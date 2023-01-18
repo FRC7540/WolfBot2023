@@ -25,7 +25,7 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final DrivebaseSubsystem m_drivebaseSubsystem = new DrivebaseSubsystem();
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
+  private final CommandXboxController m_driverXboxController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -36,7 +36,7 @@ public class RobotContainer {
   }
 
   private void configureDefaultCommands() {
-    m_drivebaseSubsystem.setDefaultCommand(new RunCommand(() -> m_drivebaseSubsystem.Drive(m_driverController.getLeftX(), m_driverController.getLeftY(), m_driverController.getRightX()), m_drivebaseSubsystem));
+    m_drivebaseSubsystem.setDefaultCommand(new RunCommand(() -> m_drivebaseSubsystem.Drive(m_driverXboxController.getLeftX(), m_driverXboxController.getLeftY(), m_driverXboxController.getRightX()), m_drivebaseSubsystem));
   }
 
   /**
@@ -55,7 +55,7 @@ public class RobotContainer {
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    m_driverXboxController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
   }
 
   /**
