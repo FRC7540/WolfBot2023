@@ -23,6 +23,9 @@ public class DrivebaseSubsystem extends SubsystemBase {
   private MecanumDrive m_mecanumDrive = new MecanumDrive(m_frontLeftMotor, m_rearLeftMotor, m_frontRightMotor, m_rearRightMotor);
   
   private double speed = Constants.DrivebaseConstants.kDriveSpeed;
+
+  //If true, use Joystick instead of Xbox controller
+  private boolean joystick = false;
   
   public DrivebaseSubsystem() {
     //Simulation setup
@@ -34,8 +37,11 @@ public class DrivebaseSubsystem extends SubsystemBase {
   }
 
   //Drives the robot
-  public void Drive(double xSpeed, double ySpeed, double zRotation) {
-    m_mecanumDrive.driveCartesian(xSpeed * speed, ySpeed * speed, zRotation * speed);
+  public void Drive(double xSpeedXbox, double ySpeedXbox, double zRotationXbox, double xSpeedJoystick, double ySpeedJoystick, double zRotationJoystick) {
+    if(joystick)
+      m_mecanumDrive.driveCartesian(xSpeedXbox * speed, ySpeedXbox * speed, zRotationXbox * speed);
+    else
+      m_mecanumDrive.driveCartesian(xSpeedJoystick, ySpeedJoystick, zRotationJoystick);
   }
 
   //Slowmode setting
@@ -44,6 +50,10 @@ public class DrivebaseSubsystem extends SubsystemBase {
       speed = Constants.DrivebaseConstants.kDriveSpeed;
     else
       speed = Constants.DrivebaseConstants.kSlowmodeSpeed;
+  }
+
+  public void setInputMode(boolean joystick) {
+    this.joystick = joystick;
   }
 
   @Override
