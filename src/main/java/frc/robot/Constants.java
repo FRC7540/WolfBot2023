@@ -20,10 +20,10 @@ public final class Constants {
 
   public static class DrivebaseConstants {
     //Motor CAN IDs
-    public static final int kLeftFrontMotor = 10; 
-    public static final int kRightFrontMotor = 11;
-    public static final int kLeftRearMotor = 12;
-    public static final int kRightRearMotor = 13;
+    public static final int kLeftFrontMotor = 1; 
+    public static final int kRightFrontMotor = 2; 
+    public static final int kLeftRearMotor = 3;
+    public static final int kRightRearMotor = 4;
 
     //Speed Calibration
     public static final double kSlowmodeSpeed = 0.5;
