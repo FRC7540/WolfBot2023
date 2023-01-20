@@ -9,12 +9,9 @@ import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.DrivebaseSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -30,7 +27,6 @@ public class RobotContainer {
 
   //Controller Setup
   private final CommandXboxController m_driverXboxController = new CommandXboxController(OperatorConstants.kDriverXboxControllerPort);
-  private final CommandJoystick m_driverJoystick = new CommandJoystick(OperatorConstants.kDriverJoystickPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -41,8 +37,7 @@ public class RobotContainer {
   private void configureDefaultCommands() {
     m_drivebaseSubsystem.setDefaultCommand(new RunCommand(
       () -> m_drivebaseSubsystem.Drive(m_driverXboxController.getLeftX(), m_driverXboxController.getLeftY(), 
-        m_driverXboxController.getRightX(), m_driverJoystick.getX(), m_driverJoystick.getY(), 
-          m_driverJoystick.getTwist()), m_drivebaseSubsystem));
+        m_driverXboxController.getRightX()), m_drivebaseSubsystem));
   }
 
   /**

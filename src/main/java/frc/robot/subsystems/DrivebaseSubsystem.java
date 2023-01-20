@@ -22,11 +22,8 @@ public class DrivebaseSubsystem extends SubsystemBase {
   //MecanumDrive Setup
   private MecanumDrive m_mecanumDrive = new MecanumDrive(m_frontLeftMotor, m_rearLeftMotor, m_frontRightMotor, m_rearRightMotor);
   
-  private double speed = Constants.DrivebaseConstants.kDriveSpeed;
+  private double speed = 1;
 
-  //If true, use Joystick instead of Xbox controller
-  private boolean joystick = false;
-  
   public DrivebaseSubsystem() {
     //Simulation setup
     REVPhysicsSim physicsSim = REVPhysicsSim.getInstance();
@@ -37,23 +34,16 @@ public class DrivebaseSubsystem extends SubsystemBase {
   }
 
   //Drives the robot
-  public void Drive(double xSpeedXbox, double ySpeedXbox, double zRotationXbox, double xSpeedJoystick, double ySpeedJoystick, double zRotationJoystick) {
-    if(joystick)
-      m_mecanumDrive.driveCartesian(xSpeedXbox * speed, ySpeedXbox * speed, zRotationXbox * speed);
-    else
-      m_mecanumDrive.driveCartesian(xSpeedJoystick, ySpeedJoystick, zRotationJoystick);
+  public void Drive(double xSpeedXbox, double ySpeedXbox, double zRotationXbox) {
+    m_mecanumDrive.driveCartesian(xSpeedXbox * speed, ySpeedXbox * speed, zRotationXbox * speed);
   }
 
   //Slowmode setting
   public void setSpeedMode(boolean slowMode) {
     if(slowMode)
-      speed = Constants.DrivebaseConstants.kDriveSpeed;
+      speed = 1; 
     else
       speed = Constants.DrivebaseConstants.kSlowmodeSpeed;
-  }
-
-  public void setInputMode(boolean joystick) {
-    this.joystick = joystick;
   }
 
   @Override

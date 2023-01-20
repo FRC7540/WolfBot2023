@@ -26,7 +26,6 @@ public final class Constants {
     public static final int kRightRearMotor = 13;
 
     //Speed Calibration
-    public static final double kDriveSpeed = 1;
     public static final double kSlowmodeSpeed = 0.5;
   }
 }
