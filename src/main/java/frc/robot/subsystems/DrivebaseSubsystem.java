@@ -17,8 +17,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class DrivebaseSubsystem extends SubsystemBase {
-  // Motor Setup with Constant IDs
-
   // MecanumDrive Setup
   private MecanumDrive m_mecanumDrive;
 
