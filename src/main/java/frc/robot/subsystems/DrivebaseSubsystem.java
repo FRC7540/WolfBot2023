@@ -7,41 +7,83 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.REVPhysicsSim;
+
+import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
+import edu.wpi.first.wpilibj.simulation.SimDeviceSim;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class DrivebaseSubsystem extends SubsystemBase {
-  //Motor Setup with Constant IDs
-  private CANSparkMax m_frontLeftMotor = new CANSparkMax(Constants.DrivebaseConstants.kLeftFrontMotor, MotorType.kBrushed);
-  private CANSparkMax m_frontRightMotor = new CANSparkMax(Constants.DrivebaseConstants.kRightFrontMotor, MotorType.kBrushed);
-  private CANSparkMax m_rearLeftMotor = new CANSparkMax(Constants.DrivebaseConstants.kLeftRearMotor, MotorType.kBrushed);
-  private CANSparkMax m_rearRightMotor = new CANSparkMax(Constants.DrivebaseConstants.kRightRearMotor, MotorType.kBrushed);
+  // Motor Setup with Constant IDs
 
-  //MecanumDrive Setup
-  private MecanumDrive m_mecanumDrive = new MecanumDrive(m_frontLeftMotor, m_rearLeftMotor, m_frontRightMotor, m_rearRightMotor);
-  
+  // MecanumDrive Setup
+  private MecanumDrive m_mecanumDrive;
+
   private double speed = 1;
 
+  private CANSparkMax[] motors = new CANSparkMax[4];
+  private SimDeviceSim[] simDevices = new SimDeviceSim[4];
+
   public DrivebaseSubsystem() {
-    //Simulation setup
-    REVPhysicsSim physicsSim = REVPhysicsSim.getInstance();
-    physicsSim.addSparkMax(m_frontLeftMotor, DCMotor.getCIM(1));
-    physicsSim.addSparkMax(m_frontRightMotor, DCMotor.getCIM(1));
-    physicsSim.addSparkMax(m_rearLeftMotor, DCMotor.getCIM(1));
-    physicsSim.addSparkMax(m_rearRightMotor, DCMotor.getCIM(1));
+    MotorType motorType = MotorType.kBrushed;
+    if (RobotBase.isSimulation()) {
+      motorType = MotorType.kBrushless;
+    }
+
+    CANSparkMax m_frontLeftMotor = new CANSparkMax(Constants.DrivebaseConstants.kLeftFrontMotor, motorType);
+    CANSparkMax m_frontRightMotor = new CANSparkMax(Constants.DrivebaseConstants.kRightFrontMotor, motorType);
+    CANSparkMax m_rearLeftMotor = new CANSparkMax(Constants.DrivebaseConstants.kLeftRearMotor, motorType);
+    CANSparkMax m_rearRightMotor = new CANSparkMax(Constants.DrivebaseConstants.kRightRearMotor, motorType);
+    m_mecanumDrive = new MecanumDrive(m_frontLeftMotor, m_rearLeftMotor, m_frontRightMotor, m_rearRightMotor);
+
+    motors = new CANSparkMax[] {
+        m_frontLeftMotor,
+        m_frontRightMotor,
+        m_rearLeftMotor,
+        m_rearRightMotor
+    };
+
+    // Simulation setup
+    if (RobotBase.isSimulation()) {
+      simulationInit();
+    }
   }
 
-  //Drives the robot
+  private void simulationInit() {
+    REVPhysicsSim physicsSim = REVPhysicsSim.getInstance();
+    for (int i = 0; i < motors.length; i++) {
+      CANSparkMax motor = motors[i];
+      simDevices[i] = new SimDeviceSim("SPARK MAX ", i + 1);
+      physicsSim.addSparkMax(motor, DCMotor.getNEO(1));
+    }
+  }
+
+  @Override
+  public void simulationPeriodic() {
+    for (int i = 0; i < motors.length; i++) {
+      CANSparkMax motor = motors[i];
+      SimDeviceSim simDevice = simDevices[i];
+      updateMotorSimDevice(motor, simDevice);
+    }
+  }
+
+  private void updateMotorSimDevice(CANSparkMax motor, SimDeviceSim simDevice) {
+    SimDouble velocityEntry = simDevice.getDouble("Velocity");
+    velocityEntry.set(motor.get());
+  }
+
+  // Drives the robot
   public void Drive(double xSpeedXbox, double ySpeedXbox, double zRotationXbox) {
     m_mecanumDrive.driveCartesian(xSpeedXbox * speed, ySpeedXbox * speed, zRotationXbox * speed);
   }
 
-  //Slowmode setting
+  // Slowmode setting
   public void setSpeedMode(boolean slowMode) {
-    if(slowMode)
-      speed = 1; 
+    if (slowMode)
+      speed = 1;
     else
       speed = Constants.DrivebaseConstants.kSlowmodeSpeed;
   }
