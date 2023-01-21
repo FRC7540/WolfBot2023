@@ -12,6 +12,7 @@ import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.simulation.SimDeviceSim;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -19,6 +20,7 @@ import frc.robot.Constants;
 public class DrivebaseSubsystem extends SubsystemBase {
   // MecanumDrive Setup
   private MecanumDrive m_mecanumDrive;
+  private Gyro gyro = null;
 
   private double speed = 1;
 
@@ -48,6 +50,10 @@ public class DrivebaseSubsystem extends SubsystemBase {
     if (RobotBase.isSimulation()) {
       simulationInit();
     }
+  }
+
+  public void setGyro(Gyro newGyro) {
+    gyro = newGyro;
   }
 
   private void simulationInit() {
