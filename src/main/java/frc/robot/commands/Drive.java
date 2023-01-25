@@ -17,7 +17,7 @@ import frc.robot.Constants;
 import frc.robot.subsystems.DrivebaseSubsystem;
 
 public class Drive extends CommandBase {
-  private static final double DEFAULT_MAX_ACCEL = 1.0;
+  private static final double DEFAULT_MAX_ACCEL = 5.0;
   private DrivebaseSubsystem drivebase;
   private DoubleSupplier translateX;
   private DoubleSupplier translateY;
@@ -49,7 +49,7 @@ public class Drive extends CommandBase {
     accelLimitEntry = Shuffleboard.getTab(Constants.ShuffleboardConstants.kGameTabName)
         .add("Acceleration Limit", DEFAULT_MAX_ACCEL)
         .withWidget(BuiltInWidgets.kNumberSlider)
-        .withProperties(Map.of("min", 0, "max", 50))
+        .withProperties(Map.of("min", 0, "max", 10))
         .getEntry();
   }
 
