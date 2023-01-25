@@ -4,19 +4,14 @@
 
 package frc.robot.subsystems;
 
-import java.util.Map;
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.REVPhysicsSim;
 
 import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.simulation.SimDeviceSim;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -25,25 +20,14 @@ public class DrivebaseSubsystem extends SubsystemBase {
   // MecanumDrive Setup
   private MecanumDrive m_mecanumDrive;
 
-  public boolean slowMode;
-
   private CANSparkMax[] motors = new CANSparkMax[4];
   private SimDeviceSim[] simDevices = new SimDeviceSim[4];
 
-  public GenericEntry slowmodeSpeed;
-
   public DrivebaseSubsystem() {
 
-    slowmodeSpeed = Shuffleboard.getTab(Constants.ShuffleboardConstants.kGameTabName)
-      .add("Slowmode Speed", 0.5)
-      .withWidget(BuiltInWidgets.kNumberSlider)
-      .withProperties(Map.of("min", 0, "max", 1))
-      .getEntry();
-
     MotorType motorType = MotorType.kBrushed;
-    if (RobotBase.isSimulation()) {
+    if (RobotBase.isSimulation())
       motorType = MotorType.kBrushless;
-    }
 
     CANSparkMax m_frontLeftMotor = new CANSparkMax(Constants.DrivebaseConstants.kLeftFrontMotor, motorType);
     CANSparkMax m_frontRightMotor = new CANSparkMax(Constants.DrivebaseConstants.kRightFrontMotor, motorType);
@@ -89,10 +73,7 @@ public class DrivebaseSubsystem extends SubsystemBase {
 
   // Drives the robot
   public void Drive(double xSpeedXbox, double ySpeedXbox, double zRotationXbox) {
-    if(!slowMode)
-      m_mecanumDrive.driveCartesian(xSpeedXbox * slowmodeSpeed.get().getDouble(), ySpeedXbox * slowmodeSpeed.get().getDouble(), zRotationXbox * slowmodeSpeed.get().getDouble());
-    else
-      m_mecanumDrive.driveCartesian(xSpeedXbox, ySpeedXbox, zRotationXbox);
+    m_mecanumDrive.driveCartesian(xSpeedXbox, ySpeedXbox, zRotationXbox);
   }
 
   @Override
