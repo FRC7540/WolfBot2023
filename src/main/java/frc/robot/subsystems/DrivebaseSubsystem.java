@@ -22,16 +22,14 @@ public class DrivebaseSubsystem extends SubsystemBase {
   private MecanumDrive m_mecanumDrive;
   private Gyro gyro = null;
 
-  private double speed = 1;
-
   private CANSparkMax[] motors = new CANSparkMax[4];
   private SimDeviceSim[] simDevices = new SimDeviceSim[4];
 
   public DrivebaseSubsystem() {
+
     MotorType motorType = MotorType.kBrushed;
-    if (RobotBase.isSimulation()) {
+    if (RobotBase.isSimulation())
       motorType = MotorType.kBrushless;
-    }
 
     CANSparkMax m_frontLeftMotor = new CANSparkMax(Constants.DrivebaseConstants.kLeftFrontMotor, motorType);
     CANSparkMax m_frontRightMotor = new CANSparkMax(Constants.DrivebaseConstants.kRightFrontMotor, motorType);
@@ -81,15 +79,7 @@ public class DrivebaseSubsystem extends SubsystemBase {
 
   // Drives the robot
   public void Drive(double xSpeedXbox, double ySpeedXbox, double zRotationXbox) {
-    m_mecanumDrive.driveCartesian(xSpeedXbox * speed, ySpeedXbox * speed, zRotationXbox * speed);
-  }
-
-  // Slowmode setting
-  public void setSpeedMode(boolean slowMode) {
-    if (slowMode)
-      speed = 1;
-    else
-      speed = Constants.DrivebaseConstants.kSlowmodeSpeed;
+    m_mecanumDrive.driveCartesian(xSpeedXbox, ySpeedXbox, zRotationXbox);
   }
 
   @Override

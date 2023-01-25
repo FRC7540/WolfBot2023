@@ -28,4 +28,9 @@ public final class Constants {
     //Speed Calibration
     public static final double kSlowmodeSpeed = 0.5;
   }
+
+  public static class ShuffleboardConstants {
+    public static final String kGameTabName = "Game";
+
+  }
 }
