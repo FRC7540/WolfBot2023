@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -16,12 +17,17 @@ import frc.robot.Constants;
 import frc.robot.subsystems.DrivebaseSubsystem;
 
 public class Drive extends CommandBase {
+  private static final double DEFAULT_MAX_ACCEL = 1.0;
   private DrivebaseSubsystem drivebase;
   private DoubleSupplier translateX;
   private DoubleSupplier translateY;
   private DoubleSupplier rotateZ;
   private BooleanSupplier slowmodeButton;
   private GenericEntry slowmodeSpeed;
+  private GenericEntry accelLimitEntry;
+  private SlewRateLimiter accelLimiterX = new SlewRateLimiter(DEFAULT_MAX_ACCEL);
+  private SlewRateLimiter accelLimiterY = new SlewRateLimiter(DEFAULT_MAX_ACCEL);
+  private double currentAccelLimit = DEFAULT_MAX_ACCEL;
 
   /** Creates a new Drive. */
   public Drive(DrivebaseSubsystem drivebase, DoubleSupplier translateX, DoubleSupplier translateY,
@@ -39,6 +45,12 @@ public class Drive extends CommandBase {
         .withWidget(BuiltInWidgets.kNumberSlider)
         .withProperties(Map.of("min", 0, "max", 1))
         .getEntry();
+
+    accelLimitEntry = Shuffleboard.getTab(Constants.ShuffleboardConstants.kGameTabName)
+        .add("Acceleration Limit", DEFAULT_MAX_ACCEL)
+        .withWidget(BuiltInWidgets.kNumberSlider)
+        .withProperties(Map.of("min", 0, "max", 50))
+        .getEntry();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -54,7 +66,13 @@ public class Drive extends CommandBase {
       y *= slowmodeSpeed.get().getDouble();
     }
 
-    drivebase.Drive(x, y, z);
+    if (currentAccelLimit != accelLimitEntry.get().getDouble()) {
+      currentAccelLimit = accelLimitEntry.get().getDouble();
+      accelLimiterX = new SlewRateLimiter(currentAccelLimit);
+      accelLimiterY = new SlewRateLimiter(currentAccelLimit);
+    }
+
+    drivebase.Drive(accelLimiterX.calculate(x), accelLimiterY.calculate(y), z);
   }
 
   // Returns true when the command should end.
