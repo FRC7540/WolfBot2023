@@ -27,6 +27,7 @@ public final class Constants {
 
     //Speed Calibration
     public static final double kSlowmodeSpeed = 0.5;
+    public static final double kDefaultMaxAcceleration = 5.0;
   }
 
   public static class ShuffleboardConstants {

@@ -17,7 +17,6 @@ import frc.robot.Constants;
 import frc.robot.subsystems.DrivebaseSubsystem;
 
 public class Drive extends CommandBase {
-  private static final double DEFAULT_MAX_ACCEL = 5.0;
   private DrivebaseSubsystem drivebase;
   private DoubleSupplier translateX;
   private DoubleSupplier translateY;
@@ -25,9 +24,9 @@ public class Drive extends CommandBase {
   private BooleanSupplier slowmodeButton;
   private GenericEntry slowmodeSpeed;
   private GenericEntry accelLimitEntry;
-  private SlewRateLimiter accelLimiterX = new SlewRateLimiter(DEFAULT_MAX_ACCEL);
-  private SlewRateLimiter accelLimiterY = new SlewRateLimiter(DEFAULT_MAX_ACCEL);
-  private double currentAccelLimit = DEFAULT_MAX_ACCEL;
+  private SlewRateLimiter accelLimiterX = new SlewRateLimiter(Constants.DrivebaseConstants.kDefaultMaxAcceleration);
+  private SlewRateLimiter accelLimiterY = new SlewRateLimiter(Constants.DrivebaseConstants.kDefaultMaxAcceleration);
+  private double currentAccelLimit = Constants.DrivebaseConstants.kDefaultMaxAcceleration;
 
   /** Creates a new Drive. */
   public Drive(DrivebaseSubsystem drivebase, DoubleSupplier translateX, DoubleSupplier translateY,
@@ -47,7 +46,7 @@ public class Drive extends CommandBase {
         .getEntry();
 
     accelLimitEntry = Shuffleboard.getTab(Constants.ShuffleboardConstants.kGameTabName)
-        .add("Acceleration Limit", DEFAULT_MAX_ACCEL)
+        .add("Acceleration Limit", Constants.DrivebaseConstants.kDefaultMaxAcceleration)
         .withWidget(BuiltInWidgets.kNumberSlider)
         .withProperties(Map.of("min", 0, "max", 10))
         .getEntry();
