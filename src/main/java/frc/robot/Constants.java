@@ -34,4 +34,8 @@ public final class Constants {
     public static final String kGameTabName = "Game";
     public static final String kTuningTabName = "Tuning";
   }
+
+  public static class CameraConstants {
+    public static final String kLimelightName = "Limelight";
+  }
 }
