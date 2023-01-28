@@ -44,6 +44,9 @@
         "Game": {
           "open": true
         },
+        "Tuning": {
+          "open": true
+        },
         "open": true
       }
     }
