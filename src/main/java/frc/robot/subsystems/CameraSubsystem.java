@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.HttpCamera;
+import edu.wpi.first.cscore.MjpegServer;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -22,10 +23,13 @@ public class CameraSubsystem extends SubsystemBase {
   }
 
   private void widgetSetup() {
-    String limelightUrl = table.getEntry("limelight_Stream").getString("");
+    String limelightUrl = table.getEntry("limelight_Stream").getString("http://10.75.40.1:5800");
+    HttpCamera video = new HttpCamera(Constants.CameraConstants.kLimelightName, limelightUrl);
+    MjpegServer server = CameraServer.addSwitchedCamera("Limelight");
+    server.setSource(video);
+
     Shuffleboard.getTab(Constants.ShuffleboardConstants.kGameTabName)
-        .add(CameraServer.startAutomaticCapture(new HttpCamera(Constants.CameraConstants.kLimelightName, limelightUrl))
-            .getSource())
+        .add(server.getSource())
         .withWidget(BuiltInWidgets.kCameraStream);
   }
 
