@@ -8,6 +8,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Drive;
 import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.DrivebaseSubsystem;
+import frc.robot.subsystems.PneumaticsSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -25,6 +26,7 @@ public class RobotContainer {
   // Subsystem Instantiation
   private final DrivebaseSubsystem m_drivebaseSubsystem = new DrivebaseSubsystem();
   private final CameraSubsystem m_cameraSubsystem = new CameraSubsystem();
+  private final PneumaticsSubsystem m_pneumaticsSubsystem = new PneumaticsSubsystem();
 
   // Controller Setup
   private final CommandXboxController m_driverXboxController = new CommandXboxController(
