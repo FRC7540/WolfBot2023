@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -22,6 +23,10 @@ public class Drive extends CommandBase {
   private DoubleSupplier rotateZ;
   private BooleanSupplier slowmodeButton;
   private GenericEntry slowmodeSpeed;
+  private GenericEntry accelLimitEntry;
+  private SlewRateLimiter accelLimiterX = new SlewRateLimiter(Constants.DrivebaseConstants.kDefaultMaxAcceleration);
+  private SlewRateLimiter accelLimiterY = new SlewRateLimiter(Constants.DrivebaseConstants.kDefaultMaxAcceleration);
+  private double currentAccelLimit = Constants.DrivebaseConstants.kDefaultMaxAcceleration;
 
   /** Creates a new Drive. */
   public Drive(DrivebaseSubsystem drivebase, DoubleSupplier translateX, DoubleSupplier translateY,
@@ -39,22 +44,41 @@ public class Drive extends CommandBase {
         .withWidget(BuiltInWidgets.kNumberSlider)
         .withProperties(Map.of("min", 0, "max", 1))
         .getEntry();
+
+    accelLimitEntry = Shuffleboard.getTab(Constants.ShuffleboardConstants.kGameTabName)
+        .add("Acceleration Limit", Constants.DrivebaseConstants.kDefaultMaxAcceleration)
+        .withWidget(BuiltInWidgets.kNumberSlider)
+        .withProperties(Map.of("min", 0, "max", 10))
+        .getEntry();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double x = translateX.getAsDouble();
-    double y = translateY.getAsDouble();
+    double x = translateX.getAsDouble() * getSpeedMultiplier();
+    double y = translateY.getAsDouble() * getSpeedMultiplier();
     double z = rotateZ.getAsDouble();
+
+    updateRateLimiters();
+
+    drivebase.Drive(accelLimiterX.calculate(x), accelLimiterY.calculate(y), z);
+  }
+
+  private double getSpeedMultiplier() {
     boolean slowModeEnabled = slowmodeButton.getAsBoolean();
-
     if (slowModeEnabled) {
-      x *= slowmodeSpeed.get().getDouble();
-      y *= slowmodeSpeed.get().getDouble();
+      return slowmodeSpeed.get().getDouble();
+    } else {
+      return 1.0;
     }
+  }
 
-    drivebase.Drive(x, y, z);
+  private void updateRateLimiters() {
+    if (currentAccelLimit != accelLimitEntry.get().getDouble()) {
+      currentAccelLimit = accelLimitEntry.get().getDouble();
+      accelLimiterX = new SlewRateLimiter(currentAccelLimit);
+      accelLimiterY = new SlewRateLimiter(currentAccelLimit);
+    }
   }
 
   // Returns true when the command should end.
