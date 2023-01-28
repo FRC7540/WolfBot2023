@@ -39,13 +39,13 @@ public class Drive extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivebase);
 
-    slowmodeSpeed = Shuffleboard.getTab(Constants.ShuffleboardConstants.kGameTabName)
+    slowmodeSpeed = Shuffleboard.getTab(Constants.ShuffleboardConstants.kTuningTabName)
         .add("Slowmode Speed", 0.5)
         .withWidget(BuiltInWidgets.kNumberSlider)
         .withProperties(Map.of("min", 0, "max", 1))
         .getEntry();
 
-    accelLimitEntry = Shuffleboard.getTab(Constants.ShuffleboardConstants.kGameTabName)
+    accelLimitEntry = Shuffleboard.getTab(Constants.ShuffleboardConstants.kTuningTabName)
         .add("Acceleration Limit", Constants.DrivebaseConstants.kDefaultMaxAcceleration)
         .withWidget(BuiltInWidgets.kNumberSlider)
         .withProperties(Map.of("min", 0, "max", 10))
