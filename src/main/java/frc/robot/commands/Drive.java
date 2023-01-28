@@ -55,23 +55,30 @@ public class Drive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double x = translateX.getAsDouble();
-    double y = translateY.getAsDouble();
+    double x = translateX.getAsDouble() * getSpeedMultiplier();
+    double y = translateY.getAsDouble() * getSpeedMultiplier();
     double z = rotateZ.getAsDouble();
+
+    updateRateLimiters();
+
+    drivebase.Drive(accelLimiterX.calculate(x), accelLimiterY.calculate(y), z);
+  }
+
+  private double getSpeedMultiplier() {
     boolean slowModeEnabled = slowmodeButton.getAsBoolean();
-
     if (slowModeEnabled) {
-      x *= slowmodeSpeed.get().getDouble();
-      y *= slowmodeSpeed.get().getDouble();
+      return slowmodeSpeed.get().getDouble();
+    } else {
+      return 1.0;
     }
+  }
 
+  private void updateRateLimiters() {
     if (currentAccelLimit != accelLimitEntry.get().getDouble()) {
       currentAccelLimit = accelLimitEntry.get().getDouble();
       accelLimiterX = new SlewRateLimiter(currentAccelLimit);
       accelLimiterY = new SlewRateLimiter(currentAccelLimit);
     }
-
-    drivebase.Drive(accelLimiterX.calculate(x), accelLimiterY.calculate(y), z);
   }
 
   // Returns true when the command should end.
