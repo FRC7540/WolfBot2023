@@ -9,8 +9,10 @@ import frc.robot.commands.Drive;
 import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.DrivebaseSubsystem;
 import frc.robot.subsystems.PneumaticsSubsystem;
+import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -63,7 +65,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-
+    //new JoystickButton(m_driverXboxController, Button.kA)
   }
 
   /**
