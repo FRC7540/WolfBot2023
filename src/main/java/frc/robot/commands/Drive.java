@@ -4,12 +4,15 @@
 
 package frc.robot.commands;
 
+import java.util.EnumSet;
 import java.util.Map;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.networktables.NetworkTableEvent;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -26,7 +29,6 @@ public class Drive extends CommandBase {
   private GenericEntry accelLimitEntry;
   private SlewRateLimiter accelLimiterX = new SlewRateLimiter(Constants.DrivebaseConstants.kDefaultMaxAcceleration);
   private SlewRateLimiter accelLimiterY = new SlewRateLimiter(Constants.DrivebaseConstants.kDefaultMaxAcceleration);
-  private double currentAccelLimit = Constants.DrivebaseConstants.kDefaultMaxAcceleration;
 
   /** Creates a new Drive. */
   public Drive(DrivebaseSubsystem drivebase, DoubleSupplier translateX, DoubleSupplier translateY,
@@ -50,6 +52,10 @@ public class Drive extends CommandBase {
         .withWidget(BuiltInWidgets.kNumberSlider)
         .withProperties(Map.of("min", 0, "max", 10))
         .getEntry();
+    NetworkTableInstance inst = NetworkTableInstance.getDefault();
+    inst.addListener(accelLimitEntry, EnumSet.of(NetworkTableEvent.Kind.kValueAll),
+        (event) -> updateRateLimiters(event));
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -58,8 +64,6 @@ public class Drive extends CommandBase {
     double x = translateX.getAsDouble() * getSpeedMultiplier();
     double y = translateY.getAsDouble() * getSpeedMultiplier();
     double z = rotateZ.getAsDouble();
-
-    updateRateLimiters();
 
     drivebase.Drive(accelLimiterX.calculate(x), accelLimiterY.calculate(y), z);
   }
@@ -73,12 +77,10 @@ public class Drive extends CommandBase {
     }
   }
 
-  private void updateRateLimiters() {
-    if (currentAccelLimit != accelLimitEntry.get().getDouble()) {
-      currentAccelLimit = accelLimitEntry.get().getDouble();
-      accelLimiterX = new SlewRateLimiter(currentAccelLimit);
-      accelLimiterY = new SlewRateLimiter(currentAccelLimit);
-    }
+  private void updateRateLimiters(NetworkTableEvent event) {
+    double currentAccelLimit = event.valueData.value.getDouble();
+    accelLimiterX = new SlewRateLimiter(currentAccelLimit);
+    accelLimiterY = new SlewRateLimiter(currentAccelLimit);
   }
 
   // Returns true when the command should end.
