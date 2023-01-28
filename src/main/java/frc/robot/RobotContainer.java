@@ -8,6 +8,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.Drive;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.DrivebaseSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -27,6 +28,7 @@ public class RobotContainer {
   // Subsystem Instantiation
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final DrivebaseSubsystem m_drivebaseSubsystem = new DrivebaseSubsystem();
+  private final CameraSubsystem m_cameraSubsystem = new CameraSubsystem();
 
   // Controller Setup
   private final CommandXboxController m_driverXboxController = new CommandXboxController(
