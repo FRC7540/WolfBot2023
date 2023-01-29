@@ -27,8 +27,8 @@ public class Drive extends CommandBase {
   private BooleanSupplier slowmodeButton;
   private GenericEntry slowmodeSpeed;
   private GenericEntry accelLimitEntry;
-  private SlewRateLimiter accelLimiterX = new SlewRateLimiter(Constants.DrivebaseConstants.kDefaultMaxAcceleration);
-  private SlewRateLimiter accelLimiterY = new SlewRateLimiter(Constants.DrivebaseConstants.kDefaultMaxAcceleration);
+  private SlewRateLimiter accelLimiterX = new SlewRateLimiter(Constants.DrivebaseConstants.DEFAULT_MAX_ACCELERATION);
+  private SlewRateLimiter accelLimiterY = new SlewRateLimiter(Constants.DrivebaseConstants.DEFAULT_MAX_ACCELERATION);
 
   /** Creates a new Drive. */
   public Drive(DrivebaseSubsystem drivebase, DoubleSupplier translateX, DoubleSupplier translateY,
@@ -41,14 +41,14 @@ public class Drive extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivebase);
 
-    slowmodeSpeed = Shuffleboard.getTab(Constants.ShuffleboardConstants.kTuningTabName)
-        .add("Slowmode Speed", 0.5)
+    slowmodeSpeed = Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
+        .add("Slowmode Speed", Constants.DrivebaseConstants.DEFAULT_SLOWMODE_SPEED)
         .withWidget(BuiltInWidgets.kNumberSlider)
         .withProperties(Map.of("min", 0, "max", 1))
         .getEntry();
 
-    accelLimitEntry = Shuffleboard.getTab(Constants.ShuffleboardConstants.kTuningTabName)
-        .add("Acceleration Limit", Constants.DrivebaseConstants.kDefaultMaxAcceleration)
+    accelLimitEntry = Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
+        .add("Acceleration Limit", Constants.DrivebaseConstants.DEFAULT_MAX_ACCELERATION)
         .withWidget(BuiltInWidgets.kNumberSlider)
         .withProperties(Map.of("min", 0, "max", 10))
         .getEntry();

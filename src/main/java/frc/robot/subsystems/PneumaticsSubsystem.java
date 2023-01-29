@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class PneumaticsSubsystem extends SubsystemBase {
-  private Compressor compressor = new Compressor(Constants.PneumaticsConstants.kPcmCanId, PneumaticsModuleType.CTREPCM);
+  private Compressor compressor = new Compressor(Constants.PneumaticsConstants.PCM_CAN_ID, PneumaticsModuleType.CTREPCM);
 
   /** Creates a new PneumaticsSubsystem. */
   public PneumaticsSubsystem() {

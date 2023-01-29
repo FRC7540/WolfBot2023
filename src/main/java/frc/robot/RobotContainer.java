@@ -24,13 +24,13 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // Subsystem Instantiation
-  private final DrivebaseSubsystem m_drivebaseSubsystem = new DrivebaseSubsystem();
-  private final CameraSubsystem m_cameraSubsystem = new CameraSubsystem();
-  private final PneumaticsSubsystem m_pneumaticsSubsystem = new PneumaticsSubsystem();
+  private final DrivebaseSubsystem drivebaseSubsystem = new DrivebaseSubsystem();
+  private final CameraSubsystem cameraSubsystem = new CameraSubsystem();
+  private final PneumaticsSubsystem pneumaticsSubsystem = new PneumaticsSubsystem();
 
   // Controller Setup
-  private final CommandXboxController m_driverXboxController = new CommandXboxController(
-      OperatorConstants.kDriverXboxControllerPort);
+  private final CommandXboxController driverXboxController = new CommandXboxController(
+      OperatorConstants.DRIVER_XBOX_CONTROLLER_PORT);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -41,11 +41,11 @@ public class RobotContainer {
   }
 
   private void configureDefaultCommands() {
-    Trigger leftBumper = m_driverXboxController.leftBumper();
-    Drive driveCommand = new Drive(m_drivebaseSubsystem, m_driverXboxController::getLeftX,
-        m_driverXboxController::getLeftY, m_driverXboxController::getRightX, leftBumper::getAsBoolean);
+    Trigger leftBumper = driverXboxController.leftBumper();
+    Drive driveCommand = new Drive(drivebaseSubsystem, driverXboxController::getLeftX,
+        driverXboxController::getLeftY, driverXboxController::getRightX, leftBumper::getAsBoolean);
 
-    m_drivebaseSubsystem.setDefaultCommand(driveCommand);
+    drivebaseSubsystem.setDefaultCommand(driveCommand);
   }
 
   /**
