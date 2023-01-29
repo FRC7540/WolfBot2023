@@ -24,11 +24,11 @@ public class CameraSubsystem extends SubsystemBase {
 
   private void widgetSetup() {
     String limelightUrl = table.getEntry("limelight_Stream").getString("http://10.75.40.1:5800");
-    HttpCamera video = new HttpCamera(Constants.CameraConstants.kLimelightName, limelightUrl);
+    HttpCamera video = new HttpCamera(Constants.CameraConstants.LIMELIGHT_NAME, limelightUrl);
     MjpegServer server = CameraServer.addSwitchedCamera("Limelight");
     server.setSource(video);
 
-    Shuffleboard.getTab(Constants.ShuffleboardConstants.kGameTabName)
+    Shuffleboard.getTab(Constants.ShuffleboardConstants.GAME_TAB_NAME)
         .add(server.getSource())
         .withWidget(BuiltInWidgets.kCameraStream);
   }
