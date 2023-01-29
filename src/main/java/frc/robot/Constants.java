@@ -29,7 +29,7 @@ public final class Constants {
     public static final int REAR_RIGHT_MOTOR = 4;
 
     // Speed Calibration
-    public static final double SLOWMODE_SPEED = 0.5;
+    public static final double DEFAULT_SLOWMODE_SPEED = 0.5;
     public static final double DEFAULT_MAX_ACCELERATION = 5.0;
   }
 

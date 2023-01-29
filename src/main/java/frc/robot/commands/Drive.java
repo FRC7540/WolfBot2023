@@ -42,7 +42,7 @@ public class Drive extends CommandBase {
     addRequirements(drivebase);
 
     slowmodeSpeed = Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
-        .add("Slowmode Speed", 0.5)
+        .add("Slowmode Speed", Constants.DrivebaseConstants.DEFAULT_SLOWMODE_SPEED)
         .withWidget(BuiltInWidgets.kNumberSlider)
         .withProperties(Map.of("min", 0, "max", 1))
         .getEntry();
