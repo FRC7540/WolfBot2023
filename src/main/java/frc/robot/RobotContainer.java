@@ -5,14 +5,14 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.ActuateClaw;
 import frc.robot.commands.Drive;
 import frc.robot.subsystems.CameraSubsystem;
+import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.DrivebaseSubsystem;
 import frc.robot.subsystems.PneumaticsSubsystem;
-import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -29,6 +29,7 @@ public class RobotContainer {
   private final DrivebaseSubsystem m_drivebaseSubsystem = new DrivebaseSubsystem();
   private final CameraSubsystem m_cameraSubsystem = new CameraSubsystem();
   private final PneumaticsSubsystem m_pneumaticsSubsystem = new PneumaticsSubsystem();
+  private final ClawSubsystem m_clawSubsystem = new ClawSubsystem();
 
   // Controller Setup
   private final CommandXboxController m_driverXboxController = new CommandXboxController(
@@ -43,11 +44,17 @@ public class RobotContainer {
   }
 
   private void configureDefaultCommands() {
+    // Drivebase default command
     Trigger leftBumper = m_driverXboxController.leftBumper();
     Drive driveCommand = new Drive(m_drivebaseSubsystem, m_driverXboxController::getLeftX,
         m_driverXboxController::getLeftY, m_driverXboxController::getRightX, leftBumper::getAsBoolean);
-
     m_drivebaseSubsystem.setDefaultCommand(driveCommand);
+
+    // Claw default command
+    Trigger aButton = m_driverXboxController.a();
+    Trigger bButton = m_driverXboxController.b();
+    ActuateClaw actuationCommand = new ActuateClaw(m_clawSubsystem, aButton::getAsBoolean, bButton::getAsBoolean);
+    m_clawSubsystem.setDefaultCommand(actuationCommand);
   }
 
   /**
@@ -65,7 +72,6 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    //new JoystickButton(m_driverXboxController, Button.kA)
   }
 
   /**

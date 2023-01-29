@@ -4,37 +4,43 @@
 
 package frc.robot.commands;
 
+import java.util.function.BooleanSupplier;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ClawSubsystem;
 
-public class CloseClaw extends CommandBase {
+public class ActuateClaw extends CommandBase {
   private ClawSubsystem clawSubsystem;
+  private BooleanSupplier openButton;
+  private BooleanSupplier closeButton;
 
-  /** Creates a new CloseClaw. */
-  public CloseClaw(ClawSubsystem clawSubsystem) {
+  /** Creates a new ActuateClaw. */
+  public ActuateClaw(ClawSubsystem clawSubsystem, BooleanSupplier openButton, BooleanSupplier closeButton) {
     this.clawSubsystem = clawSubsystem;
+    this.openButton = openButton;
+    this.closeButton = closeButton;
     addRequirements(clawSubsystem);
   }
 
-  // Called when the command is initially scheduled.
   @Override
   public void initialize() {
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Direction must be TRUE to close - closing is extending piston.
-    clawSubsystem.actuateClaw(true);
+    if (openButton.getAsBoolean()) {
+      clawSubsystem.actuateClaw(false);
+    } else if (closeButton.getAsBoolean()) {
+      clawSubsystem.actuateClaw(true);
+    } else {
+      clawSubsystem.stopClaw();
+    }
   }
 
-  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    clawSubsystem.stopClaw();
   }
 
-  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return false;
