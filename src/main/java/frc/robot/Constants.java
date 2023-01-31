@@ -18,29 +18,28 @@ package frc.robot;
  */
 public final class Constants {
   public static class OperatorConstants {
-    public static final int kDriverXboxControllerPort = 0;
-    public static final int kDriverJoystickPort = 1;
+    public static final int DRIVER_XBOX_CONTROLLER_PORT = 0;
   }
 
   public static class DrivebaseConstants {
     // Motor CAN IDs
-    public static final int kLeftFrontMotor = 1;
-    public static final int kRightFrontMotor = 2;
-    public static final int kLeftRearMotor = 3;
-    public static final int kRightRearMotor = 4;
+    public static final int FRONT_LEFT_MOTOR = 1;
+    public static final int FRONT_RIGHT_MOTOR = 2;
+    public static final int REAR_LEFT_MOTOR = 3;
+    public static final int REAR_RIGHT_MOTOR = 4;
 
     // Speed Calibration
-    public static final double kSlowmodeSpeed = 0.5;
-    public static final double kDefaultMaxAcceleration = 5.0;
+    public static final double DEFAULT_SLOWMODE_SPEED = 0.5;
+    public static final double DEFAULT_MAX_ACCELERATION = 5.0;
   }
 
   public static class ShuffleboardConstants {
-    public static final String kGameTabName = "Game";
-    public static final String kTuningTabName = "Tuning";
+    public static final String GAME_TAB_NAME = "Game";
+    public static final String TUNING_TAB_NAME = "Tuning";
   }
 
   public static class CameraConstants {
-    public static final String kLimelightName = "Limelight";
+    public static final String LIMELIGHT_NAME = "Limelight";
   }
 
   public static class PneumaticsConstants {

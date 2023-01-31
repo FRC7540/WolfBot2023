@@ -4,12 +4,15 @@
 
 package frc.robot.commands;
 
+import java.util.EnumSet;
 import java.util.Map;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.networktables.NetworkTableEvent;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -24,9 +27,8 @@ public class Drive extends CommandBase {
   private BooleanSupplier slowmodeButton;
   private GenericEntry slowmodeSpeed;
   private GenericEntry accelLimitEntry;
-  private SlewRateLimiter accelLimiterX = new SlewRateLimiter(Constants.DrivebaseConstants.kDefaultMaxAcceleration);
-  private SlewRateLimiter accelLimiterY = new SlewRateLimiter(Constants.DrivebaseConstants.kDefaultMaxAcceleration);
-  private double currentAccelLimit = Constants.DrivebaseConstants.kDefaultMaxAcceleration;
+  private SlewRateLimiter accelLimiterX = new SlewRateLimiter(Constants.DrivebaseConstants.DEFAULT_MAX_ACCELERATION);
+  private SlewRateLimiter accelLimiterY = new SlewRateLimiter(Constants.DrivebaseConstants.DEFAULT_MAX_ACCELERATION);
 
   /** Creates a new Drive. */
   public Drive(DrivebaseSubsystem drivebase, DoubleSupplier translateX, DoubleSupplier translateY,
@@ -39,17 +41,21 @@ public class Drive extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivebase);
 
-    slowmodeSpeed = Shuffleboard.getTab(Constants.ShuffleboardConstants.kTuningTabName)
-        .add("Slowmode Speed", 0.5)
+    slowmodeSpeed = Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
+        .add("Slowmode Speed", Constants.DrivebaseConstants.DEFAULT_SLOWMODE_SPEED)
         .withWidget(BuiltInWidgets.kNumberSlider)
         .withProperties(Map.of("min", 0, "max", 1))
         .getEntry();
 
-    accelLimitEntry = Shuffleboard.getTab(Constants.ShuffleboardConstants.kTuningTabName)
-        .add("Acceleration Limit", Constants.DrivebaseConstants.kDefaultMaxAcceleration)
+    accelLimitEntry = Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
+        .add("Acceleration Limit", Constants.DrivebaseConstants.DEFAULT_MAX_ACCELERATION)
         .withWidget(BuiltInWidgets.kNumberSlider)
         .withProperties(Map.of("min", 0, "max", 10))
         .getEntry();
+    NetworkTableInstance inst = NetworkTableInstance.getDefault();
+    inst.addListener(accelLimitEntry, EnumSet.of(NetworkTableEvent.Kind.kValueAll),
+        (event) -> updateRateLimiters(event));
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -58,8 +64,6 @@ public class Drive extends CommandBase {
     double x = translateX.getAsDouble() * getSpeedMultiplier();
     double y = translateY.getAsDouble() * getSpeedMultiplier();
     double z = rotateZ.getAsDouble();
-
-    updateRateLimiters();
 
     drivebase.Drive(accelLimiterX.calculate(x), accelLimiterY.calculate(y), z);
   }
@@ -73,12 +77,10 @@ public class Drive extends CommandBase {
     }
   }
 
-  private void updateRateLimiters() {
-    if (currentAccelLimit != accelLimitEntry.get().getDouble()) {
-      currentAccelLimit = accelLimitEntry.get().getDouble();
-      accelLimiterX = new SlewRateLimiter(currentAccelLimit);
-      accelLimiterY = new SlewRateLimiter(currentAccelLimit);
-    }
+  private void updateRateLimiters(NetworkTableEvent event) {
+    double currentAccelLimit = event.valueData.value.getDouble();
+    accelLimiterX = new SlewRateLimiter(currentAccelLimit);
+    accelLimiterY = new SlewRateLimiter(currentAccelLimit);
   }
 
   // Returns true when the command should end.

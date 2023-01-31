@@ -34,8 +34,8 @@ public class RobotContainer {
   private final ClawSubsystem clawSubsystem = new ClawSubsystem();
 
   // Controller Setup
-  private final CommandXboxController m_driverXboxController = new CommandXboxController(
-      OperatorConstants.kDriverXboxControllerPort);
+  private final CommandXboxController driverXboxController = new CommandXboxController(
+      OperatorConstants.DRIVER_XBOX_CONTROLLER_PORT);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.

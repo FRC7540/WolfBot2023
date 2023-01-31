@@ -19,7 +19,7 @@ import frc.robot.Constants;
 
 public class DrivebaseSubsystem extends SubsystemBase {
   // MecanumDrive Setup
-  private MecanumDrive m_mecanumDrive;
+  private MecanumDrive mecanumDrive;
   private Gyro gyro = null;
 
   private CANSparkMax[] motors = new CANSparkMax[4];
@@ -31,17 +31,17 @@ public class DrivebaseSubsystem extends SubsystemBase {
     if (RobotBase.isSimulation())
       motorType = MotorType.kBrushless;
 
-    CANSparkMax m_frontLeftMotor = new CANSparkMax(Constants.DrivebaseConstants.kLeftFrontMotor, motorType);
-    CANSparkMax m_frontRightMotor = new CANSparkMax(Constants.DrivebaseConstants.kRightFrontMotor, motorType);
-    CANSparkMax m_rearLeftMotor = new CANSparkMax(Constants.DrivebaseConstants.kLeftRearMotor, motorType);
-    CANSparkMax m_rearRightMotor = new CANSparkMax(Constants.DrivebaseConstants.kRightRearMotor, motorType);
-    m_mecanumDrive = new MecanumDrive(m_frontLeftMotor, m_rearLeftMotor, m_frontRightMotor, m_rearRightMotor);
+    CANSparkMax frontLeftMotor = new CANSparkMax(Constants.DrivebaseConstants.FRONT_LEFT_MOTOR, motorType);
+    CANSparkMax frontRightMotor = new CANSparkMax(Constants.DrivebaseConstants.FRONT_RIGHT_MOTOR, motorType);
+    CANSparkMax rearLeftMotor = new CANSparkMax(Constants.DrivebaseConstants.REAR_LEFT_MOTOR, motorType);
+    CANSparkMax rearRightMotor = new CANSparkMax(Constants.DrivebaseConstants.REAR_RIGHT_MOTOR, motorType);
+    mecanumDrive = new MecanumDrive(frontLeftMotor, rearLeftMotor, frontRightMotor, rearRightMotor);
 
     motors = new CANSparkMax[] {
-        m_frontLeftMotor,
-        m_frontRightMotor,
-        m_rearLeftMotor,
-        m_rearRightMotor
+        frontLeftMotor,
+        frontRightMotor,
+        rearLeftMotor,
+        rearRightMotor
     };
 
     // Simulation setup
@@ -79,7 +79,7 @@ public class DrivebaseSubsystem extends SubsystemBase {
 
   // Drives the robot
   public void Drive(double xSpeedXbox, double ySpeedXbox, double zRotationXbox) {
-    m_mecanumDrive.driveCartesian(xSpeedXbox, ySpeedXbox, zRotationXbox);
+    mecanumDrive.driveCartesian(xSpeedXbox, ySpeedXbox, zRotationXbox);
   }
 
   @Override
