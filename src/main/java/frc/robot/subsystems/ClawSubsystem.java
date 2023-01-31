@@ -23,17 +23,14 @@ public class ClawSubsystem extends SubsystemBase {
 
   public void OpenClaw() {
     clawSolenoids.set(Value.kReverse);
-    System.out.println("The Claw is Opening...");
   }
 
   public void CloseClaw() {
     clawSolenoids.set(Value.kForward);
-    System.out.println("The Claw is Closing...");
   }
 
   public void stopClaw() {
     clawSolenoids.set(Value.kOff);
-    System.out.println("The Claw is Stopped.");
   }
 
   @Override
