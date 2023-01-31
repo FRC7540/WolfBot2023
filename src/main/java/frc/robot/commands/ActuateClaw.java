@@ -9,33 +9,35 @@ import frc.robot.subsystems.ClawSubsystem;
 
 public class ActuateClaw extends CommandBase {
   private ClawSubsystem clawSubsystem;
-  private Enum direction;
+  private Enum<directions> direction;
 
-  /** Creates a new ActuateClaw. */
+  public enum directions {
+    FORWARD, BACKWARD
+  }
 
-  public ActuateClaw(ClawSubsystem clawSubsystem, Enum direction) {
+  public ActuateClaw(ClawSubsystem clawSubsystem, Enum<directions> direction) {
     this.clawSubsystem = clawSubsystem;
     this.direction = direction;
     addRequirements(clawSubsystem);
   }
 
-  // Called when the command is initially scheduled.
   @Override
   public void initialize() {
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    clawSubsystem.actuateClaw(direction);
+    if (direction == directions.FORWARD) {
+      clawSubsystem.CloseClaw();
+    } else if (direction == directions.BACKWARD) {
+      clawSubsystem.OpenClaw();
+    }
   }
 
-  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
   }
 
-  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return false;

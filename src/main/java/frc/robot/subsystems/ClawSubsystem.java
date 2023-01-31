@@ -17,30 +17,26 @@ public class ClawSubsystem extends SubsystemBase {
       Constants.PneumaticsConstants.kClawSolenoidExtend,
       Constants.PneumaticsConstants.kClawSolenoidRetract);
 
-  public enum directions {
-    FORWARD, BACKWARD
-  }
-
   /** Creates a new ClawSubsystem. */
   public ClawSubsystem() {
   }
 
-  public void actuateClaw(Enum direction) {
-    // Actuates the piston on the claw. If direction true, extends. If false,
-    // retracts.
-    if (direction == directions.FORWARD) {
-      clawSolenoids.set(Value.kForward);
-    } else if (direction == directions.BACKWARD) {
-      clawSolenoids.set(Value.kReverse);
-    }
+  public void OpenClaw() {
+    clawSolenoids.set(Value.kReverse);
+    System.out.println("The Claw is Opening...");
+  }
+
+  public void CloseClaw() {
+    clawSolenoids.set(Value.kForward);
+    System.out.println("The Claw is Closing...");
   }
 
   public void stopClaw() {
     clawSolenoids.set(Value.kOff);
+    System.out.println("The Claw is Stopped.");
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
   }
 }
