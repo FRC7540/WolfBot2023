@@ -28,10 +28,10 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // Subsystem Instantiation
-  private final DrivebaseSubsystem m_drivebaseSubsystem = new DrivebaseSubsystem();
-  private final CameraSubsystem m_cameraSubsystem = new CameraSubsystem();
-  private final PneumaticsSubsystem m_pneumaticsSubsystem = new PneumaticsSubsystem();
-  private final ClawSubsystem m_clawSubsystem = new ClawSubsystem();
+  private final DrivebaseSubsystem drivebaseSubsystem = new DrivebaseSubsystem();
+  private final CameraSubsystem cameraSubsystem = new CameraSubsystem();
+  private final PneumaticsSubsystem pneumaticsSubsystem = new PneumaticsSubsystem();
+  private final ClawSubsystem clawSubsystem = new ClawSubsystem();
 
   // Controller Setup
   private final CommandXboxController m_driverXboxController = new CommandXboxController(
@@ -48,12 +48,12 @@ public class RobotContainer {
   private void configureDefaultCommands() {
     // Drivebase default command
     Trigger leftBumper = m_driverXboxController.leftBumper();
-    Drive driveCommand = new Drive(m_drivebaseSubsystem, m_driverXboxController::getLeftX,
+    Drive driveCommand = new Drive(drivebaseSubsystem, m_driverXboxController::getLeftX,
         m_driverXboxController::getLeftY, m_driverXboxController::getRightX, leftBumper::getAsBoolean);
-    m_drivebaseSubsystem.setDefaultCommand(driveCommand);
+    drivebaseSubsystem.setDefaultCommand(driveCommand);
 
     // Claw default command
-    m_clawSubsystem.setDefaultCommand(new InstantCommand(() -> m_clawSubsystem.stopClaw(), m_clawSubsystem));
+    clawSubsystem.setDefaultCommand(new InstantCommand(() -> clawSubsystem.stopClaw(), clawSubsystem));
   }
 
   /**
@@ -71,8 +71,8 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    m_driverXboxController.a().whileTrue(new ActuateClaw(m_clawSubsystem, directions.BACKWARD));
-    m_driverXboxController.b().whileTrue(new ActuateClaw(m_clawSubsystem, directions.FORWARD));
+    m_driverXboxController.a().whileTrue(new ActuateClaw(clawSubsystem, directions.BACKWARD));
+    m_driverXboxController.b().whileTrue(new ActuateClaw(clawSubsystem, directions.FORWARD));
   }
 
   /**
