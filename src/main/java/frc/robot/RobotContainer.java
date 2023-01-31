@@ -11,7 +11,9 @@ import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.DrivebaseSubsystem;
 import frc.robot.subsystems.PneumaticsSubsystem;
+import frc.robot.subsystems.ClawSubsystem.directions;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -51,10 +53,7 @@ public class RobotContainer {
     m_drivebaseSubsystem.setDefaultCommand(driveCommand);
 
     // Claw default command
-    Trigger aButton = m_driverXboxController.a();
-    Trigger bButton = m_driverXboxController.b();
-    ActuateClaw actuationCommand = new ActuateClaw(m_clawSubsystem, aButton::getAsBoolean, bButton::getAsBoolean);
-    m_clawSubsystem.setDefaultCommand(actuationCommand);
+    m_clawSubsystem.setDefaultCommand(new InstantCommand(() -> m_clawSubsystem.stopClaw(), m_clawSubsystem));
   }
 
   /**
@@ -72,6 +71,8 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    m_driverXboxController.a().whileTrue(new ActuateClaw(m_clawSubsystem, directions.BACKWARD));
+    m_driverXboxController.b().whileTrue(new ActuateClaw(m_clawSubsystem, directions.FORWARD));
   }
 
   /**

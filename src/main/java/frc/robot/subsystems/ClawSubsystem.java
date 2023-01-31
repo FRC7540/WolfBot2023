@@ -17,16 +17,20 @@ public class ClawSubsystem extends SubsystemBase {
       Constants.PneumaticsConstants.kClawSolenoidExtend,
       Constants.PneumaticsConstants.kClawSolenoidRetract);
 
+  public enum directions {
+    FORWARD, BACKWARD
+  }
+
   /** Creates a new ClawSubsystem. */
   public ClawSubsystem() {
   }
 
-  public void actuateClaw(boolean direction) {
+  public void actuateClaw(Enum direction) {
     // Actuates the piston on the claw. If direction true, extends. If false,
     // retracts.
-    if (direction) {
+    if (direction == directions.FORWARD) {
       clawSolenoids.set(Value.kForward);
-    } else {
+    } else if (direction == directions.BACKWARD) {
       clawSolenoids.set(Value.kReverse);
     }
   }
