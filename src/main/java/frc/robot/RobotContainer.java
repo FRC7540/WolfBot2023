@@ -47,9 +47,9 @@ public class RobotContainer {
 
   private void configureDefaultCommands() {
     // Drivebase default command
-    Trigger leftBumper = m_driverXboxController.leftBumper();
-    Drive driveCommand = new Drive(drivebaseSubsystem, m_driverXboxController::getLeftX,
-        m_driverXboxController::getLeftY, m_driverXboxController::getRightX, leftBumper::getAsBoolean);
+    Trigger leftBumper = driverXboxController.leftBumper();
+    Drive driveCommand = new Drive(drivebaseSubsystem, driverXboxController::getLeftX,
+        driverXboxController::getLeftY, driverXboxController::getRightX, leftBumper::getAsBoolean);
     drivebaseSubsystem.setDefaultCommand(driveCommand);
 
     // Claw default command
@@ -71,8 +71,8 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    m_driverXboxController.a().whileTrue(new ActuateClaw(clawSubsystem, directions.BACKWARD));
-    m_driverXboxController.b().whileTrue(new ActuateClaw(clawSubsystem, directions.FORWARD));
+    driverXboxController.a().whileTrue(new ActuateClaw(clawSubsystem, directions.BACKWARD));
+    driverXboxController.b().whileTrue(new ActuateClaw(clawSubsystem, directions.FORWARD));
   }
 
   /**
