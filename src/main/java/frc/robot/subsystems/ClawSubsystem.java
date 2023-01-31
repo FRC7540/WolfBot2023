@@ -12,10 +12,10 @@ import frc.robot.Constants;
 
 public class ClawSubsystem extends SubsystemBase {
   private DoubleSolenoid clawSolenoids = new DoubleSolenoid(
-      Constants.PneumaticsConstants.kPcmCanId,
+      Constants.PneumaticsConstants.PCM_CAN_ID,
       PneumaticsModuleType.CTREPCM,
-      Constants.PneumaticsConstants.kClawSolenoidExtend,
-      Constants.PneumaticsConstants.kClawSolenoidRetract);
+      Constants.PneumaticsConstants.CLAW_SOLENOID_EXTEND,
+      Constants.PneumaticsConstants.CLAW_SOLENOID_RETRACT);
 
   /** Creates a new ClawSubsystem. */
   public ClawSubsystem() {

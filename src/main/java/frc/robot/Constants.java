@@ -45,10 +45,10 @@ public final class Constants {
 
   public static class PneumaticsConstants {
     // CAN ID of CTRE PCM, default 0
-    public static final int kPcmCanId = 0;
+    public static final int PCM_CAN_ID = 0;
 
     // PCM Channels for solenoids
-    public static final int kClawSolenoidExtend = 0;
-    public static final int kClawSolenoidRetract = 1;
+    public static final int CLAW_SOLENOID_EXTEND = 0;
+    public static final int CLAW_SOLENOID_RETRACT = 1;
   }
 }
