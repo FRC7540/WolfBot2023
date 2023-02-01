@@ -30,10 +30,21 @@
   },
   "NTProvider": {
     "types": {
-      "/FMSInfo": "FMSInfo"
+      "/FMSInfo": "FMSInfo",
+      "/Shuffleboard/Tuning/Gyro Selection": "String Chooser"
+    },
+    "windows": {
+      "/Shuffleboard/Tuning/Gyro Selection": {
+        "window": {
+          "visible": true
+        }
+      }
     }
   },
   "NetworkTables": {
+    "Persistent Values": {
+      "open": false
+    },
     "Retained Values": {
       "open": false
     },
@@ -43,6 +54,9 @@
           "open": true
         },
         "Tuning": {
+          "Gyro Selection": {
+            "open": true
+          },
           "open": true
         },
         "open": true
