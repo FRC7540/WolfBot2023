@@ -4,18 +4,27 @@
 
 package frc.robot.subsystems;
 
+import java.util.EnumSet;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.REVPhysicsSim;
 
 import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableEvent;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.simulation.SimDeviceSim;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.configuration.GyroChooser;
 
 public class DrivebaseSubsystem extends SubsystemBase {
   // MecanumDrive Setup
@@ -48,6 +57,16 @@ public class DrivebaseSubsystem extends SubsystemBase {
     if (RobotBase.isSimulation()) {
       simulationInit();
     }
+
+    // Creates a shuffleboard combobox widget for gyro selection
+    Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
+        .add("Gyro Selection", new GyroChooser())
+        .withWidget(BuiltInWidgets.kComboBoxChooser);
+
+    NetworkTableInstance inst = NetworkTableInstance.getDefault();
+    NetworkTable table = inst.getTable("Shuffleboard");
+    NetworkTableEntry entry = table.getEntry("Tuning/Gyro Selection/active");
+    inst.addListener(entry, EnumSet.of(NetworkTableEvent.Kind.kValueAll), this::updateGyro);
   }
 
   public void setGyro(Gyro newGyro) {
@@ -85,5 +104,18 @@ public class DrivebaseSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  }
+
+  private void updateGyro(NetworkTableEvent event) {
+    String gyroSelection = event.valueData.value.getString();
+    switch (gyroSelection) {
+      case GyroChooser.NONE:
+        gyro = null;
+        break;
+      case GyroChooser.NAVX2:
+        // TODO: Needs to be properly created
+        gyro = null;
+        break;
+    }
   }
 }
