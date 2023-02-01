@@ -8,8 +8,10 @@ All controls are based on a standard xbox controller.
 
 ### Driver controls
 
-| control  | binding            | description                          |
-| -------- | ------------------ | ------------------------------------ |
-| movement | Left Analog Stick  |                                      |
-| rotation | Right Analog Stick |                                      |
-| slowmode | Left Bumper        | Reduces speed for precision movement |
+| control    | binding            | description                          |
+| ---------- | ------------------ | ------------------------------------ |
+| movement   | Left Analog Stick  |                                      |
+| rotation   | Right Analog Stick |                                      |
+| slowmode   | Left Bumper        | Reduces speed for precision movement |
+| open claw  | Hold A Button      | Opens Claw                           |
+| close claw | Hold B Button      | Closes Claw                          |

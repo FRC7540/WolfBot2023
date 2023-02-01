@@ -6,7 +6,7 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ActuateClaw;
-import frc.robot.commands.ActuateClaw.directions;
+import frc.robot.commands.ActuateClaw.Direction;
 import frc.robot.commands.Drive;
 import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.ClawSubsystem;
@@ -71,8 +71,8 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    driverXboxController.a().whileTrue(new ActuateClaw(clawSubsystem, directions.BACKWARD));
-    driverXboxController.b().whileTrue(new ActuateClaw(clawSubsystem, directions.FORWARD));
+    driverXboxController.a().whileTrue(new ActuateClaw(clawSubsystem, Direction.BACKWARD));
+    driverXboxController.b().whileTrue(new ActuateClaw(clawSubsystem, Direction.FORWARD));
   }
 
   /**

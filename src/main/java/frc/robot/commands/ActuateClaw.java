@@ -9,13 +9,13 @@ import frc.robot.subsystems.ClawSubsystem;
 
 public class ActuateClaw extends CommandBase {
   private ClawSubsystem clawSubsystem;
-  private Enum<directions> direction;
+  private Direction direction;
 
-  public enum directions {
+  public enum Direction {
     FORWARD, BACKWARD
   }
 
-  public ActuateClaw(ClawSubsystem clawSubsystem, Enum<directions> direction) {
+  public ActuateClaw(ClawSubsystem clawSubsystem, Direction direction) {
     this.clawSubsystem = clawSubsystem;
     this.direction = direction;
     addRequirements(clawSubsystem);
@@ -23,19 +23,11 @@ public class ActuateClaw extends CommandBase {
 
   @Override
   public void initialize() {
-  }
-
-  @Override
-  public void execute() {
-    if (direction == directions.FORWARD) {
+    if (direction == Direction.FORWARD) {
       clawSubsystem.CloseClaw();
-    } else if (direction == directions.BACKWARD) {
+    } else if (direction == Direction.BACKWARD) {
       clawSubsystem.OpenClaw();
     }
-  }
-
-  @Override
-  public void end(boolean interrupted) {
   }
 
   @Override
