@@ -13,9 +13,9 @@ public class SetCompressor extends CommandBase {
   private Boolean enabled;
 
   /** Creates a new SetCompressor. */
-  public SetCompressor(PneumaticsSubsystem pneumaticsSubsystem, NetworkTableEvent enabled) {
+  public SetCompressor(PneumaticsSubsystem pneumaticsSubsystem, NetworkTableEvent event) {
     this.pneumaticsSubsystem = pneumaticsSubsystem;
-    this.enabled = enabled.valueData.value.getBoolean();
+    enabled = event.valueData.value.getBoolean();
     addRequirements(pneumaticsSubsystem);
   }
 

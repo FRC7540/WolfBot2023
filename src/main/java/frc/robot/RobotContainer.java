@@ -96,7 +96,9 @@ public class RobotContainer {
         .add("Enable Compressor", true)
         .withWidget(BuiltInWidgets.kToggleSwitch)
         .getEntry();
-    networkTableInstance.addListener(compressorEnabled, EnumSet.of(NetworkTableEvent.Kind.kValueAll), (event) -> new SetCompressor(pneumaticsSubsystem, event));
+    networkTableInstance.addListener(compressorEnabled,
+        EnumSet.of(NetworkTableEvent.Kind.kValueAll),
+        (event) -> new SetCompressor(pneumaticsSubsystem, event).schedule());
   }
 
   /**
