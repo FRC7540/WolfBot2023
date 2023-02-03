@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import java.util.EnumSet;
 
+import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.REVPhysicsSim;
@@ -17,8 +18,8 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableEvent;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.simulation.SimDeviceSim;
@@ -29,7 +30,7 @@ import frc.robot.configuration.GyroChooser;
 public class DrivebaseSubsystem extends SubsystemBase {
   // MecanumDrive Setup
   private MecanumDrive mecanumDrive;
-  private Gyro gyro = null;
+  private AHRS ahrs = null;
 
   private CANSparkMax[] motors = new CANSparkMax[4];
   private SimDeviceSim[] simDevices = new SimDeviceSim[4];
@@ -66,11 +67,7 @@ public class DrivebaseSubsystem extends SubsystemBase {
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
     NetworkTable table = inst.getTable("Shuffleboard");
     NetworkTableEntry entry = table.getEntry("Tuning/Gyro Selection/active");
-    inst.addListener(entry, EnumSet.of(NetworkTableEvent.Kind.kValueAll), this::updateGyro);
-  }
-
-  public void setGyro(Gyro newGyro) {
-    gyro = newGyro;
+    inst.addListener(entry, EnumSet.of(NetworkTableEvent.Kind.kValueAll), this::onUpdateAHRS);
   }
 
   private void simulationInit() {
@@ -106,16 +103,23 @@ public class DrivebaseSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  private void updateGyro(NetworkTableEvent event) {
+  private void onUpdateAHRS(NetworkTableEvent event) {
     String gyroSelection = event.valueData.value.getString();
     switch (gyroSelection) {
       case GyroChooser.NONE:
-        gyro = null;
+        setAHRS(null);
         break;
       case GyroChooser.NAVX2:
-        // TODO: Needs to be properly created
-        gyro = null;
+        setAHRS(new AHRS(SPI.Port.kMXP));
         break;
     }
   }
+
+  private void setAHRS(AHRS newAHRS) {
+    if (ahrs != null) {
+      ahrs.close();
+    }
+    ahrs = newAHRS;
+  }
+
 }
