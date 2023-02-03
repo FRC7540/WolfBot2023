@@ -8,10 +8,19 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ActuateClaw;
 import frc.robot.commands.ActuateClaw.Direction;
 import frc.robot.commands.Drive;
+import frc.robot.commands.SetCompressor;
 import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.DrivebaseSubsystem;
 import frc.robot.subsystems.PneumaticsSubsystem;
+
+import java.util.EnumSet;
+
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.networktables.NetworkTableEvent;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -33,9 +42,14 @@ public class RobotContainer {
   private final PneumaticsSubsystem pneumaticsSubsystem = new PneumaticsSubsystem();
   private final ClawSubsystem clawSubsystem = new ClawSubsystem();
 
+  private final NetworkTableInstance networkTableInstance = NetworkTableInstance.getDefault();
+
   // Controller Setup
   private final CommandXboxController driverXboxController = new CommandXboxController(
       OperatorConstants.DRIVER_XBOX_CONTROLLER_PORT);
+
+  // Shuffleboard Entries
+  private GenericEntry compressorEnabled;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -43,6 +57,7 @@ public class RobotContainer {
   public RobotContainer() {
     configureBindings();
     configureDefaultCommands();
+    ShuffleboardSetup();
   }
 
   private void configureDefaultCommands() {
@@ -73,6 +88,17 @@ public class RobotContainer {
   private void configureBindings() {
     driverXboxController.a().whileTrue(new ActuateClaw(clawSubsystem, Direction.BACKWARD));
     driverXboxController.b().whileTrue(new ActuateClaw(clawSubsystem, Direction.FORWARD));
+  }
+
+  private void ShuffleboardSetup() {
+    // Air Compressor Entry
+    compressorEnabled = Shuffleboard.getTab(Constants.ShuffleboardConstants.GAME_TAB_NAME)
+        .add("Enable Compressor", true)
+        .withWidget(BuiltInWidgets.kToggleSwitch)
+        .getEntry();
+    networkTableInstance.addListener(compressorEnabled,
+        EnumSet.of(NetworkTableEvent.Kind.kValueAll),
+        (event) -> new SetCompressor(pneumaticsSubsystem, event).schedule());
   }
 
   /**
