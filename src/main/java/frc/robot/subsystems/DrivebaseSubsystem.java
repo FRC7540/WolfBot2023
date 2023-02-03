@@ -11,8 +11,6 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.REVPhysicsSim;
 
-import edu.wpi.first.wpilibj.SPI;
-
 import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.networktables.NetworkTable;
@@ -20,6 +18,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableEvent;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -68,7 +67,7 @@ public class DrivebaseSubsystem extends SubsystemBase {
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
     NetworkTable table = inst.getTable("Shuffleboard");
     NetworkTableEntry entry = table.getEntry("Tuning/Gyro Selection/active");
-    inst.addListener(entry, EnumSet.of(NetworkTableEvent.Kind.kValueAll), this::updateGyro);
+    inst.addListener(entry, EnumSet.of(NetworkTableEvent.Kind.kValueAll), this::onUpdateAHRS);
   }
 
   private void simulationInit() {
@@ -104,18 +103,23 @@ public class DrivebaseSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  private void updateGyro(NetworkTableEvent event) {
+  private void onUpdateAHRS(NetworkTableEvent event) {
     String gyroSelection = event.valueData.value.getString();
     switch (gyroSelection) {
       case GyroChooser.NONE:
-        if(ahrs != null){
-          ahrs.close();
-        }
-        ahrs = null;
+        setAHRS(null);
         break;
       case GyroChooser.NAVX2:
-        ahrs = new AHRS(SPI.Port.kMXP);
+        setAHRS(new AHRS(SPI.Port.kMXP));
         break;
     }
   }
+
+  private void setAHRS(AHRS newAHRS) {
+    if (ahrs != null) {
+      ahrs.close();
+    }
+    ahrs = newAHRS;
+  }
+
 }
