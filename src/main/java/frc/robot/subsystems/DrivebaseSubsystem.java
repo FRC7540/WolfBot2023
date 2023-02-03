@@ -6,9 +6,12 @@ package frc.robot.subsystems;
 
 import java.util.EnumSet;
 
+import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.REVPhysicsSim;
+
+import edu.wpi.first.wpilibj.SPI;
 
 import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.math.system.plant.DCMotor;
@@ -18,7 +21,6 @@ import edu.wpi.first.networktables.NetworkTableEvent;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.simulation.SimDeviceSim;
@@ -29,7 +31,7 @@ import frc.robot.configuration.GyroChooser;
 public class DrivebaseSubsystem extends SubsystemBase {
   // MecanumDrive Setup
   private MecanumDrive mecanumDrive;
-  private Gyro gyro = null;
+  private AHRS ahrs = null;
 
   private CANSparkMax[] motors = new CANSparkMax[4];
   private SimDeviceSim[] simDevices = new SimDeviceSim[4];
@@ -69,10 +71,6 @@ public class DrivebaseSubsystem extends SubsystemBase {
     inst.addListener(entry, EnumSet.of(NetworkTableEvent.Kind.kValueAll), this::updateGyro);
   }
 
-  public void setGyro(Gyro newGyro) {
-    gyro = newGyro;
-  }
-
   private void simulationInit() {
     REVPhysicsSim physicsSim = REVPhysicsSim.getInstance();
     for (int i = 0; i < motors.length; i++) {
@@ -110,11 +108,13 @@ public class DrivebaseSubsystem extends SubsystemBase {
     String gyroSelection = event.valueData.value.getString();
     switch (gyroSelection) {
       case GyroChooser.NONE:
-        gyro = null;
+        if(ahrs != null){
+          ahrs.close();
+        }
+        ahrs = null;
         break;
       case GyroChooser.NAVX2:
-        // TODO: Needs to be properly created
-        gyro = null;
+        ahrs = new AHRS(SPI.Port.kMXP);
         break;
     }
   }
