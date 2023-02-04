@@ -15,15 +15,59 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class CameraSubsystem extends SubsystemBase {
-  private NetworkTable table = NetworkTableInstance.getDefault().getTable("SmartDashboard");
+  private NetworkTable smartDashboard = NetworkTableInstance.getDefault().getTable("SmartDashboard");
+  private NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
 
   /** Creates a new CameraSubsystem. */
   public CameraSubsystem() {
     widgetSetup();
   }
 
+  public double getTargetArea() {
+    return limelightTable.getEntry("ta").getDouble(0);
+  }
+
+  public double getAngleOffsetX() {
+    return limelightTable.getEntry("tx").getDouble(0);
+  }
+
+  public double getAngleOffsetY() {
+    return limelightTable.getEntry("ty").getDouble(0);
+  }
+
+  public boolean isTargetVisible() {
+    double targetVisibleDouble = limelightTable.getEntry("tv").getDouble(0);
+    return targetVisibleDouble != 0;
+  }
+
+  public enum Pipeline {
+    APRIL_TAG(0),
+    RETRO_TAPE(1);
+
+    public final int pipelineId;
+
+    private Pipeline(int pipelineId) {
+      this.pipelineId = pipelineId;
+    }
+  }
+
+  public Pipeline getPipeline() {
+    double pipelineIdDouble = limelightTable.getEntry("pipeline").getDouble(0);
+    int pipelineIdInt = (int) Math.round(pipelineIdDouble);
+    if (pipelineIdInt == 0) {
+      return Pipeline.APRIL_TAG;
+    } else {
+      return Pipeline.RETRO_TAPE;
+    }
+  }
+
+  public void setPipeline(Pipeline newPipeline) {
+    int pipelineIdInt = newPipeline.pipelineId;
+    limelightTable.getEntry("pipeline").setDouble(pipelineIdInt);
+  }
+
   private void widgetSetup() {
-    String limelightUrl = table.getEntry("limelight_Stream").getString("http://10.75.40.1:5800");
+    String limelightUrl = smartDashboard.getEntry("limelight_Stream").getString("http://10.75.40.1:5800");
     HttpCamera video = new HttpCamera(Constants.CameraConstants.LIMELIGHT_NAME, limelightUrl);
     MjpegServer server = CameraServer.addSwitchedCamera("Limelight");
     server.setSource(video);
