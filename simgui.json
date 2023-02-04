@@ -56,14 +56,17 @@
     "transitory": {
       "Shuffleboard": {
         "Game": {
-          "open": true
+          "Limelight": {
+            "open": true
+          }
         },
         "Tuning": {
           "Gyro Selection": {
             "open": true
-          },
-          "open": true
-        },
+          }
+        }
+      },
+      "limelight": {
         "open": true
       }
     }

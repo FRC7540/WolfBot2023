@@ -9,10 +9,12 @@ import frc.robot.commands.ActuateClaw;
 import frc.robot.commands.ActuateClaw.Direction;
 import frc.robot.commands.Drive;
 import frc.robot.commands.SetCompressor;
+import frc.robot.commands.SetVisionPipeline;
 import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.DrivebaseSubsystem;
 import frc.robot.subsystems.PneumaticsSubsystem;
+import frc.robot.subsystems.CameraSubsystem.Pipeline;
 
 import java.util.EnumSet;
 
@@ -88,6 +90,8 @@ public class RobotContainer {
   private void configureBindings() {
     driverXboxController.a().whileTrue(new ActuateClaw(clawSubsystem, Direction.BACKWARD));
     driverXboxController.b().whileTrue(new ActuateClaw(clawSubsystem, Direction.FORWARD));
+    driverXboxController.x().onTrue(new SetVisionPipeline(cameraSubsystem, Pipeline.APRIL_TAG));
+    driverXboxController.y().onTrue(new SetVisionPipeline(cameraSubsystem, Pipeline.RETRO_TAPE));
   }
 
   private void ShuffleboardSetup() {

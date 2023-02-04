@@ -8,6 +8,7 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.cscore.MjpegServer;
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -17,6 +18,7 @@ import frc.robot.Constants;
 public class CameraSubsystem extends SubsystemBase {
   private NetworkTable smartDashboard = NetworkTableInstance.getDefault().getTable("SmartDashboard");
   private NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+  private NetworkTableEntry pipelineEntry = limelightTable.getEntry("pipeline");
 
   /** Creates a new CameraSubsystem. */
   public CameraSubsystem() {
@@ -52,7 +54,7 @@ public class CameraSubsystem extends SubsystemBase {
   }
 
   public Pipeline getPipeline() {
-    double pipelineIdDouble = limelightTable.getEntry("pipeline").getDouble(0);
+    double pipelineIdDouble = pipelineEntry.getDouble(0);
     int pipelineIdInt = (int) Math.round(pipelineIdDouble);
     if (pipelineIdInt == 0) {
       return Pipeline.APRIL_TAG;
@@ -63,7 +65,7 @@ public class CameraSubsystem extends SubsystemBase {
 
   public void setPipeline(Pipeline newPipeline) {
     int pipelineIdInt = newPipeline.pipelineId;
-    limelightTable.getEntry("pipeline").setDouble(pipelineIdInt);
+    pipelineEntry.setDouble(pipelineIdInt);
   }
 
   private void widgetSetup() {
