@@ -13,6 +13,7 @@ import com.revrobotics.REVPhysicsSim;
 
 import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableEvent;
@@ -34,6 +35,8 @@ public class DrivebaseSubsystem extends SubsystemBase {
 
   private CANSparkMax[] motors = new CANSparkMax[4];
   private SimDeviceSim[] simDevices = new SimDeviceSim[4];
+
+  private GenericEntry fieldOrientationEntry;
 
   public DrivebaseSubsystem() {
 
@@ -68,6 +71,12 @@ public class DrivebaseSubsystem extends SubsystemBase {
     NetworkTable table = inst.getTable("Shuffleboard");
     NetworkTableEntry entry = table.getEntry("Tuning/Gyro Selection/active");
     inst.addListener(entry, EnumSet.of(NetworkTableEvent.Kind.kValueAll), this::onUpdateAHRS);
+
+    fieldOrientationEntry = Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
+        .add("drive orientated drive", false)
+        .withWidget(BuiltInWidgets.kBooleanBox)
+        .getEntry();
+
   }
 
   private void simulationInit() {
@@ -95,22 +104,28 @@ public class DrivebaseSubsystem extends SubsystemBase {
 
   // Drives the robot
   public void Drive(double xSpeedXbox, double ySpeedXbox, double zRotationXbox) {
-    mecanumDrive.driveCartesian(xSpeedXbox, ySpeedXbox, zRotationXbox);
+    if (isFieldOrientedDriveEnabled()) {
+      mecanumDrive.driveCartesian(xSpeedXbox, ySpeedXbox, zRotationXbox, ahrs.getRotation2d());
+    } else {
+      mecanumDrive.driveCartesian(xSpeedXbox, ySpeedXbox, zRotationXbox);
+    }
+
+    // driveStrategy.drive(xSpeedXBox, ySpeedXBox, zRotationXBox);
   }
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
+  private boolean isFieldOrientedDriveEnabled() {
+    return fieldOrientationEntry.get().getBoolean() && ahrs != null;
   }
 
   private void onUpdateAHRS(NetworkTableEvent event) {
     String gyroSelection = event.valueData.value.getString();
     switch (gyroSelection) {
-      case GyroChooser.NONE:
-        setAHRS(null);
-        break;
       case GyroChooser.NAVX2:
         setAHRS(new AHRS(SPI.Port.kMXP));
+        break;
+      case GyroChooser.NONE:
+      default:
+        setAHRS(null);
         break;
     }
   }
