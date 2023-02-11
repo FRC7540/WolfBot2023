@@ -49,6 +49,8 @@ public class RobotContainer {
   // Controller Setup
   private final CommandXboxController driverXboxController = new CommandXboxController(
       OperatorConstants.DRIVER_XBOX_CONTROLLER_PORT);
+  private final CommandXboxController operatorXboxController = new CommandXboxController(
+      OperatorConstants.OPERATOR_XBOX_CONTROLLER_PORT);
 
   // Shuffleboard Entries
   private GenericEntry compressorEnabled;
@@ -88,8 +90,11 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    driverXboxController.a().whileTrue(new ActuateClaw(clawSubsystem, Direction.BACKWARD));
-    driverXboxController.b().whileTrue(new ActuateClaw(clawSubsystem, Direction.FORWARD));
+    // Operator Controller Bindings
+    operatorXboxController.a().whileTrue(new ActuateClaw(clawSubsystem, Direction.BACKWARD));
+    operatorXboxController.b().whileTrue(new ActuateClaw(clawSubsystem, Direction.FORWARD));
+
+    // Driver controller Bindings
     driverXboxController.x().onTrue(new SetVisionPipeline(cameraSubsystem, Pipeline.APRIL_TAG));
     driverXboxController.y().onTrue(new SetVisionPipeline(cameraSubsystem, Pipeline.RETRO_TAPE));
   }
