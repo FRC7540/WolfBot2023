@@ -7,11 +7,14 @@ package frc.robot.subsystems;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.cscore.MjpegServer;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
+import edu.wpi.first.wpilibj.shuffleboard.WidgetType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -19,6 +22,7 @@ public class CameraSubsystem extends SubsystemBase {
   private NetworkTable smartDashboard = NetworkTableInstance.getDefault().getTable("SmartDashboard");
   private NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
   private NetworkTableEntry pipelineEntry = limelightTable.getEntry("pipeline");
+  private SimpleWidget pidController;
 
   /** Creates a new CameraSubsystem. */
   public CameraSubsystem() {
@@ -77,6 +81,10 @@ public class CameraSubsystem extends SubsystemBase {
     Shuffleboard.getTab(Constants.ShuffleboardConstants.GAME_TAB_NAME)
         .add(server.getSource())
         .withWidget(BuiltInWidgets.kCameraStream);
+
+    pidController = Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
+        .add("PID Controller", pidController)
+        .withWidget(BuiltInWidgets.kPIDController);
   }
 
   @Override
