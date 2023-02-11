@@ -46,6 +46,8 @@ public class DrivebaseSubsystem extends SubsystemBase {
     CANSparkMax rearLeftMotor = new CANSparkMax(Constants.DrivebaseConstants.REAR_LEFT_MOTOR, motorType);
     CANSparkMax rearRightMotor = new CANSparkMax(Constants.DrivebaseConstants.REAR_RIGHT_MOTOR, motorType);
     mecanumDrive = new MecanumDrive(frontLeftMotor, frontRightMotor, rearLeftMotor, rearRightMotor);
+    // Due to issues with the MecanumDrive class, frontRightMotor and rearLeftMotor
+    // are switched.
 
     motors = new CANSparkMax[] {
         frontLeftMotor,
