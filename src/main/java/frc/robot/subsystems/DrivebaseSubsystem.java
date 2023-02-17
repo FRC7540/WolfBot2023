@@ -74,7 +74,7 @@ public class DrivebaseSubsystem extends SubsystemBase {
 
     fieldOrientationEntry = Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
         .add("Field Oriented Drive", false)
-        .withWidget(BuiltInWidgets.kBooleanBox)
+        .withWidget(BuiltInWidgets.kToggleSwitch)
         .getEntry();
 
   }
