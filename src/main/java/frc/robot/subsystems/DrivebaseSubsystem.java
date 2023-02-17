@@ -73,7 +73,7 @@ public class DrivebaseSubsystem extends SubsystemBase {
     inst.addListener(entry, EnumSet.of(NetworkTableEvent.Kind.kValueAll), this::onUpdateAHRS);
 
     fieldOrientationEntry = Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
-        .add("drive orientated drive", false)
+        .add("Field Oriented Drive", false)
         .withWidget(BuiltInWidgets.kBooleanBox)
         .getEntry();
 
