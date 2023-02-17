@@ -37,7 +37,7 @@ public class AutoAlign extends PIDCommand {
           // Use the output here
           drivebase.Drive(output, 0, 0);
         });
-    pidLayout.add("controller", this.m_controller).withWidget(BuiltInWidgets.kPIDCommand);
+    pidLayout.add("controller", this.m_controller).withWidget(BuiltInWidgets.kPIDController);
     // Use addRequirements() here to declare subsystem dependencies.
     // Configure additional PID options by calling `getController` here.
     addRequirements(drivebase, cameraSubsystem);
