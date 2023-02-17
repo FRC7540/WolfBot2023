@@ -62,6 +62,7 @@ public class CameraSubsystem extends SubsystemBase {
     }
   }
 
+
   public void setPipeline(Pipeline newPipeline) {
     int pipelineIdInt = newPipeline.pipelineId;
     pipelineEntry.setDouble(pipelineIdInt);
