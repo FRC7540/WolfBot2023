@@ -16,6 +16,11 @@
           "open": true
         }
       },
+      "SPARK MAX [1]": {
+        "header": {
+          "open": true
+        }
+      },
       "navX-Sensor[0]": {
         "header": {
           "open": true
@@ -58,13 +63,16 @@
         "Game": {
           "Limelight": {
             "open": true
-          }
+          },
+          "open": true
         },
         "Tuning": {
           "Gyro Selection": {
             "open": true
-          }
-        }
+          },
+          "open": true
+        },
+        "open": true
       },
       "limelight": {
         "open": true
