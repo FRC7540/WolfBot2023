@@ -19,7 +19,6 @@ public class CameraSubsystem extends SubsystemBase {
   private NetworkTable smartDashboard = NetworkTableInstance.getDefault().getTable("SmartDashboard");
   private NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
   private NetworkTableEntry pipelineEntry = limelightTable.getEntry("pipeline");
-
   /** Creates a new CameraSubsystem. */
   public CameraSubsystem() {
     widgetSetup();

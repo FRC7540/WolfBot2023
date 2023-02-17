@@ -40,9 +40,7 @@ public class DrivebaseSubsystem extends SubsystemBase {
 
   public DrivebaseSubsystem() {
 
-    MotorType motorType = MotorType.kBrushed;
-    if (RobotBase.isSimulation())
-      motorType = MotorType.kBrushless;
+    MotorType motorType = MotorType.kBrushless;
 
     CANSparkMax frontLeftMotor = new CANSparkMax(Constants.DrivebaseConstants.FRONT_LEFT_MOTOR, motorType);
     CANSparkMax frontRightMotor = new CANSparkMax(Constants.DrivebaseConstants.FRONT_RIGHT_MOTOR, motorType);
