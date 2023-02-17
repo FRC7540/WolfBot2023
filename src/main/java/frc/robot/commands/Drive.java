@@ -27,6 +27,7 @@ public class Drive extends CommandBase {
   private BooleanSupplier slowmodeButton;
   private GenericEntry slowmodeSpeed;
   private GenericEntry accelLimitEntry;
+  private GenericEntry deadzone;
   private SlewRateLimiter accelLimiterX = new SlewRateLimiter(Constants.DrivebaseConstants.DEFAULT_MAX_ACCELERATION);
   private SlewRateLimiter accelLimiterY = new SlewRateLimiter(Constants.DrivebaseConstants.DEFAULT_MAX_ACCELERATION);
 
@@ -56,16 +57,30 @@ public class Drive extends CommandBase {
     inst.addListener(accelLimitEntry, EnumSet.of(NetworkTableEvent.Kind.kValueAll),
         (event) -> updateRateLimiters(event));
 
+    deadzone = Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
+        .add("Deadzone", Constants.DrivebaseConstants.DEFAULT_DEADZONE)
+        .withWidget(BuiltInWidgets.kNumberSlider)
+        .withProperties(Map.of("min", 0, "max", 1))
+        .getEntry();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double x = translateX.getAsDouble() * getSpeedMultiplier();
-    double y = translateY.getAsDouble() * getSpeedMultiplier();
-    double z = rotateZ.getAsDouble();
+    // Reversed strafe and rotation axis
+    double x = getDeadzone(translateX.getAsDouble()) * getSpeedMultiplier();
+    double y = getDeadzone(-translateY.getAsDouble()) * getSpeedMultiplier();
+    double z = getDeadzone(-rotateZ.getAsDouble());
 
     drivebase.Drive(accelLimiterX.calculate(x), accelLimiterY.calculate(y), z);
+  }
+
+  private double getDeadzone(Double input) {
+    if (Math.abs(input) > deadzone.get().getDouble()) {
+      return input;
+    } else {
+      return 0;
+    }
   }
 
   private double getSpeedMultiplier() {

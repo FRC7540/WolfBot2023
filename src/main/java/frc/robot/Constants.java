@@ -32,6 +32,7 @@ public final class Constants {
     // Speed Calibration
     public static final double DEFAULT_SLOWMODE_SPEED = 0.5;
     public static final double DEFAULT_MAX_ACCELERATION = 5.0;
+    public static final double DEFAULT_DEADZONE = 0.2;
   }
 
   public static class ShuffleboardConstants {
