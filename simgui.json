@@ -41,6 +41,7 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/Shuffleboard/Tuning/Auto Align PID/controller": "PIDController",
       "/Shuffleboard/Tuning/Gyro Selection": "String Chooser"
     },
     "windows": {
@@ -67,7 +68,10 @@
           "open": true
         },
         "Tuning": {
-          "Gyro Selection": {
+          "Auto Align PID": {
+            "controller": {
+              "open": true
+            },
             "open": true
           },
           "open": true

@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ActuateClaw;
+import frc.robot.commands.AutoAlign;
 import frc.robot.commands.ActuateClaw.Direction;
 import frc.robot.commands.Drive;
 import frc.robot.commands.SetCompressor;
@@ -97,6 +98,7 @@ public class RobotContainer {
     // Driver controller Bindings
     driverXboxController.x().onTrue(new SetVisionPipeline(cameraSubsystem, Pipeline.APRIL_TAG));
     driverXboxController.y().onTrue(new SetVisionPipeline(cameraSubsystem, Pipeline.RETRO_TAPE));
+    driverXboxController.rightBumper().whileTrue(new AutoAlign(drivebaseSubsystem, cameraSubsystem));
   }
 
   private void ShuffleboardSetup() {
