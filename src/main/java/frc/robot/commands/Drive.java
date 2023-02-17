@@ -68,8 +68,8 @@ public class Drive extends CommandBase {
   @Override
   public void execute() {
     // Reversed strafe and rotation axis
-    double x = getDeadzone(translateX.getAsDouble()) * getSpeedMultiplier();
-    double y = getDeadzone(-translateY.getAsDouble()) * getSpeedMultiplier();
+    double x = getDeadzone(-translateX.getAsDouble()) * getSpeedMultiplier();
+    double y = getDeadzone(translateY.getAsDouble()) * getSpeedMultiplier();
     double z = getDeadzone(-rotateZ.getAsDouble());
 
     drivebase.Drive(accelLimiterX.calculate(x), accelLimiterY.calculate(y), z);
