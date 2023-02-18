@@ -69,14 +69,13 @@ public class DrivebaseSubsystem extends SubsystemBase {
 
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
     NetworkTable table = inst.getTable("Shuffleboard");
-    NetworkTableEntry entry = table.getEntry("Tuning/Gyro Selection/active");
-    inst.addListener(entry, EnumSet.of(NetworkTableEvent.Kind.kValueAll), this::onUpdateAHRS);
+    NetworkTableEntry gyroSelectEntry = table.getEntry("Tuning/Gyro Selection/active");
+    inst.addListener(gyroSelectEntry, EnumSet.of(NetworkTableEvent.Kind.kValueAll), this::onUpdateAHRS);
 
     fieldOrientationEntry = Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
         .add("Field Oriented Drive", false)
         .withWidget(BuiltInWidgets.kToggleSwitch)
         .getEntry();
-
   }
 
   private void simulationInit() {
@@ -137,4 +136,12 @@ public class DrivebaseSubsystem extends SubsystemBase {
     ahrs = newAHRS;
   }
 
+  public void resetYaw() {
+    if (ahrs != null) {
+      ahrs.zeroYaw();
+      System.out.println("The Gyro has been reset!");
+    } else {
+      System.out.println("No gyro is configured... Yaw Reset Cancelled.");
+    }
+  }
 }
