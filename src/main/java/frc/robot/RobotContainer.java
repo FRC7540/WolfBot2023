@@ -19,11 +19,7 @@ import frc.robot.subsystems.CameraSubsystem.Pipeline;
 
 import java.util.EnumSet;
 
-import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.networktables.NetworkTableEvent;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -44,17 +40,16 @@ public class RobotContainer {
   private final CameraSubsystem cameraSubsystem = new CameraSubsystem();
   private final PneumaticsSubsystem pneumaticsSubsystem = new PneumaticsSubsystem();
   private final ClawSubsystem clawSubsystem = new ClawSubsystem();
-
-  private final NetworkTableInstance networkTableInstance = NetworkTableInstance.getDefault();
+  private final Dashboard dashboard = new Dashboard();
 
   // Controller Setup
   private final CommandXboxController driverXboxController = new CommandXboxController(
       OperatorConstants.DRIVER_XBOX_CONTROLLER_PORT);
   private final CommandXboxController operatorXboxController = new CommandXboxController(
       OperatorConstants.OPERATOR_XBOX_CONTROLLER_PORT);
+  private Drive drive;
 
   // Shuffleboard Entries
-  private GenericEntry compressorEnabled;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -62,15 +57,16 @@ public class RobotContainer {
   public RobotContainer() {
     configureBindings();
     configureDefaultCommands();
-    ShuffleboardSetup();
+    dashboard.ShuffleboardSetup();
+    networkTableListenerSetup();
   }
 
   private void configureDefaultCommands() {
     // Drivebase default command
     Trigger leftBumper = driverXboxController.leftBumper();
-    Drive driveCommand = new Drive(drivebaseSubsystem, driverXboxController::getLeftX,
+    drive = new Drive(drivebaseSubsystem, driverXboxController::getLeftX,
         driverXboxController::getLeftY, driverXboxController::getRightX, leftBumper::getAsBoolean);
-    drivebaseSubsystem.setDefaultCommand(driveCommand);
+    drivebaseSubsystem.setDefaultCommand(drive);
 
     // Claw default command
     clawSubsystem.setDefaultCommand(new InstantCommand(() -> clawSubsystem.stopClaw(), clawSubsystem));
@@ -102,15 +98,14 @@ public class RobotContainer {
     driverXboxController.start().onTrue(new InstantCommand(() -> drivebaseSubsystem.resetYaw(), drivebaseSubsystem));
   }
 
-  private void ShuffleboardSetup() {
-    // Air Compressor Entry
-    compressorEnabled = Shuffleboard.getTab(Constants.ShuffleboardConstants.GAME_TAB_NAME)
-        .add("Enable Compressor", true)
-        .withWidget(BuiltInWidgets.kToggleSwitch)
-        .getEntry();
-    networkTableInstance.addListener(compressorEnabled,
+  private void networkTableListenerSetup() {
+    Dashboard.networkTableInstance.addListener(Dashboard.compressorEnabled,
         EnumSet.of(NetworkTableEvent.Kind.kValueAll),
         (event) -> new SetCompressor(pneumaticsSubsystem, event).schedule());
+
+    Dashboard.networkTableInstance.addListener(Dashboard.accelLimitEntry, EnumSet.of(NetworkTableEvent.Kind.kValueAll),
+        (event) -> drive.updateRateLimiters(event));
+
   }
 
   /**
