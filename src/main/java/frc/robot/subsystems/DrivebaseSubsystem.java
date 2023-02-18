@@ -139,9 +139,6 @@ public class DrivebaseSubsystem extends SubsystemBase {
   public void resetYaw() {
     if (ahrs != null) {
       ahrs.zeroYaw();
-      System.out.println("The Gyro has been reset!");
-    } else {
-      System.out.println("No gyro is configured... Yaw Reset Cancelled.");
     }
   }
 }
