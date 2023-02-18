@@ -13,10 +13,16 @@ All controls are based on a standard xbox controller.
 | movement          | Left Analog Stick  |                                                |
 | rotation          | Right Analog Stick |                                                |
 | slowmode          | Left Bumper        | Reduces speed for precision movement           |
-| open claw         | Hold A Button      | Opens Claw                                     |
-| close claw        | Hold B Button      | Closes Claw                                    |
 | detect april tags | Press X Button     | Sets limelight to detect april tags            |
 | detect retro tape | Press Y Button     | Sets limelight to detect retro-reflective tape |
+| reset gyro yaw    | Press Start Button | Resets the gyro's yaw readout                  |
+
+### Operator Controls
+
+| control    | binding       | description |
+| ---------- | ------------- | ----------- |
+| open claw  | Hold A Button | Opens Claw  |
+| close claw | Hold B Button | Closes Claw |
 
 ## Limelight pipeline
 

@@ -99,6 +99,7 @@ public class RobotContainer {
     driverXboxController.x().onTrue(new SetVisionPipeline(cameraSubsystem, Pipeline.APRIL_TAG));
     driverXboxController.y().onTrue(new SetVisionPipeline(cameraSubsystem, Pipeline.RETRO_TAPE));
     driverXboxController.rightBumper().whileTrue(new AutoAlign(drivebaseSubsystem, cameraSubsystem));
+    driverXboxController.start().onTrue(new InstantCommand(() -> drivebaseSubsystem.resetYaw(), drivebaseSubsystem));
   }
 
   private void ShuffleboardSetup() {
