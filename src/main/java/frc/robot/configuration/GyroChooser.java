@@ -15,7 +15,7 @@ public static final String NAVX2 = "NavX2";
 
     public GyroChooser() {
         super();
-        setDefaultOption("None", NONE);
-        addOption("NavX2", NAVX2);
+        setDefaultOption("NavX2", NAVX2);
+        addOption("None", NONE);
     }
 }
