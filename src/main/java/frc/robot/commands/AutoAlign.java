@@ -21,12 +21,14 @@ public class AutoAlign extends PIDCommand {
   private ShuffleboardLayout pidLayout = Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
       .getLayout("Auto Align PID", BuiltInLayouts.kList)
       .withSize(2, 2);
+  private DrivebaseSubsystem drivebase;
+  private boolean originalFieldOrientedDriveEnabled = false;
 
   /** Creates a new AutoAlign. */
   public AutoAlign(DrivebaseSubsystem drivebase, CameraSubsystem cameraSubsystem) {
     super(
         // The controller that the command will use
-        new PIDController(0, 0, 0),
+        new PIDController(0.05, 0, 0),
         // This should return the measurement
         cameraSubsystem::getAngleOffsetX,
         // This should return the setpoint (can also be a constant)
@@ -36,10 +38,24 @@ public class AutoAlign extends PIDCommand {
           // Use the output here
           drivebase.Drive(output, 0, 0);
         });
+    this.drivebase = drivebase;
     pidLayout.add("controller", this.m_controller).withWidget(BuiltInWidgets.kPIDController);
     // Use addRequirements() here to declare subsystem dependencies.
     // Configure additional PID options by calling `getController` here.
     addRequirements(drivebase, cameraSubsystem);
+  }
+
+  @Override
+  public void initialize() {
+    super.initialize();
+    originalFieldOrientedDriveEnabled = drivebase.isFieldOrientedDriveEnabled();
+    drivebase.setFieldOrientedDriveEnabled(false);
+  }
+
+  @Override
+  public void end(boolean interrupted) {
+    super.end(interrupted);
+    drivebase.setFieldOrientedDriveEnabled(originalFieldOrientedDriveEnabled);
   }
 
   // Returns true when the command should end.

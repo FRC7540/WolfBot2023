@@ -40,7 +40,7 @@ public class RobotContainer {
   private final CameraSubsystem cameraSubsystem = new CameraSubsystem();
   private final PneumaticsSubsystem pneumaticsSubsystem = new PneumaticsSubsystem();
   private final ClawSubsystem clawSubsystem = new ClawSubsystem();
-  private final Dashboard dashboard = new Dashboard();
+  private final Dashboard dashboard = new Dashboard(drivebaseSubsystem);
 
   // Controller Setup
   private final CommandXboxController driverXboxController = new CommandXboxController(
@@ -105,6 +105,10 @@ public class RobotContainer {
 
     Dashboard.networkTableInstance.addListener(Dashboard.accelLimitEntry, EnumSet.of(NetworkTableEvent.Kind.kValueAll),
         (event) -> drive.updateRateLimiters(event));
+
+    Dashboard.networkTableInstance.addListener(Dashboard.fieldOrientationEntry, EnumSet.of(NetworkTableEvent.Kind.kValueAll), (e) -> {
+      drivebaseSubsystem.setFieldOrientedDriveEnabled(e.valueData.value.getBoolean());
+    });
 
   }
 

@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-import java.util.EnumSet;
-
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -13,23 +11,22 @@ import com.revrobotics.REVPhysicsSim;
 
 import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.networktables.NetworkTableEvent;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.simulation.SimDeviceSim;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Dashboard;
-import frc.robot.configuration.GyroChooser;
 
 public class DrivebaseSubsystem extends SubsystemBase {
   // MecanumDrive Setup
-  private MecanumDrive mecanumDrive;
-  private AHRS ahrs = null;
+  public final MecanumDrive mecanumDrive;
+  public final AHRS ahrs = new AHRS(SPI.Port.kMXP);
 
   private CANSparkMax[] motors = new CANSparkMax[4];
   private SimDeviceSim[] simDevices = new SimDeviceSim[4];
+
+  private boolean fieldOrientedDrive;
 
   public DrivebaseSubsystem() {
 
@@ -54,9 +51,7 @@ public class DrivebaseSubsystem extends SubsystemBase {
     if (RobotBase.isSimulation()) {
       simulationInit();
     }
-
-    Dashboard.networkTableInstance.addListener(Dashboard.gyroSelectEntry, EnumSet.of(NetworkTableEvent.Kind.kValueAll), this::onUpdateAHRS);
-      }
+  }
 
   private void simulationInit() {
     REVPhysicsSim physicsSim = REVPhysicsSim.getInstance();
@@ -88,32 +83,14 @@ public class DrivebaseSubsystem extends SubsystemBase {
     } else {
       mecanumDrive.driveCartesian(xSpeedXbox, ySpeedXbox, zRotationXbox);
     }
-
-    // driveStrategy.drive(xSpeedXBox, ySpeedXBox, zRotationXBox);
   }
 
-  private boolean isFieldOrientedDriveEnabled() {
-    return Dashboard.fieldOrientationEntry.get().getBoolean() && ahrs != null;
+  public boolean isFieldOrientedDriveEnabled() {
+    return fieldOrientedDrive;
   }
 
-  private void onUpdateAHRS(NetworkTableEvent event) {
-    String gyroSelection = event.valueData.value.getString();
-    switch (gyroSelection) {
-      case GyroChooser.NAVX2:
-        setAHRS(new AHRS(SPI.Port.kMXP));
-        break;
-      case GyroChooser.NONE:
-      default:
-        setAHRS(null);
-        break;
-    }
-  }
-
-  private void setAHRS(AHRS newAHRS) {
-    if (ahrs != null) {
-      ahrs.close();
-    }
-    ahrs = newAHRS;
+  public void setFieldOrientedDriveEnabled(boolean enabled) {
+    fieldOrientedDrive = enabled;
   }
 
   public void resetYaw() {

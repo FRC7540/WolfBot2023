@@ -12,25 +12,34 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class CameraSubsystem extends SubsystemBase {
   private NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
   private NetworkTableEntry pipelineEntry = limelightTable.getEntry("pipeline");
+  private NetworkTableEntry targetAreaEntry = limelightTable.getEntry("ta");
+  private NetworkTableEntry targetXOffsetEntry = limelightTable.getEntry("tx");
+  private NetworkTableEntry targetYOffsetEntry = limelightTable.getEntry("ty");
+  private NetworkTableEntry targetVisibleEntry = limelightTable.getEntry("tv");
 
   /** Creates a new CameraSubsystem. */
   public CameraSubsystem() {
+    targetAreaEntry.setDouble(0);
+    targetXOffsetEntry.setDouble(0);
+    targetYOffsetEntry.setDouble(0);
+    targetVisibleEntry.setDouble(0);
+    pipelineEntry.setDouble(0);
   }
 
   public double getTargetArea() {
-    return limelightTable.getEntry("ta").getDouble(0);
+    return targetAreaEntry.getDouble(0);
   }
 
   public double getAngleOffsetX() {
-    return limelightTable.getEntry("tx").getDouble(0);
+    return targetXOffsetEntry.getDouble(0);
   }
 
   public double getAngleOffsetY() {
-    return limelightTable.getEntry("ty").getDouble(0);
+    return targetYOffsetEntry.getDouble(0);
   }
 
   public boolean isTargetVisible() {
-    double targetVisibleDouble = limelightTable.getEntry("tv").getDouble(0);
+    double targetVisibleDouble = targetVisibleEntry.getDouble(0);
     return targetVisibleDouble != 0;
   }
 
