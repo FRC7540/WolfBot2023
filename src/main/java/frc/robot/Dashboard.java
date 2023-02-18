@@ -16,7 +16,6 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.configuration.GyroChooser;
 import frc.robot.subsystems.DrivebaseSubsystem;
 
 public class Dashboard extends SubsystemBase {
@@ -40,10 +39,6 @@ public class Dashboard extends SubsystemBase {
 
         public void ShuffleboardSetup() {
                 // Drive Shuffleboard Widgets
-                Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
-                                .add("Gyro Selection", new GyroChooser())
-                                .withWidget(BuiltInWidgets.kComboBoxChooser);
-
                 fieldOrientationEntry = Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
                                 .add("Field Oriented Drive", false)
                                 .withWidget(BuiltInWidgets.kToggleSwitch)
