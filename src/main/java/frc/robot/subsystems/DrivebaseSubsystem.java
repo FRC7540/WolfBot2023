@@ -13,19 +13,14 @@ import com.revrobotics.REVPhysicsSim;
 
 import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableEvent;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.simulation.SimDeviceSim;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Dashboard;
 import frc.robot.configuration.GyroChooser;
 
 public class DrivebaseSubsystem extends SubsystemBase {
@@ -35,8 +30,6 @@ public class DrivebaseSubsystem extends SubsystemBase {
 
   private CANSparkMax[] motors = new CANSparkMax[4];
   private SimDeviceSim[] simDevices = new SimDeviceSim[4];
-
-  private GenericEntry fieldOrientationEntry;
 
   public DrivebaseSubsystem() {
 
@@ -62,21 +55,8 @@ public class DrivebaseSubsystem extends SubsystemBase {
       simulationInit();
     }
 
-    // Creates a shuffleboard combobox widget for gyro selection
-    Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
-        .add("Gyro Selection", new GyroChooser())
-        .withWidget(BuiltInWidgets.kComboBoxChooser);
-
-    NetworkTableInstance inst = NetworkTableInstance.getDefault();
-    NetworkTable table = inst.getTable("Shuffleboard");
-    NetworkTableEntry gyroSelectEntry = table.getEntry("Tuning/Gyro Selection/active");
-    inst.addListener(gyroSelectEntry, EnumSet.of(NetworkTableEvent.Kind.kValueAll), this::onUpdateAHRS);
-
-    fieldOrientationEntry = Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
-        .add("Field Oriented Drive", false)
-        .withWidget(BuiltInWidgets.kToggleSwitch)
-        .getEntry();
-  }
+    Dashboard.networkTableInstance.addListener(Dashboard.gyroSelectEntry, EnumSet.of(NetworkTableEvent.Kind.kValueAll), this::onUpdateAHRS);
+      }
 
   private void simulationInit() {
     REVPhysicsSim physicsSim = REVPhysicsSim.getInstance();
@@ -113,7 +93,7 @@ public class DrivebaseSubsystem extends SubsystemBase {
   }
 
   private boolean isFieldOrientedDriveEnabled() {
-    return fieldOrientationEntry.get().getBoolean() && ahrs != null;
+    return Dashboard.fieldOrientationEntry.get().getBoolean() && ahrs != null;
   }
 
   private void onUpdateAHRS(NetworkTableEvent event) {
