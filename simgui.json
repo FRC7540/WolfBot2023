@@ -16,11 +16,6 @@
           "open": true
         }
       },
-      "SPARK MAX [1]": {
-        "header": {
-          "open": true
-        }
-      },
       "navX-Sensor[0]": {
         "header": {
           "open": true
@@ -41,6 +36,8 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/Shuffleboard/Game/Drivebase": "MecanumDrive",
+      "/Shuffleboard/Game/Gyro": "Gyro",
       "/Shuffleboard/Tuning/Auto Align PID/controller": "PIDController",
       "/Shuffleboard/Tuning/Gyro Selection": "String Chooser"
     },
