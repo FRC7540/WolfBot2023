@@ -2,9 +2,11 @@
 
 This is the code for TimberWolf robotics FRC 2023.
 
-## Controls
+## Controls & Dashboard
 
 All controls are based on a standard xbox controller.
+
+Please make sure that you use a shuffleboard tile size of 64, rather than the default 128.
 
 ### Driver controls
 
