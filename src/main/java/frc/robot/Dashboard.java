@@ -42,8 +42,6 @@ public class Dashboard extends SubsystemBase {
         /** Creates a new ShuffleboardSubsystem. */
         public Dashboard(DrivebaseSubsystem drivebaseSubsystem) {
                 this.drivebaseSubsystem = drivebaseSubsystem;
-
-                Shuffleboard.selectTab(Constants.ShuffleboardConstants.GAME_TAB_NAME);
         }
 
         public void ShuffleboardSetup() {
@@ -120,5 +118,7 @@ public class Dashboard extends SubsystemBase {
                                 .withWidget(BuiltInWidgets.kCameraStream)
                                 .withPosition(0, 0);
 
+                Shuffleboard.selectTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME);
+                Shuffleboard.selectTab(Constants.ShuffleboardConstants.GAME_TAB_NAME);
         }
 }
