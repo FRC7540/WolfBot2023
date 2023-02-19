@@ -48,7 +48,7 @@ public class Drive extends CommandBase {
   }
 
   private double getDeadzone(Double input) {
-    if (Math.abs(input) > Dashboard.deadzone.get().getDouble()) {
+    if (Math.abs(input) > Dashboard.deadzoneEntry.get().getDouble()) {
       return input;
     } else {
       return 0;

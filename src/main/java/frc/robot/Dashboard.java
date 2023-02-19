@@ -30,7 +30,9 @@ public class Dashboard extends SubsystemBase {
         public static GenericEntry compressorEnabled;
         public static GenericEntry slowmodeSpeed;
         public static GenericEntry accelLimitEntry;
-        public static GenericEntry deadzone;
+        public static GenericEntry deadzoneEntry;
+        public static GenericEntry maxSpeedEntry;
+        public static GenericEntry maxRotationSpeedEntry;
         public static NetworkTableEntry gyroSelectEntry = table.getEntry("Tuning/Gyro Selection/active");
         private DrivebaseSubsystem drivebaseSubsystem;
 
@@ -49,7 +51,7 @@ public class Dashboard extends SubsystemBase {
 
                 driveTuningLayout = Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
                                 .getLayout("Drive Tuning", BuiltInLayouts.kList)
-                                .withSize(2, 4);
+                                .withSize(4, 7);
 
                 slowmodeSpeed = driveTuningLayout
                                 .add("Slowmode Speed", Constants.DrivebaseConstants.DEFAULT_SLOWMODE_SPEED)
@@ -63,8 +65,20 @@ public class Dashboard extends SubsystemBase {
                                 .withProperties(Map.of("min", 0, "max", 10))
                                 .getEntry();
 
-                deadzone = driveTuningLayout
+                deadzoneEntry = driveTuningLayout
                                 .add("Deadzone", Constants.DrivebaseConstants.DEFAULT_DEADZONE)
+                                .withWidget(BuiltInWidgets.kNumberSlider)
+                                .withProperties(Map.of("min", 0, "max", 1))
+                                .getEntry();
+
+                maxSpeedEntry = driveTuningLayout
+                                .add("Speed Limit", Constants.DrivebaseConstants.DEFAULT_SPEED_LIMIT)
+                                .withWidget(BuiltInWidgets.kNumberSlider)
+                                .withProperties(Map.of("min", 0, "max", 1))
+                                .getEntry();
+
+                maxRotationSpeedEntry = driveTuningLayout
+                                .add("Rotation Speed Limit", Constants.DrivebaseConstants.DEFAULT_ROTATION_SPEED_LIMIT)
                                 .withWidget(BuiltInWidgets.kNumberSlider)
                                 .withProperties(Map.of("min", 0, "max", 1))
                                 .getEntry();
