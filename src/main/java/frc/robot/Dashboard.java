@@ -13,8 +13,10 @@ import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.DrivebaseSubsystem;
 
@@ -28,9 +30,14 @@ public class Dashboard extends SubsystemBase {
         public static GenericEntry compressorEnabled;
         public static GenericEntry slowmodeSpeed;
         public static GenericEntry accelLimitEntry;
-        public static GenericEntry deadzone;
+        public static GenericEntry deadzoneEntry;
+        public static GenericEntry maxSpeedEntry;
+        public static GenericEntry maxRotationSpeedEntry;
         public static NetworkTableEntry gyroSelectEntry = table.getEntry("Tuning/Gyro Selection/active");
         private DrivebaseSubsystem drivebaseSubsystem;
+
+        private ShuffleboardLayout driveTuningLayout;
+        private ShuffleboardLayout telemetryLayout;
 
         /** Creates a new ShuffleboardSubsystem. */
         public Dashboard(DrivebaseSubsystem drivebaseSubsystem) {
@@ -39,41 +46,66 @@ public class Dashboard extends SubsystemBase {
 
         public void ShuffleboardSetup() {
                 // Drive Shuffleboard Widgets
-                fieldOrientationEntry = Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
-                                .add("Field Oriented Drive", false)
-                                .withWidget(BuiltInWidgets.kToggleSwitch)
-                                .getEntry();
 
-                slowmodeSpeed = Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
+                driveTuningLayout = Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
+                                .getLayout("Drive Tuning", BuiltInLayouts.kList)
+                                .withSize(4, 7);
+
+                slowmodeSpeed = driveTuningLayout
                                 .add("Slowmode Speed", Constants.DrivebaseConstants.DEFAULT_SLOWMODE_SPEED)
                                 .withWidget(BuiltInWidgets.kNumberSlider)
                                 .withProperties(Map.of("min", 0, "max", 1))
                                 .getEntry();
 
-                accelLimitEntry = Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
+                accelLimitEntry = driveTuningLayout
                                 .add("Acceleration Limit", Constants.DrivebaseConstants.DEFAULT_MAX_ACCELERATION)
                                 .withWidget(BuiltInWidgets.kNumberSlider)
                                 .withProperties(Map.of("min", 0, "max", 10))
                                 .getEntry();
 
-                deadzone = Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
+                deadzoneEntry = driveTuningLayout
                                 .add("Deadzone", Constants.DrivebaseConstants.DEFAULT_DEADZONE)
                                 .withWidget(BuiltInWidgets.kNumberSlider)
                                 .withProperties(Map.of("min", 0, "max", 1))
                                 .getEntry();
 
-                Shuffleboard.getTab(Constants.ShuffleboardConstants.GAME_TAB_NAME)
-                                .add("Drivebase", drivebaseSubsystem.mecanumDrive)
+                maxSpeedEntry = driveTuningLayout
+                                .add("Speed Limit", Constants.DrivebaseConstants.DEFAULT_SPEED_LIMIT)
+                                .withWidget(BuiltInWidgets.kNumberSlider)
+                                .withProperties(Map.of("min", 0, "max", 1))
+                                .getEntry();
+
+                maxRotationSpeedEntry = driveTuningLayout
+                                .add("Rotation Speed Limit", Constants.DrivebaseConstants.DEFAULT_ROTATION_SPEED_LIMIT)
+                                .withWidget(BuiltInWidgets.kNumberSlider)
+                                .withProperties(Map.of("min", 0, "max", 1))
+                                .getEntry();
+
+                telemetryLayout = Shuffleboard.getTab(Constants.ShuffleboardConstants.GAME_TAB_NAME)
+                                .getLayout("Telemetry", BuiltInLayouts.kGrid)
+                                .withProperties(Map.of("Number of columns", 2, "Number of rows", 1))
+                                .withSize(9, 5)
+                                .withPosition(6, 0);
+
+                telemetryLayout.add("Gyro", drivebaseSubsystem.ahrs)
+                                .withWidget(BuiltInWidgets.kGyro);
+
+                telemetryLayout.add("Drivebase", drivebaseSubsystem.mecanumDrive)
                                 .withWidget(BuiltInWidgets.kMecanumDrive);
 
-                Shuffleboard.getTab(Constants.ShuffleboardConstants.GAME_TAB_NAME)
-                                .add("Gyro", drivebaseSubsystem.ahrs)
-                                .withWidget(BuiltInWidgets.kGyro);
+                fieldOrientationEntry = Shuffleboard.getTab(Constants.ShuffleboardConstants.GAME_TAB_NAME)
+                                .add("Field Oriented Drive", false)
+                                .withWidget(BuiltInWidgets.kToggleSwitch)
+                                .withSize(2, 1)
+                                .withPosition(0, 4)
+                                .getEntry();
 
                 // Pneumatics Widgets
                 compressorEnabled = Shuffleboard.getTab(Constants.ShuffleboardConstants.GAME_TAB_NAME)
                                 .add("Enable Compressor", true)
                                 .withWidget(BuiltInWidgets.kToggleSwitch)
+                                .withSize(2, 1)
+                                .withPosition(2, 4)
                                 .getEntry();
 
                 // Limelight widget
@@ -83,7 +115,10 @@ public class Dashboard extends SubsystemBase {
                 server.setSource(video);
                 Shuffleboard.getTab(Constants.ShuffleboardConstants.GAME_TAB_NAME)
                                 .add(server.getSource())
-                                .withWidget(BuiltInWidgets.kCameraStream);
+                                .withWidget(BuiltInWidgets.kCameraStream)
+                                .withPosition(0, 0);
 
+                Shuffleboard.selectTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME);
+                Shuffleboard.selectTab(Constants.ShuffleboardConstants.GAME_TAB_NAME);
         }
 }

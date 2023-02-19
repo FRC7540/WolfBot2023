@@ -42,13 +42,13 @@ public class Drive extends CommandBase {
     // Reversed strafe and rotation axis
     double x = getDeadzone(-translateX.getAsDouble()) * getSpeedMultiplier();
     double y = getDeadzone(translateY.getAsDouble()) * getSpeedMultiplier();
-    double z = getDeadzone(-rotateZ.getAsDouble());
+    double z = getDeadzone(-rotateZ.getAsDouble()) * Dashboard.maxRotationSpeedEntry.get().getDouble();
 
     drivebase.Drive(accelLimiterX.calculate(x), accelLimiterY.calculate(y), z);
   }
 
   private double getDeadzone(Double input) {
-    if (Math.abs(input) > Dashboard.deadzone.get().getDouble()) {
+    if (Math.abs(input) > Dashboard.deadzoneEntry.get().getDouble()) {
       return input;
     } else {
       return 0;
@@ -60,7 +60,7 @@ public class Drive extends CommandBase {
     if (slowModeEnabled) {
       return Dashboard.slowmodeSpeed.get().getDouble();
     } else {
-      return 1.0;
+      return Dashboard.maxSpeedEntry.get().getDouble();
     }
   }
 

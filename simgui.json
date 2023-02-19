@@ -38,15 +38,10 @@
       "/FMSInfo": "FMSInfo",
       "/Shuffleboard/Game/Drivebase": "MecanumDrive",
       "/Shuffleboard/Game/Gyro": "Gyro",
+      "/Shuffleboard/Game/Telemetry/Drivebase": "MecanumDrive",
+      "/Shuffleboard/Game/Telemetry/Gyro": "Gyro",
       "/Shuffleboard/Tuning/Auto Align PID/controller": "PIDController",
       "/Shuffleboard/Tuning/Gyro Selection": "String Chooser"
-    },
-    "windows": {
-      "/Shuffleboard/Tuning/Gyro Selection": {
-        "window": {
-          "visible": true
-        }
-      }
     }
   },
   "NetworkTables": {
