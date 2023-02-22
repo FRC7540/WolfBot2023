@@ -57,7 +57,7 @@ public final class Constants {
     public static final int CRANE_SOLENOID = 0;
   }
 
-  public static class CraneConstants{
+  public static class CraneConstants {
     public static final int ELBOW_MOTOR = 5;
     public static final double ELBOW_DEADZONE = 0.2;
   }
