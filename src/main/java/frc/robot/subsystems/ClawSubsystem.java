@@ -33,7 +33,4 @@ public class ClawSubsystem extends SubsystemBase {
     clawSolenoids.set(Value.kOff);
   }
 
-  @Override
-  public void periodic() {
-  }
 }

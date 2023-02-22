@@ -51,7 +51,14 @@ public final class Constants {
     public static final int PCM_CAN_ID = 0;
 
     // PCM Channels for solenoids
-    public static final int CLAW_SOLENOID_EXTEND = 0;
-    public static final int CLAW_SOLENOID_RETRACT = 1;
+    public static final int CLAW_SOLENOID_EXTEND = 2;
+    public static final int CLAW_SOLENOID_RETRACT = 3;
+
+    public static final int CRANE_SOLENOID = 0;
+  }
+
+  public static class CraneConstants {
+    public static final int ELBOW_MOTOR = 5;
+    public static final double ELBOW_DEADZONE = 0.2;
   }
 }

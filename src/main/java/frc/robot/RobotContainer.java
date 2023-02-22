@@ -9,10 +9,12 @@ import frc.robot.commands.ActuateClaw;
 import frc.robot.commands.AutoAlign;
 import frc.robot.commands.ActuateClaw.Direction;
 import frc.robot.commands.Drive;
+import frc.robot.commands.OperateCrane;
 import frc.robot.commands.SetCompressor;
 import frc.robot.commands.SetVisionPipeline;
 import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.ClawSubsystem;
+import frc.robot.subsystems.CraneSubsystem;
 import frc.robot.subsystems.DrivebaseSubsystem;
 import frc.robot.subsystems.PneumaticsSubsystem;
 import frc.robot.subsystems.CameraSubsystem.Pipeline;
@@ -40,6 +42,7 @@ public class RobotContainer {
   private final CameraSubsystem cameraSubsystem = new CameraSubsystem();
   private final PneumaticsSubsystem pneumaticsSubsystem = new PneumaticsSubsystem();
   private final ClawSubsystem clawSubsystem = new ClawSubsystem();
+  private final CraneSubsystem craneSubsystem = new CraneSubsystem();
   private final Dashboard dashboard = new Dashboard(drivebaseSubsystem);
 
   // Controller Setup
@@ -48,6 +51,7 @@ public class RobotContainer {
   private final CommandXboxController operatorXboxController = new CommandXboxController(
       OperatorConstants.OPERATOR_XBOX_CONTROLLER_PORT);
   private Drive drive;
+  private OperateCrane operateCrane;
 
   // Shuffleboard Entries
 
@@ -70,6 +74,11 @@ public class RobotContainer {
 
     // Claw default command
     clawSubsystem.setDefaultCommand(new InstantCommand(() -> clawSubsystem.stopClaw(), clawSubsystem));
+
+    // Crane default command
+    operateCrane = new OperateCrane(craneSubsystem, operatorXboxController::getLeftY, operatorXboxController.y(),
+        operatorXboxController.x());
+    craneSubsystem.setDefaultCommand(operateCrane);
   }
 
   /**
@@ -106,9 +115,10 @@ public class RobotContainer {
     Dashboard.networkTableInstance.addListener(Dashboard.accelLimitEntry, EnumSet.of(NetworkTableEvent.Kind.kValueAll),
         (event) -> drive.updateRateLimiters(event));
 
-    Dashboard.networkTableInstance.addListener(Dashboard.fieldOrientationEntry, EnumSet.of(NetworkTableEvent.Kind.kValueAll), (e) -> {
-      drivebaseSubsystem.setFieldOrientedDriveEnabled(e.valueData.value.getBoolean());
-    });
+    Dashboard.networkTableInstance.addListener(Dashboard.fieldOrientationEntry,
+        EnumSet.of(NetworkTableEvent.Kind.kValueAll), (e) -> {
+          drivebaseSubsystem.setFieldOrientedDriveEnabled(e.valueData.value.getBoolean());
+        });
 
   }
 

@@ -69,8 +69,4 @@ public class CameraSubsystem extends SubsystemBase {
     pipelineEntry.setDouble(pipelineIdInt);
   }
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
 }
