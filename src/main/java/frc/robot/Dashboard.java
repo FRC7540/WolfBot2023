@@ -117,8 +117,5 @@ public class Dashboard extends SubsystemBase {
                                 .add(server.getSource())
                                 .withWidget(BuiltInWidgets.kCameraStream)
                                 .withPosition(0, 0);
-
-                Shuffleboard.selectTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME);
-                Shuffleboard.selectTab(Constants.ShuffleboardConstants.GAME_TAB_NAME);
         }
 }
