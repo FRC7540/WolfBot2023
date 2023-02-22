@@ -31,12 +31,8 @@ public class CraneSubsystem extends SubsystemBase {
     craneSolenoid.set(false);
   }
 
-  public void MoveElbow(double elbow){
+  public void MoveElbow(double elbow) {
     elbowMotor.set(elbow);
   }
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
 }

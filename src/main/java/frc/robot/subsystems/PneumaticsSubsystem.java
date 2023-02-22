@@ -26,7 +26,4 @@ public class PneumaticsSubsystem extends SubsystemBase {
     compressor.disable();
   }
 
-  @Override
-  public void periodic() {
-  }
 }
