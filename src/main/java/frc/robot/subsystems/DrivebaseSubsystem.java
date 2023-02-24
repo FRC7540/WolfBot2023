@@ -98,4 +98,8 @@ public class DrivebaseSubsystem extends SubsystemBase {
       ahrs.zeroYaw();
     }
   }
+
+  public float getPitch() {
+    return ahrs.getPitch();
+  }
 }
