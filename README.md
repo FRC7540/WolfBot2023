@@ -18,8 +18,9 @@ Please make sure that you use a shuffleboard tile size of 64, rather than the de
 | auto align        | Right Bumper       | Aligns robot with target                       |
 | detect april tags | Press X Button     | Sets limelight to detect april tags            |
 | detect retro tape | Press Y Button     | Sets limelight to detect retro-reflective tape |
-| reset gyro yaw    | Press Start Button | Resets the gyro's yaw readout                  |
 | auto balance      | Press A Button     | Auto balances on platform                      |
+| reset gyro yaw    | Press Start Button | Resets the gyro's yaw readout                  |
+
 
 ### Operator Controls
 
