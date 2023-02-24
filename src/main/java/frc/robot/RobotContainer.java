@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ActuateClaw;
 import frc.robot.commands.AutoAlign;
+import frc.robot.commands.AutoBalance;
 import frc.robot.commands.ActuateClaw.Direction;
 import frc.robot.commands.Drive;
 import frc.robot.commands.OperateCrane;
@@ -105,6 +106,7 @@ public class RobotContainer {
     driverXboxController.y().onTrue(new SetVisionPipeline(cameraSubsystem, Pipeline.RETRO_TAPE));
     driverXboxController.rightBumper().whileTrue(new AutoAlign(drivebaseSubsystem, cameraSubsystem));
     driverXboxController.start().onTrue(new InstantCommand(() -> drivebaseSubsystem.resetYaw(), drivebaseSubsystem));
+    driverXboxController.a().whileTrue(new AutoBalance(drivebaseSubsystem));
   }
 
   private void networkTableListenerSetup() {
