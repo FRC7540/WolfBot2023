@@ -28,6 +28,7 @@ public class Dashboard extends SubsystemBase {
 
         public static GenericEntry fieldOrientationEntry;
         public static GenericEntry compressorEnabled;
+        public static GenericEntry armRotationReadout;
         public static GenericEntry slowmodeSpeed;
         public static GenericEntry accelLimitEntry;
         public static GenericEntry deadzoneEntry;
@@ -106,6 +107,12 @@ public class Dashboard extends SubsystemBase {
                                 .withWidget(BuiltInWidgets.kToggleSwitch)
                                 .withSize(2, 1)
                                 .withPosition(2, 4)
+                                .getEntry();
+
+                armRotationReadout = Shuffleboard.getTab(Constants.ShuffleboardConstants.GAME_TAB_NAME)
+                                .add("Elbow Rotation", 0)
+                                .withWidget(BuiltInWidgets.kDial)
+                                .withProperties(Map.of("min", -100, "max", 100))
                                 .getEntry();
 
                 // Limelight widget
