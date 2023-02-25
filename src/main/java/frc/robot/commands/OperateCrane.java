@@ -7,6 +7,7 @@ package frc.robot.commands;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.CraneSubsystem;
@@ -17,6 +18,8 @@ public class OperateCrane extends CommandBase {
   private DoubleSupplier elbowJoystick;
   private BooleanSupplier shoulderUp;
   private BooleanSupplier shoulderDown;
+  
+  private SlewRateLimiter elbowRateLimiter = new SlewRateLimiter(45);
 
   public OperateCrane(CraneSubsystem craneSubsystem, DoubleSupplier elbowJoystick, BooleanSupplier shoulderUp,
       BooleanSupplier shoulderDown) {
@@ -32,8 +35,11 @@ public class OperateCrane extends CommandBase {
   @Override
   public void execute() {
     if (Math.abs(elbowJoystick.getAsDouble()) > Constants.CraneConstants.ELBOW_DEADZONE) {
-      craneSubsystem.MoveElbow(elbowJoystick.getAsDouble());
+      double offset = elbowRateLimiter.calculate(elbowJoystick.getAsDouble());
+      double newAngle = craneSubsystem.getAngle() + offset;
+      craneSubsystem.setAngle(newAngle);
     }
+    craneSubsystem.DriveElbow();
 
     if (shoulderUp.getAsBoolean()) {
       craneSubsystem.ShoulderUp();

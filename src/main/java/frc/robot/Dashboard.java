@@ -113,6 +113,7 @@ public class Dashboard extends SubsystemBase {
                                 .add("Elbow Rotation", 0)
                                 .withWidget(BuiltInWidgets.kDial)
                                 .withProperties(Map.of("min", -100, "max", 100))
+                                .withPosition(0, 5)
                                 .getEntry();
 
                 // Limelight widget
