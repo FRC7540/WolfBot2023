@@ -122,6 +122,26 @@ public class RobotContainer {
           drivebaseSubsystem.setFieldOrientedDriveEnabled(e.valueData.value.getBoolean());
         });
 
+    Dashboard.networkTableInstance.addListener(
+        Dashboard.armMinimumAngle,
+        EnumSet.of(NetworkTableEvent.Kind.kValueAll),
+        (e) -> craneSubsystem.setMinAngle(e.valueData.value.getDouble()));
+    Dashboard.networkTableInstance.addListener(
+        Dashboard.armMaximumAngle,
+        EnumSet.of(NetworkTableEvent.Kind.kValueAll),
+        (e) -> craneSubsystem.setMaxAngle(e.valueData.value.getDouble()));
+    Dashboard.networkTableInstance.addListener(
+        Dashboard.armEncoderOffset,
+        EnumSet.of(NetworkTableEvent.Kind.kValueAll),
+        (e) -> craneSubsystem.setEncoderOffset(e.valueData.value.getDouble()));
+    Dashboard.networkTableInstance.addListener(
+        Dashboard.armRateLimit,
+        EnumSet.of(NetworkTableEvent.Kind.kValueAll),
+        (e) -> operateCrane.setRateLimit(e.valueData.value.getDouble()));
+    Dashboard.networkTableInstance.addListener(
+        Dashboard.armSpeedMultiplier,
+        EnumSet.of(NetworkTableEvent.Kind.kValueAll),
+        (e) -> operateCrane.setSpeedMultiplier(e.valueData.value.getDouble()));
   }
 
   /**

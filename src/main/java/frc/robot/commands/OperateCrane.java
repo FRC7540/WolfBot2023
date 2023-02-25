@@ -18,8 +18,9 @@ public class OperateCrane extends CommandBase {
   private DoubleSupplier elbowJoystick;
   private BooleanSupplier shoulderUp;
   private BooleanSupplier shoulderDown;
-  
-  private SlewRateLimiter elbowRateLimiter = new SlewRateLimiter(45);
+  private double speedMultiplier = Constants.CraneConstants.DEFAULT_SPEED_MULTIPLIER;
+
+  private SlewRateLimiter elbowRateLimiter = new SlewRateLimiter(Constants.CraneConstants.DEFAULT_RATE_LIMIT);
 
   public OperateCrane(CraneSubsystem craneSubsystem, DoubleSupplier elbowJoystick, BooleanSupplier shoulderUp,
       BooleanSupplier shoulderDown) {
@@ -35,9 +36,8 @@ public class OperateCrane extends CommandBase {
   @Override
   public void execute() {
     if (Math.abs(elbowJoystick.getAsDouble()) > Constants.CraneConstants.ELBOW_DEADZONE) {
-      double offset = elbowRateLimiter.calculate(elbowJoystick.getAsDouble());
-      double newAngle = craneSubsystem.getAngle() + offset;
-      craneSubsystem.setAngle(newAngle);
+      double newAngle = craneSubsystem.getAngle() + elbowJoystick.getAsDouble() * speedMultiplier;
+      craneSubsystem.setAngle(elbowRateLimiter.calculate(newAngle));
     }
     craneSubsystem.DriveElbow();
 
@@ -48,6 +48,14 @@ public class OperateCrane extends CommandBase {
     if (shoulderDown.getAsBoolean()) {
       craneSubsystem.ShoulderDown();
     }
+  }
+
+  public void setRateLimit(double rateLimit) {
+    elbowRateLimiter = new SlewRateLimiter(rateLimit);
+  }
+
+  public void setSpeedMultiplier(double speedMultiplier) {
+    this.speedMultiplier = speedMultiplier;
   }
 
   // Returns true when the command should end.
