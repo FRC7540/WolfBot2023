@@ -109,7 +109,7 @@ public class Dashboard extends SubsystemBase {
                                 .getEntry();
 
                 // Limelight widget
-                String limelightUrl = smartDashboard.getEntry("limelight_Stream").getString("http://10.75.40.1:5800");
+                String limelightUrl = smartDashboard.getEntry("limelight_Stream").getString("http://limelight.local:5800");
                 HttpCamera video = new HttpCamera(Constants.CameraConstants.LIMELIGHT_NAME, limelightUrl);
                 MjpegServer server = CameraServer.addSwitchedCamera("Limelight");
                 server.setSource(video);
