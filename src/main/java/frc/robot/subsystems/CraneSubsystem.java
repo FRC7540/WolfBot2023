@@ -18,9 +18,11 @@ public class CraneSubsystem extends SubsystemBase {
 
   private CANSparkMax elbowMotor = new CANSparkMax(Constants.CraneConstants.ELBOW_MOTOR, MotorType.kBrushless);
   private DoubleSolenoid craneSolenoids = new DoubleSolenoid(Constants.PneumaticsConstants.PCM_CAN_ID,
-      PneumaticsModuleType.CTREPCM, Constants.PneumaticsConstants.CRANE_SOLENOID_EXTEND, Constants.PneumaticsConstants.CRANE_SOLENOID_RETRACT);
+      PneumaticsModuleType.CTREPCM, Constants.PneumaticsConstants.CRANE_SOLENOID_EXTEND,
+      Constants.PneumaticsConstants.CRANE_SOLENOID_RETRACT);
 
   public CraneSubsystem() {
+
   }
 
   public void ShoulderUp() {
