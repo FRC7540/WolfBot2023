@@ -24,10 +24,13 @@ Please make sure that you use a shuffleboard tile size of 64, rather than the de
 
 ### Operator Controls
 
-| control    | binding       | description |
-| ---------- | ------------- | ----------- |
-| open claw  | Hold A Button | Opens Claw  |
-| close claw | Hold B Button | Closes Claw |
+| control        | binding           | description              |
+| -------------- | ----------------- | ------------------------ |
+| open claw      | Hold A Button     | Opens Claw               |
+| close claw     | Hold B Button     | Closes Claw              |
+| crane up       | Press Y Button    | Extends Crane Pistons    |
+| crane down     | Press X Button    | Retracts Crane Pistons   |
+| elbow movement | Left Analog Stick | Y axis moves elbow joint |
 
 ## Limelight pipeline
 

@@ -54,7 +54,8 @@ public final class Constants {
     public static final int CLAW_SOLENOID_EXTEND = 2;
     public static final int CLAW_SOLENOID_RETRACT = 3;
 
-    public static final int CRANE_SOLENOID = 0;
+    public static final int CRANE_SOLENOID_EXTEND = 0;
+    public static final int CRANE_SOLENOID_RETRACT = 1;
   }
 
   public static class CraneConstants {
