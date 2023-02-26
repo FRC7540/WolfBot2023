@@ -61,5 +61,17 @@ public final class Constants {
   public static class CraneConstants {
     public static final int ELBOW_MOTOR = 5;
     public static final double ELBOW_DEADZONE = 0.2;
+
+    public static final int ENCODER_PIN_1 = 0;
+    public static final int ENOCDER_PIN_2 = 1;
+    public static final int ENOCDER_PIN_3 = 2;
+    public static final int ENOCDER_PIN_4 = 3;
+    public static final int LIMIT_SWITCH = 4;
+    public static final double DEFAULT_MINIMUM_ANGLE = 0.0;
+    public static final double DEFAULT_MAXIMUM_ANGLE = 270;
+    public static final double DEFAULT_ANGLE_OFFSET = 0;
+    public static final double DEFAULT_RATE_LIMIT = 45;
+    public static final double DEFAULT_SPEED_MULTIPLIER = 1;
+
   }
 }

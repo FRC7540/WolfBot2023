@@ -28,16 +28,24 @@ public class Dashboard extends SubsystemBase {
 
         public static GenericEntry fieldOrientationEntry;
         public static GenericEntry compressorEnabled;
+        public static GenericEntry armRotationReadout;
         public static GenericEntry slowmodeSpeed;
         public static GenericEntry accelLimitEntry;
         public static GenericEntry deadzoneEntry;
         public static GenericEntry maxSpeedEntry;
         public static GenericEntry maxRotationSpeedEntry;
+        public static GenericEntry armEncoderOffset;
+        public static GenericEntry armMinimumAngle;
+        public static GenericEntry armMaximumAngle;
+        public static GenericEntry armRateLimit;
+        public static GenericEntry armSpeedMultiplier;
+        public static GenericEntry armSetPointReadout;
         public static NetworkTableEntry gyroSelectEntry = table.getEntry("Tuning/Gyro Selection/active");
         private DrivebaseSubsystem drivebaseSubsystem;
 
         private ShuffleboardLayout driveTuningLayout;
         private ShuffleboardLayout telemetryLayout;
+        private ShuffleboardLayout craneTuningLayout;
 
         /** Creates a new ShuffleboardSubsystem. */
         public Dashboard(DrivebaseSubsystem drivebaseSubsystem) {
@@ -46,6 +54,37 @@ public class Dashboard extends SubsystemBase {
 
         public void ShuffleboardSetup() {
                 // Drive Shuffleboard Widgets
+
+                craneTuningLayout = Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
+                                .getLayout("Crane Tuning", BuiltInLayouts.kList)
+                                .withSize(4, 7);
+
+                armEncoderOffset = craneTuningLayout
+                                .add("Encoder Offset", Constants.CraneConstants.DEFAULT_ANGLE_OFFSET)
+                                .withWidget(BuiltInWidgets.kNumberSlider)
+                                .withProperties(Map.of("min", -360, "max", 360))
+                                .getEntry();
+
+                armMinimumAngle = craneTuningLayout.add("Min Angle", Constants.CraneConstants.DEFAULT_MINIMUM_ANGLE)
+                                .withWidget(BuiltInWidgets.kNumberSlider)
+                                .withProperties(Map.of("min", -360, "max", 360))
+                                .getEntry();
+
+                armMaximumAngle = craneTuningLayout.add("Max Angle", Constants.CraneConstants.DEFAULT_MAXIMUM_ANGLE)
+                                .withWidget(BuiltInWidgets.kNumberSlider)
+                                .withProperties(Map.of("min", -360, "max", 360))
+                                .getEntry();
+
+                armRateLimit = craneTuningLayout.add("Rate Limit", Constants.CraneConstants.DEFAULT_RATE_LIMIT)
+                                .withWidget(BuiltInWidgets.kNumberSlider)
+                                .withProperties(Map.of("min", 0, "max", 180))
+                                .getEntry();
+
+                armSpeedMultiplier = craneTuningLayout
+                                .add("Speed Multiplier", Constants.CraneConstants.DEFAULT_SPEED_MULTIPLIER)
+                                .withWidget(BuiltInWidgets.kNumberSlider)
+                                .withProperties(Map.of("min", 0, "max", 50))
+                                .getEntry();
 
                 driveTuningLayout = Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
                                 .getLayout("Drive Tuning", BuiltInLayouts.kList)
@@ -108,8 +147,23 @@ public class Dashboard extends SubsystemBase {
                                 .withPosition(2, 4)
                                 .getEntry();
 
+                armRotationReadout = Shuffleboard.getTab(Constants.ShuffleboardConstants.GAME_TAB_NAME)
+                                .add("Elbow Rotation", 0)
+                                .withWidget(BuiltInWidgets.kDial)
+                                .withProperties(Map.of("min", -360, "max", 360))
+                                .withPosition(0, 5)
+                                .getEntry();
+
+                armSetPointReadout = Shuffleboard.getTab(Constants.ShuffleboardConstants.GAME_TAB_NAME)
+                                .add("Set Point", 0)
+                                .withWidget(BuiltInWidgets.kDial)
+                                .withProperties(Map.of("min", -360, "max", 360))
+                                .withPosition(3, 5)
+                                .getEntry();
+
                 // Limelight widget
-                String limelightUrl = smartDashboard.getEntry("limelight_Stream").getString("http://limelight.local:5800");
+                String limelightUrl = smartDashboard.getEntry("limelight_Stream")
+                                .getString("http://limelight.local:5800");
                 HttpCamera video = new HttpCamera(Constants.CameraConstants.LIMELIGHT_NAME, limelightUrl);
                 MjpegServer server = CameraServer.addSwitchedCamera("Limelight");
                 server.setSource(video);
