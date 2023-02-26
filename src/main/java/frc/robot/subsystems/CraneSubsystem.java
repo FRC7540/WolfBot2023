@@ -15,6 +15,10 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.simulation.DutyCycleEncoderSim;
 import edu.wpi.first.wpilibj.simulation.SimDeviceSim;
@@ -31,7 +35,7 @@ public class CraneSubsystem extends SubsystemBase {
       Constants.PneumaticsConstants.CRANE_SOLENOID_RETRACT);
 
   public PIDController elbowPidController = new PIDController(0.5, 0, 0);
-  private double elbowAngle = 0d;
+  private double elbowAngleSetPoint = 0d;
   private double minAngle = Constants.CraneConstants.DEFAULT_MINIMUM_ANGLE;
   private double maxAngle = Constants.CraneConstants.DEFAULT_MAXIMUM_ANGLE;
 
@@ -40,9 +44,15 @@ public class CraneSubsystem extends SubsystemBase {
   private SimDeviceSim simDeviceSim;
   private DutyCycleEncoderSim encoderSim;
 
+  private ShuffleboardLayout pidLayout = Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
+      .getLayout("Arm PID", BuiltInLayouts.kList)
+      .withSize(4, 4);
+
   public CraneSubsystem() {
     absoluteEncoder.setPositionOffset(Constants.CraneConstants.DEFAULT_ANGLE_OFFSET);
-    elbowAngle = absoluteEncoder.getAbsolutePosition();
+    elbowAngleSetPoint = absoluteEncoder.getAbsolutePosition();
+
+    pidLayout.add("controller", this.elbowPidController).withWidget(BuiltInWidgets.kPIDController);
 
     if (RobotBase.isSimulation()) {
       SimulationInit();
@@ -58,8 +68,8 @@ public class CraneSubsystem extends SubsystemBase {
   }
 
   public void DriveElbow() {
-    double position = absoluteEncoder.get();
-    double output = elbowPidController.calculate(position, elbowAngle);
+    double position = getEncoderOutput();
+    double output = elbowPidController.calculate(position, elbowAngleSetPoint);
     if (output < -1) {
       output = -1;
     } else if (output > 1) {
@@ -69,7 +79,11 @@ public class CraneSubsystem extends SubsystemBase {
   }
 
   public double getEncoderOutput() {
-    return absoluteEncoder.get();
+    if (RobotBase.isSimulation()) {
+      return absoluteEncoder.get();
+    } else {
+      return absoluteEncoder.getAbsolutePosition();
+    }
   }
 
   public void setEncoderOffset(double offset){
@@ -82,11 +96,11 @@ public class CraneSubsystem extends SubsystemBase {
     } else if (angle > maxAngle) {
       angle = maxAngle;
     }
-    elbowAngle = angle;
+    elbowAngleSetPoint = angle;
   }
 
-  public double getAngle() {
-    return elbowAngle;
+  public double getAngleSetPoint() {
+    return elbowAngleSetPoint;
   }
 
   public void setMinAngle(double minAngle) {
@@ -99,8 +113,8 @@ public class CraneSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    Dashboard.armRotationReadout.setDouble(absoluteEncoder.getAbsolutePosition());
-    Dashboard.armSetPointReadout.setDouble(getAngle());
+    Dashboard.armRotationReadout.setDouble(getEncoderOutput());
+    Dashboard.armSetPointReadout.setDouble(getAngleSetPoint());
   }
 
   private void SimulationInit() {
@@ -114,6 +128,6 @@ public class CraneSubsystem extends SubsystemBase {
   public void simulationPeriodic() {
     SimDouble velocityEntry = simDeviceSim.getDouble("Velocity");
     velocityEntry.set(elbowMotor.get());
-    encoderSim.set(absoluteEncoder.get() + elbowMotor.get() * 0.5);
+    encoderSim.set(absoluteEncoder.get() + elbowMotor.get() * 10);
   }
 }

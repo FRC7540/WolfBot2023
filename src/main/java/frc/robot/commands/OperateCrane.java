@@ -36,7 +36,7 @@ public class OperateCrane extends CommandBase {
   @Override
   public void execute() {
     if (Math.abs(elbowJoystick.getAsDouble()) > Constants.CraneConstants.ELBOW_DEADZONE) {
-      double newAngle = craneSubsystem.getAngle() + elbowJoystick.getAsDouble() * speedMultiplier;
+      double newAngle = craneSubsystem.getAngleSetPoint() + elbowJoystick.getAsDouble() * speedMultiplier;
       craneSubsystem.setAngle(elbowRateLimiter.calculate(newAngle));
     }
     craneSubsystem.DriveElbow();
