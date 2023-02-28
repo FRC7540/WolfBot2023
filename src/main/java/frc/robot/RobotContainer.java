@@ -127,9 +127,13 @@ public class RobotContainer {
         EnumSet.of(NetworkTableEvent.Kind.kValueAll),
         (e) -> craneSubsystem.setMinAngle(e.valueData.value.getDouble()));
     Dashboard.networkTableInstance.addListener(
-        Dashboard.armMaximumAngle,
+        Dashboard.armMaximumAngleHigh,
         EnumSet.of(NetworkTableEvent.Kind.kValueAll),
-        (e) -> craneSubsystem.setMaxAngle(e.valueData.value.getDouble()));
+        (e) -> craneSubsystem.setMaxAngleHigh(e.valueData.value.getDouble()));
+    Dashboard.networkTableInstance.addListener(
+        Dashboard.armMaximumAngleLow,
+        EnumSet.of(NetworkTableEvent.Kind.kValueAll),
+        (e) -> craneSubsystem.setMaxAngleLow(e.valueData.value.getDouble()));
     Dashboard.networkTableInstance.addListener(
         Dashboard.armEncoderOffset,
         EnumSet.of(NetworkTableEvent.Kind.kValueAll),
