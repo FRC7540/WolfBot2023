@@ -37,7 +37,9 @@ public class CraneSubsystem extends SubsystemBase {
   public PIDController elbowPidController = new PIDController(0.5, 0, 0);
   private double elbowAngleSetPoint = 0d;
   private double minAngle = Constants.CraneConstants.DEFAULT_MINIMUM_ANGLE;
-  private double maxAngle = Constants.CraneConstants.DEFAULT_MAXIMUM_ANGLE;
+  private double maxAngleHigh = Constants.CraneConstants.DEFAULT_MAXIMUM_ANGLE_HIGH;
+  private double maxAngleLow = Constants.CraneConstants.DEFAULT_MAXIMUM_ANGLE_LOW;
+  private boolean isArmUp = false;
 
   private DutyCycleEncoder absoluteEncoder = new DutyCycleEncoder(Constants.CraneConstants.ENCODER_PIN_1);
 
@@ -60,10 +62,14 @@ public class CraneSubsystem extends SubsystemBase {
   }
 
   public void ShoulderUp() {
+    isArmUp = true;
+    setAngle(getAngleSetPoint());
     craneSolenoids.set(Value.kForward);
   }
 
   public void ShoulderDown() {
+    isArmUp = false;
+    setAngle(getAngleSetPoint());
     craneSolenoids.set(Value.kReverse);
   }
 
@@ -86,11 +92,12 @@ public class CraneSubsystem extends SubsystemBase {
     }
   }
 
-  public void setEncoderOffset(double offset){
+  public void setEncoderOffset(double offset) {
     absoluteEncoder.setPositionOffset(offset);
   }
 
   public void setAngle(double angle) {
+    double maxAngle = getMaxAngle();
     if (angle < minAngle) {
       angle = minAngle;
     } else if (angle > maxAngle) {
@@ -107,8 +114,20 @@ public class CraneSubsystem extends SubsystemBase {
     this.minAngle = minAngle;
   }
 
-  public void setMaxAngle(double maxAngle) {
-    this.maxAngle = maxAngle;
+  public void setMaxAngleHigh(double maxAngle) {
+    this.maxAngleHigh = maxAngle;
+  }
+
+  public void setMaxAngleLow(double maxAngle) {
+    this.maxAngleLow = maxAngle;
+  }
+
+  public double getMaxAngle() {
+    if (isArmUp) {
+      return maxAngleHigh;
+    } else {
+      return maxAngleLow;
+    }
   }
 
   @Override

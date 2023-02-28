@@ -36,7 +36,8 @@ public class Dashboard extends SubsystemBase {
         public static GenericEntry maxRotationSpeedEntry;
         public static GenericEntry armEncoderOffset;
         public static GenericEntry armMinimumAngle;
-        public static GenericEntry armMaximumAngle;
+        public static GenericEntry armMaximumAngleHigh;
+        public static GenericEntry armMaximumAngleLow;
         public static GenericEntry armRateLimit;
         public static GenericEntry armSpeedMultiplier;
         public static GenericEntry armSetPointReadout;
@@ -70,7 +71,14 @@ public class Dashboard extends SubsystemBase {
                                 .withProperties(Map.of("min", -360, "max", 360))
                                 .getEntry();
 
-                armMaximumAngle = craneTuningLayout.add("Max Angle", Constants.CraneConstants.DEFAULT_MAXIMUM_ANGLE)
+                armMaximumAngleHigh = craneTuningLayout
+                                .add("Max Angle High", Constants.CraneConstants.DEFAULT_MAXIMUM_ANGLE_HIGH)
+                                .withWidget(BuiltInWidgets.kNumberSlider)
+                                .withProperties(Map.of("min", -360, "max", 360))
+                                .getEntry();
+
+                armMaximumAngleLow = craneTuningLayout
+                                .add("Max Angle Low", Constants.CraneConstants.DEFAULT_MAXIMUM_ANGLE_LOW)
                                 .withWidget(BuiltInWidgets.kNumberSlider)
                                 .withProperties(Map.of("min", -360, "max", 360))
                                 .getEntry();
