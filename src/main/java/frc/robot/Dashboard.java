@@ -163,7 +163,7 @@ public class Dashboard extends SubsystemBase {
 
                 // Limelight widget
                 String limelightUrl = smartDashboard.getEntry("limelight_Stream")
-                                .getString("http://limelight.local:5800");
+                                .getString("http://limelight-twolf.local:5800");
                 HttpCamera video = new HttpCamera(Constants.CameraConstants.LIMELIGHT_NAME, limelightUrl);
                 MjpegServer server = CameraServer.addSwitchedCamera("Limelight");
                 server.setSource(video);
