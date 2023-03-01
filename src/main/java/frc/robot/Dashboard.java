@@ -63,24 +63,24 @@ public class Dashboard extends SubsystemBase {
                 armEncoderOffset = craneTuningLayout
                                 .add("Encoder Offset", Constants.CraneConstants.DEFAULT_ANGLE_OFFSET)
                                 .withWidget(BuiltInWidgets.kNumberSlider)
-                                .withProperties(Map.of("min", -360, "max", 360))
+                                .withProperties(Map.of("min", 0, "max", 360))
                                 .getEntry();
 
                 armMinimumAngle = craneTuningLayout.add("Min Angle", Constants.CraneConstants.DEFAULT_MINIMUM_ANGLE)
                                 .withWidget(BuiltInWidgets.kNumberSlider)
-                                .withProperties(Map.of("min", -360, "max", 360))
+                                .withProperties(Map.of("min", 0, "max", 360))
                                 .getEntry();
 
                 armMaximumAngleHigh = craneTuningLayout
                                 .add("Max Angle High", Constants.CraneConstants.DEFAULT_MAXIMUM_ANGLE_HIGH)
                                 .withWidget(BuiltInWidgets.kNumberSlider)
-                                .withProperties(Map.of("min", -360, "max", 360))
+                                .withProperties(Map.of("min", 0, "max", 360))
                                 .getEntry();
 
                 armMaximumAngleLow = craneTuningLayout
                                 .add("Max Angle Low", Constants.CraneConstants.DEFAULT_MAXIMUM_ANGLE_LOW)
                                 .withWidget(BuiltInWidgets.kNumberSlider)
-                                .withProperties(Map.of("min", -360, "max", 360))
+                                .withProperties(Map.of("min", 0, "max", 360))
                                 .getEntry();
 
                 armRateLimit = craneTuningLayout.add("Rate Limit", Constants.CraneConstants.DEFAULT_RATE_LIMIT)
@@ -158,14 +158,14 @@ public class Dashboard extends SubsystemBase {
                 armRotationReadout = Shuffleboard.getTab(Constants.ShuffleboardConstants.GAME_TAB_NAME)
                                 .add("Elbow Rotation", 0)
                                 .withWidget(BuiltInWidgets.kDial)
-                                .withProperties(Map.of("min", -360, "max", 360))
+                                .withProperties(Map.of("min", 0, "max", 360))
                                 .withPosition(0, 5)
                                 .getEntry();
 
                 armSetPointReadout = Shuffleboard.getTab(Constants.ShuffleboardConstants.GAME_TAB_NAME)
                                 .add("Set Point", 0)
                                 .withWidget(BuiltInWidgets.kDial)
-                                .withProperties(Map.of("min", -360, "max", 360))
+                                .withProperties(Map.of("min", 0, "max", 360))
                                 .withPosition(3, 5)
                                 .getEntry();
 

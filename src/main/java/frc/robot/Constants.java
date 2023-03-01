@@ -67,12 +67,13 @@ public final class Constants {
     public static final int ENOCDER_PIN_3 = 2;
     public static final int ENOCDER_PIN_4 = 3;
     public static final int LIMIT_SWITCH = 4;
-    public static final double DEFAULT_MINIMUM_ANGLE = 0.0;
-    public static final double DEFAULT_MAXIMUM_ANGLE_HIGH = 270;
-    public static final double DEFAULT_MAXIMUM_ANGLE_LOW = 180;
-    public static final double DEFAULT_ANGLE_OFFSET = 0;
-    public static final double DEFAULT_RATE_LIMIT = 45;
-    public static final double DEFAULT_SPEED_MULTIPLIER = 1;
 
+    public static final double DEFAULT_MINIMUM_ANGLE = 15.0;
+    public static final double DEFAULT_MAXIMUM_ANGLE_HIGH = 270.0;
+    public static final double DEFAULT_MAXIMUM_ANGLE_LOW = 90.0;
+    public static final double DEFAULT_ANGLE_OFFSET = 220.0;
+    public static final double DEFAULT_RATE_LIMIT = 80;
+    
+    public static final double DEFAULT_SPEED_MULTIPLIER = 1;
   }
 }
