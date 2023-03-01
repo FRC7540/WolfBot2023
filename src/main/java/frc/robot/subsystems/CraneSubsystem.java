@@ -34,7 +34,7 @@ public class CraneSubsystem extends SubsystemBase {
       PneumaticsModuleType.CTREPCM, Constants.PneumaticsConstants.CRANE_SOLENOID_EXTEND,
       Constants.PneumaticsConstants.CRANE_SOLENOID_RETRACT);
 
-  public PIDController elbowPidController = new PIDController(0.5, 0, 0);
+  public PIDController elbowPidController = new PIDController(0.015, 0, 0);
   private double elbowAngleSetPoint = 0d;
   private double minAngle = Constants.CraneConstants.DEFAULT_MINIMUM_ANGLE;
   private double maxAngleHigh = Constants.CraneConstants.DEFAULT_MAXIMUM_ANGLE_HIGH;
@@ -51,10 +51,14 @@ public class CraneSubsystem extends SubsystemBase {
       .withSize(4, 4);
 
   public CraneSubsystem() {
+    absoluteEncoder.setDutyCycleRange(1.0/1025.0, 1024.0/1025.0);
+    absoluteEncoder.setDistancePerRotation(360);
     absoluteEncoder.setPositionOffset(Constants.CraneConstants.DEFAULT_ANGLE_OFFSET);
     elbowAngleSetPoint = absoluteEncoder.getAbsolutePosition();
 
     pidLayout.add("controller", this.elbowPidController).withWidget(BuiltInWidgets.kPIDController);
+
+    setAngle(getEncoderOutput());
 
     if (RobotBase.isSimulation()) {
       SimulationInit();
@@ -85,11 +89,8 @@ public class CraneSubsystem extends SubsystemBase {
   }
 
   public double getEncoderOutput() {
-    if (RobotBase.isSimulation()) {
-      return absoluteEncoder.get();
-    } else {
-      return absoluteEncoder.getAbsolutePosition();
-    }
+    double output = (absoluteEncoder.getAbsolutePosition() * 360) + Constants.CraneConstants.DEFAULT_ANGLE_OFFSET;
+    return output % 360;
   }
 
   public void setEncoderOffset(double offset) {
