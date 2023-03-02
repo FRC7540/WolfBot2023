@@ -131,8 +131,8 @@ public class Dashboard extends SubsystemBase {
                 telemetryLayout = Shuffleboard.getTab(Constants.ShuffleboardConstants.GAME_TAB_NAME)
                                 .getLayout("Telemetry", BuiltInLayouts.kGrid)
                                 .withProperties(Map.of("Number of columns", 2, "Number of rows", 1))
-                                .withSize(9, 5)
-                                .withPosition(6, 0);
+                                .withSize(8, 5)
+                                .withPosition(12, 0);
 
                 telemetryLayout.add("Gyro", drivebaseSubsystem.ahrs)
                                 .withWidget(BuiltInWidgets.kGyro);
@@ -144,7 +144,7 @@ public class Dashboard extends SubsystemBase {
                                 .add("Field Oriented Drive", false)
                                 .withWidget(BuiltInWidgets.kToggleSwitch)
                                 .withSize(2, 1)
-                                .withPosition(0, 4)
+                                .withPosition(16, 6)
                                 .getEntry();
 
                 // Pneumatics Widgets
@@ -152,21 +152,21 @@ public class Dashboard extends SubsystemBase {
                                 .add("Enable Compressor", true)
                                 .withWidget(BuiltInWidgets.kToggleSwitch)
                                 .withSize(2, 1)
-                                .withPosition(2, 4)
+                                .withPosition(16, 5)
                                 .getEntry();
 
                 armRotationReadout = Shuffleboard.getTab(Constants.ShuffleboardConstants.GAME_TAB_NAME)
                                 .add("Elbow Rotation", 0)
                                 .withWidget(BuiltInWidgets.kDial)
                                 .withProperties(Map.of("min", 0, "max", 360))
-                                .withPosition(0, 5)
+                                .withPosition(14, 5)
                                 .getEntry();
 
                 armSetPointReadout = Shuffleboard.getTab(Constants.ShuffleboardConstants.GAME_TAB_NAME)
                                 .add("Set Point", 0)
                                 .withWidget(BuiltInWidgets.kDial)
                                 .withProperties(Map.of("min", 0, "max", 360))
-                                .withPosition(3, 5)
+                                .withPosition(12, 5)
                                 .getEntry();
 
                 // Limelight widget
@@ -178,6 +178,14 @@ public class Dashboard extends SubsystemBase {
                 Shuffleboard.getTab(Constants.ShuffleboardConstants.GAME_TAB_NAME)
                                 .add(server.getSource())
                                 .withWidget(BuiltInWidgets.kCameraStream)
+                                .withSize(6, 6)
                                 .withPosition(0, 0);
+
+                // Webcam Widget
+                Shuffleboard.getTab(Constants.ShuffleboardConstants.GAME_TAB_NAME)
+                                .add(CameraServer.startAutomaticCapture())
+                                .withWidget(BuiltInWidgets.kCameraStream)
+                                .withSize(6, 6)
+                                .withPosition(6, 0);
         }
 }
