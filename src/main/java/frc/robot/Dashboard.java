@@ -41,6 +41,7 @@ public class Dashboard extends SubsystemBase {
         public static GenericEntry armRateLimit;
         public static GenericEntry armSpeedMultiplier;
         public static GenericEntry armSetPointReadout;
+        public static GenericEntry pressureReadout;
         public static NetworkTableEntry gyroSelectEntry = table.getEntry("Tuning/Gyro Selection/active");
         private DrivebaseSubsystem drivebaseSubsystem;
 
@@ -167,6 +168,12 @@ public class Dashboard extends SubsystemBase {
                                 .withWidget(BuiltInWidgets.kDial)
                                 .withProperties(Map.of("min", 0, "max", 360))
                                 .withPosition(12, 5)
+                                .getEntry();
+
+                pressureReadout = Shuffleboard.getTab(Constants.ShuffleboardConstants.GAME_TAB_NAME)
+                                .add("Air Pressure", 0)
+                                .withWidget(BuiltInWidgets.kDial)
+                                .withProperties(Map.of("min", 0, "max", 130))
                                 .getEntry();
 
                 // Limelight widget
