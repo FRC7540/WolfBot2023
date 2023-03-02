@@ -50,6 +50,8 @@ public final class Constants {
     // CAN ID of CTRE PCM, default 0
     public static final int PCM_CAN_ID = 0;
 
+    public static final int PRESSURE_SENSOR_ANALOG_PIN = 0;
+
     // PCM Channels for solenoids
     public static final int CLAW_SOLENOID_EXTEND = 2;
     public static final int CLAW_SOLENOID_RETRACT = 3;
