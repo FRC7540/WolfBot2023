@@ -10,7 +10,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class CameraSubsystem extends SubsystemBase {
-  private NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+  private NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight-twolf");
   private NetworkTableEntry pipelineEntry = limelightTable.getEntry("pipeline");
   private NetworkTableEntry targetAreaEntry = limelightTable.getEntry("ta");
   private NetworkTableEntry targetXOffsetEntry = limelightTable.getEntry("tx");
