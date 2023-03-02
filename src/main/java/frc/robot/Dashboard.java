@@ -174,6 +174,7 @@ public class Dashboard extends SubsystemBase {
                                 .add("Air Pressure", 0)
                                 .withWidget(BuiltInWidgets.kDial)
                                 .withProperties(Map.of("min", 0, "max", 130))
+                                .withPosition(18, 5)
                                 .getEntry();
 
                 // Limelight widget
