@@ -142,7 +142,7 @@ public class Dashboard extends SubsystemBase {
                                 .withWidget(BuiltInWidgets.kMecanumDrive);
 
                 fieldOrientationEntry = Shuffleboard.getTab(Constants.ShuffleboardConstants.GAME_TAB_NAME)
-                                .add("Field Oriented Drive", false)
+                                .add("Field Oriented Drive", true)
                                 .withWidget(BuiltInWidgets.kToggleSwitch)
                                 .withSize(2, 1)
                                 .withPosition(16, 6)

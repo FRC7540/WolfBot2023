@@ -24,6 +24,7 @@ import java.util.EnumSet;
 
 import edu.wpi.first.networktables.NetworkTableEvent;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -49,6 +50,7 @@ public class RobotContainer {
   private final Dashboard dashboard = new Dashboard(drivebaseSubsystem);
 
   private boolean autonomous;
+  private boolean fieldOrientedBase;
 
   // Controller Setup
   private final CommandXboxController driverXboxController = new CommandXboxController(
@@ -168,7 +170,11 @@ public class RobotContainer {
 
   public Command autonomousCommand = new SequentialCommandGroup(
       new InstantCommand(() -> reconfigureDefaultCommands(true)),
+      new ConditionalCommand(new InstantCommand(() -> fieldOrientedBase = true),
+          new InstantCommand(() -> fieldOrientedBase = false), drivebaseSubsystem::isFieldOrientedDriveEnabled),
+      new InstantCommand(() -> drivebaseSubsystem.setFieldOrientedDriveEnabled(false)),
       new RunCommand(() -> drivebaseSubsystem.Drive(0, 0.3, 0)).withTimeout(1),
       new RunCommand(() -> drivebaseSubsystem.Drive(0, -0.3, 0)).withTimeout(4),
-      new InstantCommand(() -> reconfigureDefaultCommands(false)));
+      new InstantCommand(() -> reconfigureDefaultCommands(false)),
+      new InstantCommand(() -> drivebaseSubsystem.setFieldOrientedDriveEnabled(fieldOrientedBase)));
 }

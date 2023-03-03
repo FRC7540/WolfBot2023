@@ -26,7 +26,7 @@ public class DrivebaseSubsystem extends SubsystemBase {
   private CANSparkMax[] motors = new CANSparkMax[4];
   private SimDeviceSim[] simDevices = new SimDeviceSim[4];
 
-  private boolean fieldOrientedDrive;
+  private boolean fieldOrientedDrive = true;
 
   public DrivebaseSubsystem() {
 
