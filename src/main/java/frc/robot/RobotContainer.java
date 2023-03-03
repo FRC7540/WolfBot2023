@@ -169,6 +169,6 @@ public class RobotContainer {
   public Command autonomousCommand = new SequentialCommandGroup(
       new InstantCommand(() -> reconfigureDefaultCommands(true)),
       new RunCommand(() -> drivebaseSubsystem.Drive(0, 0.3, 0)).withTimeout(1),
-      new RunCommand(() -> drivebaseSubsystem.Drive(0, -0.3, 0)).withTimeout(4.5),
+      new RunCommand(() -> drivebaseSubsystem.Drive(0, -0.3, 0)).withTimeout(4),
       new InstantCommand(() -> reconfigureDefaultCommands(false)));
 }
