@@ -79,6 +79,6 @@ public final class Constants {
     public static final double AUTO_HIGH_ANGLE = 170;
     public static final double AUTO_LOW_ANGLE = 100;
     
-    public static final double DEFAULT_SPEED_MULTIPLIER = 1;
+    public static final double DEFAULT_SPEED_MULTIPLIER = 2;
   }
 }
