@@ -48,6 +48,8 @@ public class RobotContainer {
   private final CraneSubsystem craneSubsystem = new CraneSubsystem();
   private final Dashboard dashboard = new Dashboard(drivebaseSubsystem);
 
+  private boolean autonomous;
+
   // Controller Setup
   private final CommandXboxController driverXboxController = new CommandXboxController(
       OperatorConstants.DRIVER_XBOX_CONTROLLER_PORT);
@@ -72,7 +74,7 @@ public class RobotContainer {
     // Drivebase default command
     Trigger leftBumper = driverXboxController.leftBumper();
     drive = new Drive(drivebaseSubsystem, driverXboxController::getLeftX,
-        driverXboxController::getLeftY, driverXboxController::getRightX, leftBumper::getAsBoolean);
+        driverXboxController::getLeftY, driverXboxController::getRightX, leftBumper::getAsBoolean, autonomous);
     drivebaseSubsystem.setDefaultCommand(drive);
 
     // Claw default command
@@ -160,6 +162,8 @@ public class RobotContainer {
   }
 
   public Command autonomousCommand = new SequentialCommandGroup(
+      new InstantCommand(() -> autonomous = true),
+      new InstantCommand(() -> configureDefaultCommands()),
       new InstantCommand(() -> System.out.println("Autonomous Started!")),
       new RunCommand(() -> drivebaseSubsystem.Drive(0, 0.3, 0)).withTimeout(1),
       new InstantCommand(() -> System.out.println("Moving forward")),
