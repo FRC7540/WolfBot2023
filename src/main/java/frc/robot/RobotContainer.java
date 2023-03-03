@@ -160,6 +160,8 @@ public class RobotContainer {
   }
 
   public Command autonomousCommand = new SequentialCommandGroup(
+      new InstantCommand(() -> System.out.println("Autonomous Started!")),
       new RunCommand(() -> drivebaseSubsystem.Drive(0, 0.3, 0)).withTimeout(1),
+      new InstantCommand(() -> System.out.println("Moving forward")),
       new RunCommand(() -> drivebaseSubsystem.Drive(0, -0.6, 0)).withTimeout(3));
 }
