@@ -36,16 +36,28 @@ public class OperateCrane extends CommandBase {
   @Override
   public void execute() {
     if (Math.abs(elbowJoystick.getAsDouble()) > Constants.CraneConstants.ELBOW_DEADZONE) {
-      double newAngle = craneSubsystem.getAngleSetPoint() + elbowJoystick.getAsDouble() * speedMultiplier;
+      double newAngle = craneSubsystem.getAngleSetPoint() + elbowJoystick.getAsDouble() * speedMultiplier * -1;
       craneSubsystem.setAngle(elbowRateLimiter.calculate(newAngle));
+      if (craneSubsystem.getAngleSetPoint() == Constants.CraneConstants.DEFAULT_MINIMUM_ANGLE
+          || craneSubsystem.getAngleSetPoint() == craneSubsystem.getMaxAngle()) {
+      }
     }
+
     craneSubsystem.DriveElbow();
 
     if (shoulderUp.getAsBoolean()) {
       craneSubsystem.ShoulderUp();
+      if (craneSubsystem.getAngleSetPoint() < Constants.CraneConstants.AUTO_HIGH_ANGLE) {
+        craneSubsystem.setAngle(Constants.CraneConstants.AUTO_HIGH_ANGLE);
+      }
+      craneSubsystem.setMinAngle(Constants.CraneConstants.AUTO_HIGH_ANGLE);
     }
 
     if (shoulderDown.getAsBoolean()) {
+      if (craneSubsystem.getAngleSetPoint() > Constants.CraneConstants.AUTO_LOW_ANGLE) {
+        craneSubsystem.setAngle(Constants.CraneConstants.AUTO_LOW_ANGLE);
+      }
+      craneSubsystem.setMinAngle(Constants.CraneConstants.DEFAULT_MINIMUM_ANGLE);
       craneSubsystem.ShoulderDown();
     }
   }
