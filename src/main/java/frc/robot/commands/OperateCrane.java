@@ -42,11 +42,11 @@ public class OperateCrane extends CommandBase {
     craneSubsystem.DriveElbow();
 
     if (shoulderUp.getAsBoolean()) {
+      craneSubsystem.ShoulderUp();
       if (craneSubsystem.getAngleSetPoint() < Constants.CraneConstants.AUTO_HIGH_ANGLE) {
         craneSubsystem.setAngle(Constants.CraneConstants.AUTO_HIGH_ANGLE);
       }
       craneSubsystem.setMinAngle(Constants.CraneConstants.AUTO_HIGH_ANGLE);
-      craneSubsystem.ShoulderUp();
     }
 
     if (shoulderDown.getAsBoolean()) {
