@@ -30,7 +30,7 @@ public final class Constants {
     public static final int REAR_RIGHT_MOTOR = 3;
 
     // Speed Calibration
-    public static final double DEFAULT_SLOWMODE_SPEED = 0.34;
+    public static final double DEFAULT_SLOWMODE_SPEED = 0.2;
     public static final double DEFAULT_MAX_ACCELERATION = 5.0;
     public static final double DEFAULT_DEADZONE = 0.2;
     public static final double DEFAULT_SPEED_LIMIT = 0.8;
@@ -72,7 +72,7 @@ public final class Constants {
 
     public static final double DEFAULT_MINIMUM_ANGLE = 15.0;
     public static final double DEFAULT_MAXIMUM_ANGLE_HIGH = 270.0;
-    public static final double DEFAULT_MAXIMUM_ANGLE_LOW = 100.0;
+    public static final double DEFAULT_MAXIMUM_ANGLE_LOW = 110.0;
     public static final double DEFAULT_ANGLE_OFFSET = 220.0;
     public static final double DEFAULT_RATE_LIMIT = 80;
     public static final double AUTO_HIGH_ANGLE = 145;
