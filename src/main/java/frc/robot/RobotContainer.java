@@ -152,6 +152,11 @@ public class RobotContainer {
         (e) -> operateCrane.setSpeedMultiplier(e.valueData.value.getDouble()));
   }
 
+  private void reconfigureDefaultCommands(boolean autonomous) {
+    this.autonomous = autonomous;
+    configureDefaultCommands();
+  }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
@@ -162,10 +167,8 @@ public class RobotContainer {
   }
 
   public Command autonomousCommand = new SequentialCommandGroup(
-      new InstantCommand(() -> autonomous = true),
-      new InstantCommand(() -> configureDefaultCommands()),
-      new InstantCommand(() -> System.out.println("Autonomous Started!")),
+      new InstantCommand(() -> reconfigureDefaultCommands(true)),
       new RunCommand(() -> drivebaseSubsystem.Drive(0, 0.3, 0)).withTimeout(1),
-      new InstantCommand(() -> System.out.println("Moving forward")),
-      new RunCommand(() -> drivebaseSubsystem.Drive(0, -0.6, 0)).withTimeout(3));
+      new RunCommand(() -> drivebaseSubsystem.Drive(0, -0.3, 0)).withTimeout(4.5),
+      new InstantCommand(() -> reconfigureDefaultCommands(false)));
 }
