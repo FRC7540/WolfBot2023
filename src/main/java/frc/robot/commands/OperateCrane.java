@@ -20,8 +20,6 @@ public class OperateCrane extends CommandBase {
   private BooleanSupplier shoulderDown;
   private double speedMultiplier = Constants.CraneConstants.DEFAULT_SPEED_MULTIPLIER;
 
-  private boolean rumble = false;
-
   private SlewRateLimiter elbowRateLimiter = new SlewRateLimiter(Constants.CraneConstants.DEFAULT_RATE_LIMIT);
 
   public OperateCrane(CraneSubsystem craneSubsystem, DoubleSupplier elbowJoystick, BooleanSupplier shoulderUp,
@@ -42,12 +40,7 @@ public class OperateCrane extends CommandBase {
       craneSubsystem.setAngle(elbowRateLimiter.calculate(newAngle));
       if (craneSubsystem.getAngleSetPoint() == Constants.CraneConstants.DEFAULT_MINIMUM_ANGLE
           || craneSubsystem.getAngleSetPoint() == craneSubsystem.getMaxAngle()) {
-        rumble = true;
-      } else {
-        rumble = false;
       }
-    } else {
-      rumble = false;
     }
 
     craneSubsystem.DriveElbow();
@@ -75,10 +68,6 @@ public class OperateCrane extends CommandBase {
 
   public void setSpeedMultiplier(double speedMultiplier) {
     this.speedMultiplier = speedMultiplier;
-  }
-
-  public boolean getControllerRumble() {
-    return rumble;
   }
 
   // Returns true when the command should end.
