@@ -73,8 +73,8 @@ public class CraneSubsystem extends SubsystemBase {
 
   public void ShoulderDown() {
     isArmUp = false;
-    setAngle(getAngleSetPoint());
     craneSolenoids.set(Value.kReverse);
+    setAngle(getAngleSetPoint());
   }
 
   public void DriveElbow() {
