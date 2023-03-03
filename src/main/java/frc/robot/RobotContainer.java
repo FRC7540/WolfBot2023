@@ -169,12 +169,17 @@ public class RobotContainer {
   }
 
   public Command autonomousCommand = new SequentialCommandGroup(
+      // Preliminary required override setup
       new InstantCommand(() -> reconfigureDefaultCommands(true)),
       new ConditionalCommand(new InstantCommand(() -> fieldOrientedBase = true),
           new InstantCommand(() -> fieldOrientedBase = false), drivebaseSubsystem::isFieldOrientedDriveEnabled),
       new InstantCommand(() -> drivebaseSubsystem.setFieldOrientedDriveEnabled(false)),
+
+      // Autonomous Code
       new RunCommand(() -> drivebaseSubsystem.Drive(0, 0.3, 0)).withTimeout(1),
       new RunCommand(() -> drivebaseSubsystem.Drive(0, -0.3, 0)).withTimeout(4),
+
+      // Post-Autonomous override cancelling
       new InstantCommand(() -> reconfigureDefaultCommands(false)),
       new InstantCommand(() -> drivebaseSubsystem.setFieldOrientedDriveEnabled(fieldOrientedBase)));
 }
