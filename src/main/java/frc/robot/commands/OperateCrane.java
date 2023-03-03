@@ -20,6 +20,9 @@ public class OperateCrane extends CommandBase {
   private BooleanSupplier shoulderDown;
   private double speedMultiplier = Constants.CraneConstants.DEFAULT_SPEED_MULTIPLIER;
 
+  private CraneDown craneDown;
+  private CraneUp craneUp;
+
   private SlewRateLimiter elbowRateLimiter = new SlewRateLimiter(Constants.CraneConstants.DEFAULT_RATE_LIMIT);
 
   public OperateCrane(CraneSubsystem craneSubsystem, DoubleSupplier elbowJoystick, BooleanSupplier shoulderUp,
@@ -28,6 +31,9 @@ public class OperateCrane extends CommandBase {
     this.elbowJoystick = elbowJoystick;
     this.shoulderUp = shoulderUp;
     this.shoulderDown = shoulderDown;
+
+    craneDown = new CraneDown(craneSubsystem);
+    craneUp = new CraneUp(craneSubsystem);
 
     addRequirements(craneSubsystem);
   }
@@ -38,27 +44,19 @@ public class OperateCrane extends CommandBase {
     if (Math.abs(elbowJoystick.getAsDouble()) > Constants.CraneConstants.ELBOW_DEADZONE) {
       double newAngle = craneSubsystem.getAngleSetPoint() + elbowJoystick.getAsDouble() * speedMultiplier * -1;
       craneSubsystem.setAngle(elbowRateLimiter.calculate(newAngle));
-      if (craneSubsystem.getAngleSetPoint() == Constants.CraneConstants.DEFAULT_MINIMUM_ANGLE
+      if (craneSubsystem.getAngleSetPoint() == Constants.CraneConstants.DEFAULT_MINIMUM_ANGLE_LOW
           || craneSubsystem.getAngleSetPoint() == craneSubsystem.getMaxAngle()) {
       }
     }
 
     craneSubsystem.DriveElbow();
 
-    if (shoulderUp.getAsBoolean()) {
-      craneSubsystem.ShoulderUp();
-      if (craneSubsystem.getAngleSetPoint() < Constants.CraneConstants.AUTO_HIGH_ANGLE) {
-        craneSubsystem.setAngle(Constants.CraneConstants.AUTO_HIGH_ANGLE);
-      }
-      craneSubsystem.setMinAngle(Constants.CraneConstants.AUTO_HIGH_ANGLE);
+    if (shoulderUp.getAsBoolean() && !craneSubsystem.isArmUp) {
+      craneUp.schedule();
     }
 
-    if (shoulderDown.getAsBoolean()) {
-      if (craneSubsystem.getAngleSetPoint() > Constants.CraneConstants.AUTO_LOW_ANGLE) {
-        craneSubsystem.setAngle(Constants.CraneConstants.AUTO_LOW_ANGLE);
-      }
-      craneSubsystem.setMinAngle(Constants.CraneConstants.DEFAULT_MINIMUM_ANGLE);
-      craneSubsystem.ShoulderDown();
+    if (shoulderDown.getAsBoolean() && craneSubsystem.isArmUp) {
+      craneDown.schedule();
     }
   }
 

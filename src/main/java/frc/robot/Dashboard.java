@@ -67,7 +67,7 @@ public class Dashboard extends SubsystemBase {
                                 .withProperties(Map.of("min", 0, "max", 360))
                                 .getEntry();
 
-                armMinimumAngle = craneTuningLayout.add("Min Angle", Constants.CraneConstants.DEFAULT_MINIMUM_ANGLE)
+                armMinimumAngle = craneTuningLayout.add("Min Angle", Constants.CraneConstants.DEFAULT_MINIMUM_ANGLE_LOW)
                                 .withWidget(BuiltInWidgets.kNumberSlider)
                                 .withProperties(Map.of("min", 0, "max", 360))
                                 .getEntry();

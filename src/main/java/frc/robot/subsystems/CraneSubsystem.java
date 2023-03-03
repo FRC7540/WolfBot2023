@@ -36,10 +36,10 @@ public class CraneSubsystem extends SubsystemBase {
 
   public PIDController elbowPidController = new PIDController(0.015, 0, 0);
   private double elbowAngleSetPoint = 0d;
-  private double minAngle = Constants.CraneConstants.DEFAULT_MINIMUM_ANGLE;
+  private double minAngle = Constants.CraneConstants.DEFAULT_MINIMUM_ANGLE_LOW;
   private double maxAngleHigh = Constants.CraneConstants.DEFAULT_MAXIMUM_ANGLE_HIGH;
   private double maxAngleLow = Constants.CraneConstants.DEFAULT_MAXIMUM_ANGLE_LOW;
-  private boolean isArmUp = false;
+  public boolean isArmUp = false;
 
   private DutyCycleEncoder absoluteEncoder = new DutyCycleEncoder(Constants.CraneConstants.ENCODER_PIN_1);
 
@@ -67,14 +67,12 @@ public class CraneSubsystem extends SubsystemBase {
 
   public void ShoulderUp() {
     isArmUp = true;
-    setAngle(getAngleSetPoint());
     craneSolenoids.set(Value.kForward);
   }
 
   public void ShoulderDown() {
     isArmUp = false;
     craneSolenoids.set(Value.kReverse);
-    setAngle(getAngleSetPoint());
   }
 
   public void DriveElbow() {
