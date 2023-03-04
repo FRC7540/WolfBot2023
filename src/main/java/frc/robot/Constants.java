@@ -21,7 +21,7 @@ public final class Constants {
     public static final int DRIVER_XBOX_CONTROLLER_PORT = 0;
     public static final int OPERATOR_XBOX_CONTROLLER_PORT = 1;
 
-    public static final double DEFAULT_DEBOUNCE_DELAY = 0.2;
+    public static final double DEFAULT_DEBOUNCE_DELAY = 0.1;
   }
 
   public static class DrivebaseConstants {

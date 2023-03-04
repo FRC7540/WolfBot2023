@@ -83,8 +83,7 @@ public class RobotContainer {
     clawSubsystem.setDefaultCommand(new InstantCommand(() -> clawSubsystem.stopClaw(), clawSubsystem));
 
     // Crane default command
-    operateCrane = new OperateCrane(craneSubsystem, operatorXboxController::getLeftY, operatorXboxController.y(),
-        operatorXboxController.x());
+    operateCrane = new OperateCrane(craneSubsystem, operatorXboxController::getLeftY);
     craneSubsystem.setDefaultCommand(operateCrane);
   }
 
@@ -106,6 +105,8 @@ public class RobotContainer {
     // Operator Controller Bindings
     operatorXboxController.a().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY).whileTrue(new ActuateClaw(clawSubsystem, Direction.BACKWARD));
     operatorXboxController.b().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY).whileTrue(new ActuateClaw(clawSubsystem, Direction.FORWARD));
+    operatorXboxController.x().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY).onTrue(new InstantCommand(() -> operateCrane.craneDown()));
+    operatorXboxController.y().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY).onTrue(new InstantCommand(() -> operateCrane.craneUp()));
 
     // Driver controller Bindings
     driverXboxController.x().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY).onTrue(new SetVisionPipeline(cameraSubsystem, Pipeline.APRIL_TAG));

@@ -8,7 +8,6 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
 import frc.robot.subsystems.CraneSubsystem;
 
@@ -16,8 +15,6 @@ public class OperateCrane extends CommandBase {
 
   private CraneSubsystem craneSubsystem;
   private DoubleSupplier elbowJoystick;
-  private Trigger shoulderUp;
-  private Trigger shoulderDown;
   private double speedMultiplier = Constants.CraneConstants.DEFAULT_SPEED_MULTIPLIER;
 
   private CraneDown craneDown;
@@ -25,12 +22,9 @@ public class OperateCrane extends CommandBase {
 
   private SlewRateLimiter elbowRateLimiter = new SlewRateLimiter(Constants.CraneConstants.DEFAULT_RATE_LIMIT);
 
-  public OperateCrane(CraneSubsystem craneSubsystem, DoubleSupplier elbowJoystick, Trigger shoulderUp,
-      Trigger shoulderDown) {
+  public OperateCrane(CraneSubsystem craneSubsystem, DoubleSupplier elbowJoystick) {
     this.craneSubsystem = craneSubsystem;
     this.elbowJoystick = elbowJoystick;
-    this.shoulderUp = shoulderUp;
-    this.shoulderDown = shoulderDown;
 
     craneDown = new CraneDown(craneSubsystem);
     craneUp = new CraneUp(craneSubsystem);
@@ -50,15 +44,19 @@ public class OperateCrane extends CommandBase {
     }
 
     craneSubsystem.DriveElbow();
+  }
 
-    if (shoulderUp.debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY).getAsBoolean() && !craneSubsystem.isArmUp) {
+  public void craneUp() {
+    if (!craneSubsystem.isArmUp) {
       craneUp.schedule();
     }
+  }
 
-    if (shoulderDown.debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY).getAsBoolean() && craneSubsystem.isArmUp) {
+  public void craneDown() {
+    if (craneSubsystem.isArmUp) {
       craneDown.schedule();
     }
-  }
+  } 
 
   public void setRateLimit(double rateLimit) {
     elbowRateLimiter = new SlewRateLimiter(rateLimit);
