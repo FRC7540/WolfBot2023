@@ -76,7 +76,7 @@ public final class Constants {
     public static final double DEFAULT_MAXIMUM_ANGLE_LOW = 110.0;
     public static final double DEFAULT_ANGLE_OFFSET = 220.0;
     public static final double DEFAULT_RATE_LIMIT = 80;
-    public static final double AUTO_HIGH_ANGLE = 170;
+    public static final double AUTO_HIGH_ANGLE = 200;
     public static final double AUTO_LOW_ANGLE = 100;
     
     public static final double DEFAULT_SPEED_MULTIPLIER = 2;

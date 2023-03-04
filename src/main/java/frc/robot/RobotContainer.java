@@ -181,5 +181,8 @@ public class RobotContainer {
 
       // Post-Autonomous override cancelling
       new InstantCommand(() -> reconfigureDefaultCommands(false)),
-      new InstantCommand(() -> drivebaseSubsystem.setFieldOrientedDriveEnabled(fieldOrientedBase)));
+      new InstantCommand(() -> drivebaseSubsystem.setFieldOrientedDriveEnabled(fieldOrientedBase)),
+
+      // Reset Yaw
+      new InstantCommand(() -> drivebaseSubsystem.resetYaw()));
 }
