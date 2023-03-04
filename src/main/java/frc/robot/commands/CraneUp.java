@@ -16,7 +16,7 @@ public class CraneUp extends SequentialCommandGroup {
   /** Creates a new CraneUp. */
   public CraneUp(CraneSubsystem craneSubsystem) {
     addCommands(new InstantCommand(() -> craneSubsystem.setAngle(Constants.CraneConstants.AUTO_HIGH_ANGLE)),
-                new InstantCommand(() -> craneSubsystem.setMinAngle(Constants.CraneConstants.DEFAULT_MAXIMUM_ANGLE_HIGH)),
+                new InstantCommand(() -> craneSubsystem.setMinAngle(Constants.CraneConstants.DEFAULT_MINIMUM_ANGLE_HIGH)),
                 new InstantCommand(() -> craneSubsystem.ShoulderUp()));
   }
 }
