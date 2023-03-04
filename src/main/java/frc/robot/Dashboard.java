@@ -67,7 +67,7 @@ public class Dashboard extends SubsystemBase {
                                 .withProperties(Map.of("min", 0, "max", 360))
                                 .getEntry();
 
-                armMinimumAngle = craneTuningLayout.add("Min Angle", Constants.CraneConstants.DEFAULT_MINIMUM_ANGLE)
+                armMinimumAngle = craneTuningLayout.add("Min Angle", Constants.CraneConstants.DEFAULT_MINIMUM_ANGLE_LOW)
                                 .withWidget(BuiltInWidgets.kNumberSlider)
                                 .withProperties(Map.of("min", 0, "max", 360))
                                 .getEntry();
@@ -142,7 +142,7 @@ public class Dashboard extends SubsystemBase {
                                 .withWidget(BuiltInWidgets.kMecanumDrive);
 
                 fieldOrientationEntry = Shuffleboard.getTab(Constants.ShuffleboardConstants.GAME_TAB_NAME)
-                                .add("Field Oriented Drive", false)
+                                .add("Field Oriented Drive", true)
                                 .withWidget(BuiltInWidgets.kToggleSwitch)
                                 .withSize(2, 1)
                                 .withPosition(16, 6)

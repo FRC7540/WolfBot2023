@@ -24,6 +24,7 @@ import java.util.EnumSet;
 
 import edu.wpi.first.networktables.NetworkTableEvent;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -47,6 +48,9 @@ public class RobotContainer {
   private final ClawSubsystem clawSubsystem = new ClawSubsystem();
   private final CraneSubsystem craneSubsystem = new CraneSubsystem();
   private final Dashboard dashboard = new Dashboard(drivebaseSubsystem);
+
+  private boolean autonomous;
+  private boolean fieldOrientedBase;
 
   // Controller Setup
   private final CommandXboxController driverXboxController = new CommandXboxController(
@@ -72,7 +76,7 @@ public class RobotContainer {
     // Drivebase default command
     Trigger leftBumper = driverXboxController.leftBumper();
     drive = new Drive(drivebaseSubsystem, driverXboxController::getLeftX,
-        driverXboxController::getLeftY, driverXboxController::getRightX, leftBumper::getAsBoolean);
+        driverXboxController::getLeftY, driverXboxController::getRightX, leftBumper::getAsBoolean, autonomous);
     drivebaseSubsystem.setDefaultCommand(drive);
 
     // Claw default command
@@ -150,6 +154,11 @@ public class RobotContainer {
         (e) -> operateCrane.setSpeedMultiplier(e.valueData.value.getDouble()));
   }
 
+  private void reconfigureDefaultCommands(boolean autonomous) {
+    this.autonomous = autonomous;
+    configureDefaultCommands();
+  }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
@@ -160,6 +169,20 @@ public class RobotContainer {
   }
 
   public Command autonomousCommand = new SequentialCommandGroup(
+      // Preliminary required override setup
+      new InstantCommand(() -> reconfigureDefaultCommands(true)),
+      new ConditionalCommand(new InstantCommand(() -> fieldOrientedBase = true),
+          new InstantCommand(() -> fieldOrientedBase = false), drivebaseSubsystem::isFieldOrientedDriveEnabled),
+      new InstantCommand(() -> drivebaseSubsystem.setFieldOrientedDriveEnabled(false)),
+
+      // Autonomous Code
       new RunCommand(() -> drivebaseSubsystem.Drive(0, 0.3, 0)).withTimeout(1),
-      new RunCommand(() -> drivebaseSubsystem.Drive(0, -0.6, 0)).withTimeout(3));
+      new RunCommand(() -> drivebaseSubsystem.Drive(0, -0.3, 0)).withTimeout(4),
+
+      // Post-Autonomous override cancelling
+      new InstantCommand(() -> reconfigureDefaultCommands(false)),
+      new InstantCommand(() -> drivebaseSubsystem.setFieldOrientedDriveEnabled(fieldOrientedBase)),
+
+      // Reset Yaw
+      new InstantCommand(() -> drivebaseSubsystem.resetYaw()));
 }

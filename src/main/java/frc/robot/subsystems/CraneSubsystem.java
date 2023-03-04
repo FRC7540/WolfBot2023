@@ -34,12 +34,12 @@ public class CraneSubsystem extends SubsystemBase {
       PneumaticsModuleType.CTREPCM, Constants.PneumaticsConstants.CRANE_SOLENOID_EXTEND,
       Constants.PneumaticsConstants.CRANE_SOLENOID_RETRACT);
 
-  public PIDController elbowPidController = new PIDController(0.015, 0, 0);
+  public PIDController elbowPidController = new PIDController(0.012, 0, 0.0001);
   private double elbowAngleSetPoint = 0d;
-  private double minAngle = Constants.CraneConstants.DEFAULT_MINIMUM_ANGLE;
+  private double minAngle = Constants.CraneConstants.DEFAULT_MINIMUM_ANGLE_LOW;
   private double maxAngleHigh = Constants.CraneConstants.DEFAULT_MAXIMUM_ANGLE_HIGH;
   private double maxAngleLow = Constants.CraneConstants.DEFAULT_MAXIMUM_ANGLE_LOW;
-  private boolean isArmUp = false;
+  public boolean isArmUp = false;
 
   private DutyCycleEncoder absoluteEncoder = new DutyCycleEncoder(Constants.CraneConstants.ENCODER_PIN_1);
 
@@ -67,13 +67,11 @@ public class CraneSubsystem extends SubsystemBase {
 
   public void ShoulderUp() {
     isArmUp = true;
-    setAngle(getAngleSetPoint());
     craneSolenoids.set(Value.kForward);
   }
 
   public void ShoulderDown() {
     isArmUp = false;
-    setAngle(getAngleSetPoint());
     craneSolenoids.set(Value.kReverse);
   }
 
