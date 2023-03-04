@@ -103,10 +103,9 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Operator Controller Bindings
-    operatorXboxController.a().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY).whileTrue(new ActuateClaw(clawSubsystem, Direction.BACKWARD));
-    operatorXboxController.b().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY).whileTrue(new ActuateClaw(clawSubsystem, Direction.FORWARD));
-    operatorXboxController.x().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY).onTrue(new InstantCommand(() -> operateCrane.craneDown()));
-    operatorXboxController.y().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY).onTrue(new InstantCommand(() -> operateCrane.craneUp()));
+    operatorXboxController.a().whileTrue(new ActuateClaw(clawSubsystem, Direction.BACKWARD));
+    operatorXboxController.b().whileTrue(new ActuateClaw(clawSubsystem, Direction.FORWARD));
+    operatorXboxController.start().onTrue(new InstantCommand(() -> operateCrane.recallPreset(Dashboard.presetChooser.getSelected())));
 
     // Driver controller Bindings
     driverXboxController.x().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY).onTrue(new SetVisionPipeline(cameraSubsystem, Pipeline.APRIL_TAG));

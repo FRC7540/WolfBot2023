@@ -9,6 +9,7 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.Constants.CraneConstants.Presets;
 import frc.robot.subsystems.CraneSubsystem;
 
 public class OperateCrane extends CommandBase {
@@ -22,7 +23,17 @@ public class OperateCrane extends CommandBase {
 
   private SlewRateLimiter elbowRateLimiter = new SlewRateLimiter(Constants.CraneConstants.DEFAULT_RATE_LIMIT);
 
-  public OperateCrane(CraneSubsystem craneSubsystem, DoubleSupplier elbowJoystick) {
+  public enum armPreset {
+    HOME,
+    FLOOR_PICKUP,
+    SLIDE_PICKUP,
+    UPPER_NODE,
+    LOWER_NODE,
+    HYBRID_NODE
+  }
+
+  public OperateCrane(CraneSubsystem craneSubsystem, DoubleSupplier elbowJoystick, BooleanSupplier shoulderUp,
+      BooleanSupplier shoulderDown) {
     this.craneSubsystem = craneSubsystem;
     this.elbowJoystick = elbowJoystick;
 
@@ -64,6 +75,37 @@ public class OperateCrane extends CommandBase {
 
   public void setSpeedMultiplier(double speedMultiplier) {
     this.speedMultiplier = speedMultiplier;
+  }
+
+  public void recallPreset(Enum<armPreset> preset) {
+    boolean shoulder = false;
+    double elbow = 0;
+    if (preset == armPreset.HOME) {
+      shoulder = Presets.HOME_SHOULDER;
+      elbow = Presets.HOME_ELBOW;
+    } else if (preset == armPreset.FLOOR_PICKUP) {
+      shoulder = Presets.FLOOR_SHOULDER;
+      elbow = Presets.FLOOR_ELBOW;
+    } else if (preset == armPreset.SLIDE_PICKUP) {
+      shoulder = Presets.SLIDE_SHOULDER;
+      elbow = Presets.SLIDE_ELBOW;
+    } else if (preset == armPreset.UPPER_NODE) {
+      shoulder = Presets.UPPER_SHOULDER;
+      elbow = Presets.UPPER_ELBOW;
+    } else if (preset == armPreset.LOWER_NODE) {
+      shoulder = Presets.LOWER_SHOULDER;
+      elbow = Presets.LOWER_ELBOW;
+    } else if (preset == armPreset.HYBRID_NODE) {
+      shoulder = Presets.HYBRID_SHOULDER;
+      elbow = Presets.HYBRID_ELBOW;
+    }
+
+    if (shoulder)
+      craneUp.schedule();
+    else
+      craneDown.schedule();
+
+    craneSubsystem.setAngle(elbow);
   }
 
   // Returns true when the command should end.

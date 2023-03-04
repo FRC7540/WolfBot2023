@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.configuration.PresetChooser;
 import frc.robot.subsystems.DrivebaseSubsystem;
 
 public class Dashboard extends SubsystemBase {
@@ -44,6 +45,8 @@ public class Dashboard extends SubsystemBase {
         public static GenericEntry pressureReadout;
         public static NetworkTableEntry gyroSelectEntry = table.getEntry("Tuning/Gyro Selection/active");
         private DrivebaseSubsystem drivebaseSubsystem;
+
+        public static PresetChooser presetChooser = new PresetChooser();
 
         private ShuffleboardLayout driveTuningLayout;
         private ShuffleboardLayout telemetryLayout;
@@ -195,5 +198,8 @@ public class Dashboard extends SubsystemBase {
                                 .withWidget(BuiltInWidgets.kCameraStream)
                                 .withSize(6, 6)
                                 .withPosition(6, 0);
+
+                Shuffleboard.getTab(Constants.ShuffleboardConstants.GAME_TAB_NAME).add("Arm Preset", presetChooser)
+                                .withSize(3, 1).withPosition(0, 6);
         }
 }
