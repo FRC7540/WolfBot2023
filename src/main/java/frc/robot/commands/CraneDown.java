@@ -16,11 +16,9 @@ import frc.robot.subsystems.CraneSubsystem;
 public class CraneDown extends SequentialCommandGroup {
   /** Creates a new CraneDown. */
   public CraneDown(CraneSubsystem craneSubsystem) {
-    addCommands(new InstantCommand(() -> System.out.println("Crane Going Down!")),
                 new InstantCommand(() -> craneSubsystem.setMinAngle(Constants.CraneConstants.DEFAULT_MINIMUM_ANGLE_LOW)),
                 new InstantCommand(() -> craneSubsystem.ShoulderDown()),
                 new WaitCommand(0.25),
                 new InstantCommand(() -> craneSubsystem.setAngle(Constants.CraneConstants.AUTO_LOW_ANGLE)),
-                new InstantCommand(() -> System.out.println("Crane Down.")));
   }
 }
