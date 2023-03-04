@@ -104,15 +104,15 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Operator Controller Bindings
-    operatorXboxController.a().whileTrue(new ActuateClaw(clawSubsystem, Direction.BACKWARD));
-    operatorXboxController.b().whileTrue(new ActuateClaw(clawSubsystem, Direction.FORWARD));
+    operatorXboxController.a().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY).whileTrue(new ActuateClaw(clawSubsystem, Direction.BACKWARD));
+    operatorXboxController.b().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY).whileTrue(new ActuateClaw(clawSubsystem, Direction.FORWARD));
 
     // Driver controller Bindings
-    driverXboxController.x().onTrue(new SetVisionPipeline(cameraSubsystem, Pipeline.APRIL_TAG));
-    driverXboxController.y().onTrue(new SetVisionPipeline(cameraSubsystem, Pipeline.RETRO_TAPE));
-    driverXboxController.rightBumper().whileTrue(new AutoAlign(drivebaseSubsystem, cameraSubsystem));
-    driverXboxController.start().onTrue(new InstantCommand(() -> drivebaseSubsystem.resetYaw(), drivebaseSubsystem));
-    driverXboxController.a().whileTrue(new AutoBalance(drivebaseSubsystem));
+    driverXboxController.x().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY).onTrue(new SetVisionPipeline(cameraSubsystem, Pipeline.APRIL_TAG));
+    driverXboxController.y().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY).onTrue(new SetVisionPipeline(cameraSubsystem, Pipeline.RETRO_TAPE));
+    driverXboxController.rightBumper().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY).whileTrue(new AutoAlign(drivebaseSubsystem, cameraSubsystem));
+    driverXboxController.start().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY).onTrue(new InstantCommand(() -> drivebaseSubsystem.resetYaw(), drivebaseSubsystem));
+    driverXboxController.a().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY).whileTrue(new AutoBalance(drivebaseSubsystem));
   }
 
   private void networkTableListenerSetup() {

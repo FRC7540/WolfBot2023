@@ -4,11 +4,11 @@
 
 package frc.robot.commands;
 
-import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
 import frc.robot.subsystems.CraneSubsystem;
 
@@ -16,8 +16,8 @@ public class OperateCrane extends CommandBase {
 
   private CraneSubsystem craneSubsystem;
   private DoubleSupplier elbowJoystick;
-  private BooleanSupplier shoulderUp;
-  private BooleanSupplier shoulderDown;
+  private Trigger shoulderUp;
+  private Trigger shoulderDown;
   private double speedMultiplier = Constants.CraneConstants.DEFAULT_SPEED_MULTIPLIER;
 
   private CraneDown craneDown;
@@ -25,8 +25,8 @@ public class OperateCrane extends CommandBase {
 
   private SlewRateLimiter elbowRateLimiter = new SlewRateLimiter(Constants.CraneConstants.DEFAULT_RATE_LIMIT);
 
-  public OperateCrane(CraneSubsystem craneSubsystem, DoubleSupplier elbowJoystick, BooleanSupplier shoulderUp,
-      BooleanSupplier shoulderDown) {
+  public OperateCrane(CraneSubsystem craneSubsystem, DoubleSupplier elbowJoystick, Trigger shoulderUp,
+      Trigger shoulderDown) {
     this.craneSubsystem = craneSubsystem;
     this.elbowJoystick = elbowJoystick;
     this.shoulderUp = shoulderUp;
@@ -51,11 +51,11 @@ public class OperateCrane extends CommandBase {
 
     craneSubsystem.DriveElbow();
 
-    if (shoulderUp.getAsBoolean() && !craneSubsystem.isArmUp) {
+    if (shoulderUp.debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY).getAsBoolean() && !craneSubsystem.isArmUp) {
       craneUp.schedule();
     }
 
-    if (shoulderDown.getAsBoolean() && craneSubsystem.isArmUp) {
+    if (shoulderDown.debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY).getAsBoolean() && craneSubsystem.isArmUp) {
       craneDown.schedule();
     }
   }
