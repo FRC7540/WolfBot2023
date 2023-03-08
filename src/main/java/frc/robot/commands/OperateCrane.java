@@ -102,12 +102,7 @@ public class OperateCrane extends CommandBase {
       elbow = Dashboard.lowerElbowEntry.get().getDouble();
     }
 
-    if (shoulder)
-      craneSubsystem.ShoulderUp();
-    else
-      craneSubsystem.ShoulderDown();
-
-    craneSubsystem.setAngle(elbow);
+    new SetArmPreset(craneSubsystem, shoulder, elbow).schedule();
   }
 
   // Returns true when the command should end.
