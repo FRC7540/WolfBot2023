@@ -105,21 +105,21 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Operator Controller Bindings
-    operatorXboxController.rightTrigger().whileTrue(new ActuateClaw(clawSubsystem, Direction.BACKWARD));
-    operatorXboxController.leftTrigger().whileTrue(new ActuateClaw(clawSubsystem, Direction.FORWARD));
-    operatorXboxController.x()
+    operatorXboxController.rightTrigger().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY).whileTrue(new ActuateClaw(clawSubsystem, Direction.BACKWARD));
+    operatorXboxController.leftTrigger().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY).whileTrue(new ActuateClaw(clawSubsystem, Direction.FORWARD));
+    operatorXboxController.x().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
         .onTrue(new InstantCommand(() -> operateCrane.recallPreset(armPreset.HOME), craneSubsystem));
-    operatorXboxController.a()
+    operatorXboxController.a().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
         .onTrue(new InstantCommand(
             () -> operateCrane.recallPreset(
                 operatorXboxController.leftBumper().getAsBoolean() ? armPreset.LOWER_NODE : armPreset.FLOOR_PICKUP),
             craneSubsystem));
-    operatorXboxController.b()
+    operatorXboxController.b().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
         .onTrue(new InstantCommand(
             () -> operateCrane
                 .recallPreset(operatorXboxController.leftBumper().getAsBoolean() ? armPreset.MID_NODE : armPreset.DO_NOTHING),
             craneSubsystem));
-    operatorXboxController.y()
+    operatorXboxController.y().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
         .onTrue(new InstantCommand(
             () -> operateCrane.recallPreset(
                 operatorXboxController.leftBumper().getAsBoolean() ? armPreset.UPPER_NODE : armPreset.SHELF_PICKUP),
