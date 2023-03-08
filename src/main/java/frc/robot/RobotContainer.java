@@ -9,6 +9,7 @@ import frc.robot.commands.ActuateClaw;
 import frc.robot.commands.AutoAlign;
 import frc.robot.commands.AutoBalance;
 import frc.robot.commands.ActuateClaw.Direction;
+import frc.robot.commands.OperateCrane.armPreset;
 import frc.robot.commands.Drive;
 import frc.robot.commands.OperateCrane;
 import frc.robot.commands.SetCompressor;
@@ -83,7 +84,8 @@ public class RobotContainer {
     clawSubsystem.setDefaultCommand(new InstantCommand(() -> clawSubsystem.stopClaw(), clawSubsystem));
 
     // Crane default command
-    operateCrane = new OperateCrane(craneSubsystem, operatorXboxController::getLeftY);
+    operateCrane = new OperateCrane(craneSubsystem, operatorXboxController::getLeftY, operatorXboxController.povUp(),
+        operatorXboxController.povDown());
     craneSubsystem.setDefaultCommand(operateCrane);
   }
 
@@ -103,9 +105,25 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Operator Controller Bindings
-    operatorXboxController.a().whileTrue(new ActuateClaw(clawSubsystem, Direction.BACKWARD));
-    operatorXboxController.b().whileTrue(new ActuateClaw(clawSubsystem, Direction.FORWARD));
-    operatorXboxController.start().onTrue(new InstantCommand(() -> operateCrane.recallPreset(Dashboard.presetChooser.getSelected())));
+    operatorXboxController.rightTrigger().whileTrue(new ActuateClaw(clawSubsystem, Direction.BACKWARD));
+    operatorXboxController.leftTrigger().whileTrue(new ActuateClaw(clawSubsystem, Direction.FORWARD));
+    operatorXboxController.x()
+        .onTrue(new InstantCommand(() -> operateCrane.recallPreset(armPreset.HOME), craneSubsystem));
+    operatorXboxController.a()
+        .onTrue(new InstantCommand(
+            () -> operateCrane.recallPreset(
+                operatorXboxController.leftBumper().getAsBoolean() ? armPreset.LOWER_NODE : armPreset.FLOOR_PICKUP),
+            craneSubsystem));
+    operatorXboxController.b()
+        .onTrue(new InstantCommand(
+            () -> operateCrane
+                .recallPreset(operatorXboxController.leftBumper().getAsBoolean() ? armPreset.MID_NODE : armPreset.DO_NOTHING),
+            craneSubsystem));
+    operatorXboxController.y()
+        .onTrue(new InstantCommand(
+            () -> operateCrane.recallPreset(
+                operatorXboxController.leftBumper().getAsBoolean() ? armPreset.UPPER_NODE : armPreset.SHELF_PICKUP),
+            craneSubsystem));
 
     // Driver controller Bindings
     driverXboxController.x().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY).onTrue(new SetVisionPipeline(cameraSubsystem, Pipeline.APRIL_TAG));

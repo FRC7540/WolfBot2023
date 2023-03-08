@@ -13,9 +13,9 @@ public class PresetChooser extends SendableChooser<Enum<armPreset>>{
         super();
         setDefaultOption("Home", OperateCrane.armPreset.HOME);
         addOption("Floor Pickup", OperateCrane.armPreset.FLOOR_PICKUP);
-        addOption("Slide Pickup", OperateCrane.armPreset.SLIDE_PICKUP);
+        addOption("Slide Pickup", OperateCrane.armPreset.SHELF_PICKUP);
         addOption("Upper Node", OperateCrane.armPreset.UPPER_NODE);
-        addOption("Lower Node", OperateCrane.armPreset.LOWER_NODE);
-        addOption("Hybrid Node", OperateCrane.armPreset.HYBRID_NODE);
+        addOption("Lower Node", OperateCrane.armPreset.MID_NODE);
+        addOption("Hybrid Node", OperateCrane.armPreset.LOWER_NODE);
     }
 }

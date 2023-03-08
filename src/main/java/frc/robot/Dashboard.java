@@ -46,6 +46,14 @@ public class Dashboard extends SubsystemBase {
         public static NetworkTableEntry gyroSelectEntry = table.getEntry("Tuning/Gyro Selection/active");
         private DrivebaseSubsystem drivebaseSubsystem;
 
+        private ShuffleboardLayout presetLayout;
+        public static GenericEntry homeElbowEntry;
+        public static GenericEntry floorElbowEntry;
+        public static GenericEntry shelfElbowEntry;
+        public static GenericEntry lowerElbowEntry;
+        public static GenericEntry midElbowEntry;
+        public static GenericEntry upperElbowEntry;
+
         public static PresetChooser presetChooser = new PresetChooser();
 
         private ShuffleboardLayout driveTuningLayout;
@@ -199,7 +207,51 @@ public class Dashboard extends SubsystemBase {
                                 .withSize(6, 6)
                                 .withPosition(6, 0);
 
-                Shuffleboard.getTab(Constants.ShuffleboardConstants.GAME_TAB_NAME).add("Arm Preset", presetChooser)
-                                .withSize(3, 1).withPosition(0, 6);
+                presetLayout = Shuffleboard.getTab(Constants.ShuffleboardConstants.PRESET_TAB_NAME)
+                                .getLayout("Presets", BuiltInLayouts.kList)
+                                .withSize(3, 8);
+
+                homeElbowEntry = presetLayout
+                                .add("Home", Constants.CraneConstants.Presets.HOME_ELBOW)
+                                .withWidget(BuiltInWidgets.kNumberSlider)
+                                .withProperties(Map.of("min", Constants.CraneConstants.Presets.HOME_ELBOW - 20, "max",
+                                                Constants.CraneConstants.Presets.HOME_ELBOW + 20))
+                                .getEntry();
+
+                floorElbowEntry = presetLayout
+                                .add("Floor", Constants.CraneConstants.Presets.FLOOR_ELBOW)
+                                .withWidget(BuiltInWidgets.kNumberSlider)
+                                .withProperties(Map.of("min", Constants.CraneConstants.Presets.FLOOR_ELBOW - 20, "max",
+                                                Constants.CraneConstants.Presets.FLOOR_ELBOW + 20))
+                                .getEntry();
+
+                shelfElbowEntry = presetLayout
+                                .add("Shelf", Constants.CraneConstants.Presets.SHELF_ELBOW)
+                                .withWidget(BuiltInWidgets.kNumberSlider)
+                                .withProperties(Map.of("min", Constants.CraneConstants.Presets.SHELF_ELBOW - 20, "max",
+                                                Constants.CraneConstants.Presets.SHELF_ELBOW + 20))
+                                .getEntry();
+
+                lowerElbowEntry = presetLayout
+                                .add("Lower", Constants.CraneConstants.Presets.LOWER_ELBOW)
+                                .withWidget(BuiltInWidgets.kNumberSlider)
+                                .withProperties(Map.of("min", Constants.CraneConstants.Presets.LOWER_ELBOW - 20, "max",
+                                                Constants.CraneConstants.Presets.LOWER_ELBOW + 20))
+                                .getEntry();
+
+                midElbowEntry = presetLayout
+                                .add("Mid", Constants.CraneConstants.Presets.MID_ELBOW)
+                                .withWidget(BuiltInWidgets.kNumberSlider)
+                                .withProperties(Map.of("min", Constants.CraneConstants.Presets.MID_ELBOW - 20, "max",
+                                                Constants.CraneConstants.Presets.MID_ELBOW + 20))
+                                .getEntry();
+
+                upperElbowEntry = presetLayout
+                                .add("Upper", Constants.CraneConstants.Presets.UPPER_ELBOW)
+                                .withWidget(BuiltInWidgets.kNumberSlider)
+                                .withProperties(Map.of("min", Constants.CraneConstants.Presets.UPPER_ELBOW - 20, "max",
+                                                Constants.CraneConstants.Presets.UPPER_ELBOW + 20))
+                                .getEntry();
+
         }
 }

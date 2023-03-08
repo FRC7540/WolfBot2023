@@ -10,6 +10,7 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.Constants.CraneConstants.Presets;
+import frc.robot.Dashboard;
 import frc.robot.subsystems.CraneSubsystem;
 
 public class OperateCrane extends CommandBase {
@@ -26,10 +27,11 @@ public class OperateCrane extends CommandBase {
   public enum armPreset {
     HOME,
     FLOOR_PICKUP,
-    SLIDE_PICKUP,
+    SHELF_PICKUP,
     UPPER_NODE,
+    MID_NODE,
     LOWER_NODE,
-    HYBRID_NODE
+    DO_NOTHING
   }
 
   public OperateCrane(CraneSubsystem craneSubsystem, DoubleSupplier elbowJoystick, BooleanSupplier shoulderUp,
@@ -78,32 +80,32 @@ public class OperateCrane extends CommandBase {
   }
 
   public void recallPreset(Enum<armPreset> preset) {
-    boolean shoulder = false;
-    double elbow = 0;
+    boolean shoulder = craneSubsystem.isArmUp;
+    double elbow = craneSubsystem.getAngleSetPoint();
     if (preset == armPreset.HOME) {
       shoulder = Presets.HOME_SHOULDER;
-      elbow = Presets.HOME_ELBOW;
+      elbow = Dashboard.homeElbowEntry.get().getDouble();
     } else if (preset == armPreset.FLOOR_PICKUP) {
       shoulder = Presets.FLOOR_SHOULDER;
-      elbow = Presets.FLOOR_ELBOW;
-    } else if (preset == armPreset.SLIDE_PICKUP) {
-      shoulder = Presets.SLIDE_SHOULDER;
-      elbow = Presets.SLIDE_ELBOW;
+      elbow = Dashboard.floorElbowEntry.get().getDouble();
+    } else if (preset == armPreset.SHELF_PICKUP) {
+      shoulder = Presets.SHELF_SHOULDER;
+      elbow = Dashboard.shelfElbowEntry.get().getDouble();
     } else if (preset == armPreset.UPPER_NODE) {
       shoulder = Presets.UPPER_SHOULDER;
-      elbow = Presets.UPPER_ELBOW;
+      elbow = Dashboard.upperElbowEntry.get().getDouble();
+    } else if (preset == armPreset.MID_NODE) {
+      shoulder = Presets.MID_SHOULDER;
+      elbow = Dashboard.midElbowEntry.get().getDouble();
     } else if (preset == armPreset.LOWER_NODE) {
       shoulder = Presets.LOWER_SHOULDER;
-      elbow = Presets.LOWER_ELBOW;
-    } else if (preset == armPreset.HYBRID_NODE) {
-      shoulder = Presets.HYBRID_SHOULDER;
-      elbow = Presets.HYBRID_ELBOW;
+      elbow = Dashboard.lowerElbowEntry.get().getDouble();
     }
 
     if (shoulder)
-      craneUp.schedule();
+      craneSubsystem.ShoulderUp();
     else
-      craneDown.schedule();
+      craneSubsystem.ShoulderDown();
 
     craneSubsystem.setAngle(elbow);
   }
