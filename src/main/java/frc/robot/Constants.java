@@ -42,6 +42,7 @@ public final class Constants {
   public static class ShuffleboardConstants {
     public static final String GAME_TAB_NAME = "Game";
     public static final String TUNING_TAB_NAME = "Tuning";
+    public static final String PRESET_TAB_NAME = "Presets";
   }
 
   public static class CameraConstants {
@@ -80,7 +81,33 @@ public final class Constants {
     public static final double DEFAULT_RATE_LIMIT = 80;
     public static final double AUTO_HIGH_ANGLE = 200;
     public static final double AUTO_LOW_ANGLE = 100;
-    
+
     public static final double DEFAULT_SPEED_MULTIPLIER = 2;
+
+    public static class Presets {
+      // Home Preset
+      public static final boolean HOME_SHOULDER = false;
+      public static final double HOME_ELBOW = 15;
+
+      // Floor Pickup Preset
+      public static final boolean FLOOR_SHOULDER = false;
+      public static final double FLOOR_ELBOW = 110;
+
+      // Slide Pickup Preset
+      public static final boolean SHELF_SHOULDER = true;
+      public static final double SHELF_ELBOW = 200;
+
+      // Upper Node Preset
+      public static final boolean UPPER_SHOULDER = true;
+      public static final double UPPER_ELBOW = 180;
+
+      // Lower Node Preset
+      public static final boolean MID_SHOULDER = true;
+      public static final double MID_ELBOW = 250;
+
+      // Hybrid Node Preset
+      public static final boolean LOWER_SHOULDER = false;
+      public static final double LOWER_ELBOW = 90;
+    }
   }
 }

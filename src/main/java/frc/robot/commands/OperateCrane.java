@@ -4,11 +4,14 @@
 
 package frc.robot.commands;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.Constants.CraneConstants.Presets;
+import frc.robot.Dashboard;
 import frc.robot.subsystems.CraneSubsystem;
 
 public class OperateCrane extends CommandBase {
@@ -22,7 +25,18 @@ public class OperateCrane extends CommandBase {
 
   private SlewRateLimiter elbowRateLimiter = new SlewRateLimiter(Constants.CraneConstants.DEFAULT_RATE_LIMIT);
 
-  public OperateCrane(CraneSubsystem craneSubsystem, DoubleSupplier elbowJoystick) {
+  public enum armPreset {
+    HOME,
+    FLOOR_PICKUP,
+    SHELF_PICKUP,
+    UPPER_NODE,
+    MID_NODE,
+    LOWER_NODE,
+    DO_NOTHING
+  }
+
+  public OperateCrane(CraneSubsystem craneSubsystem, DoubleSupplier elbowJoystick, BooleanSupplier shoulderUp,
+      BooleanSupplier shoulderDown) {
     this.craneSubsystem = craneSubsystem;
     this.elbowJoystick = elbowJoystick;
 
@@ -64,6 +78,32 @@ public class OperateCrane extends CommandBase {
 
   public void setSpeedMultiplier(double speedMultiplier) {
     this.speedMultiplier = speedMultiplier;
+  }
+
+  public void recallPreset(Enum<armPreset> preset) {
+    boolean shoulder = craneSubsystem.isArmUp;
+    double elbow = craneSubsystem.getAngleSetPoint();
+    if (preset == armPreset.HOME) {
+      shoulder = Presets.HOME_SHOULDER;
+      elbow = Dashboard.homeElbowEntry.get().getDouble();
+    } else if (preset == armPreset.FLOOR_PICKUP) {
+      shoulder = Presets.FLOOR_SHOULDER;
+      elbow = Dashboard.floorElbowEntry.get().getDouble();
+    } else if (preset == armPreset.SHELF_PICKUP) {
+      shoulder = Presets.SHELF_SHOULDER;
+      elbow = Dashboard.shelfElbowEntry.get().getDouble();
+    } else if (preset == armPreset.UPPER_NODE) {
+      shoulder = Presets.UPPER_SHOULDER;
+      elbow = Dashboard.upperElbowEntry.get().getDouble();
+    } else if (preset == armPreset.MID_NODE) {
+      shoulder = Presets.MID_SHOULDER;
+      elbow = Dashboard.midElbowEntry.get().getDouble();
+    } else if (preset == armPreset.LOWER_NODE) {
+      shoulder = Presets.LOWER_SHOULDER;
+      elbow = Dashboard.lowerElbowEntry.get().getDouble();
+    }
+
+    new SetArmPreset(craneSubsystem, shoulder, elbow).schedule();
   }
 
   // Returns true when the command should end.

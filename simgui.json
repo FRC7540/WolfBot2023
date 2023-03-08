@@ -46,10 +46,12 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/Shuffleboard/Game/Arm Preset": "String Chooser",
       "/Shuffleboard/Game/Drivebase": "MecanumDrive",
       "/Shuffleboard/Game/Gyro": "Gyro",
       "/Shuffleboard/Game/Telemetry/Drivebase": "MecanumDrive",
       "/Shuffleboard/Game/Telemetry/Gyro": "Gyro",
+      "/Shuffleboard/Test/Arm Preset": "String Chooser",
       "/Shuffleboard/Tuning/Arm PID/controller": "PIDController",
       "/Shuffleboard/Tuning/Auto Align PID/controller": "PIDController",
       "/Shuffleboard/Tuning/Auto Balance PID/controller": "PIDController",
