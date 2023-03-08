@@ -18,7 +18,6 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.configuration.PresetChooser;
 import frc.robot.subsystems.DrivebaseSubsystem;
 
 public class Dashboard extends SubsystemBase {
@@ -53,8 +52,6 @@ public class Dashboard extends SubsystemBase {
         public static GenericEntry lowerElbowEntry;
         public static GenericEntry midElbowEntry;
         public static GenericEntry upperElbowEntry;
-
-        public static PresetChooser presetChooser = new PresetChooser();
 
         private ShuffleboardLayout driveTuningLayout;
         private ShuffleboardLayout telemetryLayout;
