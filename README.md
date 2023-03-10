@@ -32,8 +32,8 @@ Please make sure that you use a shuffleboard tile size of 64, rather than the de
 | home preset         | Press X Button    | Normal: Home Preset, Score: Home Preset        |
 | scoring mode        | Hold Left Bumper  | When held, puts presets into Score mode        |
 | elbow movement      | Left Analog Stick | Y axis moves elbow joint                       |
-| opens claw          | Left Trigger      | will open claw for grabbing game pieces        |
-| closes claw         | Right Trigger     | will close claw for chomping game pieces       |
+| opens claw          | Right Trigger     | will open claw for grabbing game pieces        |
+| closes claw         | Left Trigger      | will close claw for chomping game pieces       |
 | crane shoulder up   | Press D-Pad up    | Makes the shoulder go up                       |
 | crane shoulder down | Press D-Pad down  | Makes the shoulder go down                     |
 
