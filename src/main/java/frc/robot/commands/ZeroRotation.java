@@ -18,14 +18,14 @@ public class ZeroRotation extends PIDCommand {
       .getLayout("Rotation Zero PID", BuiltInLayouts.kList)
       .withSize(4, 4);
 
-  public ZeroRotation(DrivebaseSubsystem drivebaseSubsystem) {
+  public ZeroRotation(DrivebaseSubsystem drivebaseSubsystem, float setRotation) {
     super(
         // The controller that the command will use
         new PIDController(0.05, 0, 0),
         // This should return the measurement
         drivebaseSubsystem::getYaw,
         // This should return the setpoint (can also be a constant)
-        () -> 0,
+        () -> setRotation,
         // This uses the output
         output -> {
           // Use the output here
