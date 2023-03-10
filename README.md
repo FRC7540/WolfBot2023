@@ -14,7 +14,6 @@ Please make sure that you use a shuffleboard tile size of 64, rather than the de
 | ----------------- | ------------------ | ---------------------------------------------- |
 | movement          | Left Analog Stick  |                                                |
 | rotation          | Right Analog Stick |                                                |
-| slowmode          | Left Bumper        | Reduces speed for precision movement           |
 | auto align        | Right Bumper       | Aligns robot with target                       |
 | detect april tags | Press X Button     | Sets limelight to detect april tags            |
 | detect retro tape | Press Y Button     | Sets limelight to detect retro-reflective tape |
@@ -24,13 +23,18 @@ Please make sure that you use a shuffleboard tile size of 64, rather than the de
 
 ### Operator Controls
 
-| control        | binding           | description              |
-| -------------- | ----------------- | ------------------------ |
-| open claw      | Hold A Button     | Opens Claw               |
-| close claw     | Hold B Button     | Closes Claw              |
-| crane up       | Press Y Button    | Extends Crane Pistons    |
-| crane down     | Press X Button    | Retracts Crane Pistons   |
-| elbow movement | Left Analog Stick | Y axis moves elbow joint |
+| control             | binding           | description                                    |
+| ------------------- | ----------------- | ---------------------------------------------- |
+| floor preset        | Press A Button    | Normal: Floor Preset, Score: Lower Goal Preset |
+| middle score preset | Press B Button    | Score: Middle Goal Preset                      |
+| shelf preset        | Press Y Button    | Normal: Shelf Preset, Score: High Goal Preset  |
+| home preset         | Press X Button    | Normal: Home Preset, Score: Home Preset        |
+| scoring mode        | Hold Left Bumper  | When held, puts presets into Score mode        |
+| elbow movement      | Left Analog Stick | Y axis moves elbow joint                       |
+| opens claw          | Left Trigger      | will open claw for grabbing game pieces        |
+| closes claw         | Right Trigger     | will close claw for chomping game pieces       |
+| crane shoulder up   | Press D-Pad up    | Makes the shoulder go up                       |
+| crane shoulder down | Press D-Pad down  | Makes the shoulder go down                     |
 
 ## Limelight pipeline
 
