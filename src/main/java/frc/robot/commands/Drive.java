@@ -23,17 +23,14 @@ public class Drive extends CommandBase {
   private SlewRateLimiter accelLimiterX = new SlewRateLimiter(Constants.DrivebaseConstants.DEFAULT_MAX_ACCELERATION);
   private SlewRateLimiter accelLimiterY = new SlewRateLimiter(Constants.DrivebaseConstants.DEFAULT_MAX_ACCELERATION);
 
-  private boolean autonomous = false;
-
   /** Creates a new Drive. */
   public Drive(DrivebaseSubsystem drivebase, DoubleSupplier translateX, DoubleSupplier translateY,
-      DoubleSupplier rotateZ, BooleanSupplier slowmodeButton, boolean autonomous) {
+      DoubleSupplier rotateZ, BooleanSupplier slowmodeButton) {
     this.drivebase = drivebase;
     this.translateX = translateX;
     this.translateY = translateY;
     this.rotateZ = rotateZ;
     this.slowmodeButton = slowmodeButton;
-    this.autonomous = autonomous;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivebase);
 
@@ -42,15 +39,13 @@ public class Drive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (!autonomous) {
-      // Reversed strafe and rotation axis
-      double x = getDeadzone(-translateX.getAsDouble()) * getSpeedMultiplier();
-      double y = getDeadzone(translateY.getAsDouble()) * getSpeedMultiplier();
-      double z = getDeadzone(-rotateZ.getAsDouble()) * getSpeedMultiplier()
-          * Dashboard.maxRotationSpeedEntry.get().getDouble();
+    // Reversed strafe and rotation axis
+    double x = getDeadzone(-translateX.getAsDouble()) * getSpeedMultiplier();
+    double y = getDeadzone(translateY.getAsDouble()) * getSpeedMultiplier();
+    double z = getDeadzone(-rotateZ.getAsDouble()) * getSpeedMultiplier()
+        * Dashboard.maxRotationSpeedEntry.get().getDouble();
 
-      drivebase.Drive(accelLimiterX.calculate(x), accelLimiterY.calculate(y), z);
-    }
+    drivebase.Drive(accelLimiterX.calculate(x), accelLimiterY.calculate(y), z);
   }
 
   private double getDeadzone(Double input) {
