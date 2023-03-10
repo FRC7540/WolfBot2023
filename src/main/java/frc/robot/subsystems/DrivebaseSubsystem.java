@@ -93,6 +93,10 @@ public class DrivebaseSubsystem extends SubsystemBase {
     fieldOrientedDrive = enabled;
   }
 
+  public float getYaw() {
+    return ahrs.getYaw();
+  }
+
   public void resetYaw() {
     if (ahrs != null) {
       ahrs.zeroYaw();
@@ -101,5 +105,9 @@ public class DrivebaseSubsystem extends SubsystemBase {
 
   public float getPitch() {
     return ahrs.getPitch();
+  }
+
+  public void lockRotation() {
+
   }
 }
