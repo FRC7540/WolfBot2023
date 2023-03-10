@@ -190,7 +190,10 @@ public class RobotContainer {
     }
 
     public Command autonomousCommand = new SequentialCommandGroup(
-            new InstantCommand(() -> drivebaseSubsystem.resetYaw(), drivebaseSubsystem),
-            new RunCommand(() -> drivebaseSubsystem.Drive(0, 0.3, 0), drivebaseSubsystem).withTimeout(1),
-            new RunCommand(() -> drivebaseSubsystem.Drive(0, -0.3, 0), drivebaseSubsystem).withTimeout(4));
+                    new InstantCommand(() -> {
+                            drivebaseSubsystem.resetYaw();
+                            drivebaseSubsystem.resetDisplacement();
+                    }, drivebaseSubsystem),
+                    new RunCommand(() -> drivebaseSubsystem.Drive(0, 0.3, 0), drivebaseSubsystem).withTimeout(1),
+                    new RunCommand(() -> drivebaseSubsystem.Drive(0, -0.3, 0), drivebaseSubsystem).withTimeout(4));
 }
