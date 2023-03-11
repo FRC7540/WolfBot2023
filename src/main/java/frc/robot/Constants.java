@@ -43,6 +43,7 @@ public final class Constants {
     public static final String GAME_TAB_NAME = "Game";
     public static final String TUNING_TAB_NAME = "Tuning";
     public static final String PRESET_TAB_NAME = "Presets";
+    public static final String AUTO_TUNING_TAB_NAME = "Auto Tuning";
   }
 
   public static class CameraConstants {
@@ -109,5 +110,12 @@ public final class Constants {
       public static final boolean LOWER_SHOULDER = false;
       public static final double LOWER_ELBOW = 90;
     }
+
+  }
+
+  public static class Autonomous {
+    public static final double DRIVE_BACKWARD_DISTANCE = -0.75;
+    public static final double DRIVE_FORWARD_DISTANCE = 4.8;
+    public static final double BALANCE_TRIGGER_ANGLE = 5;
   }
 }

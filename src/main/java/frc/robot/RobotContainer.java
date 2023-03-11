@@ -61,6 +61,7 @@ public class RobotContainer {
         private DriveRotationLocked driveRotationLocked;
 
         private Trigger leftBumper = driverXboxController.leftBumper();
+        private AutoBalance autoBalance = new AutoBalance(drivebaseSubsystem);
 
         // Shuffleboard Entries
 
@@ -75,13 +76,14 @@ public class RobotContainer {
         }
 
         private void configureDefaultCommands() {
+                // Drivebase default command
+                Trigger leftBumper = driverXboxController.leftBumper();
                 drive = new Drive(drivebaseSubsystem, driverXboxController::getLeftX,
                                 driverXboxController::getLeftY, driverXboxController::getRightX,
                                 leftBumper::getAsBoolean);
                 drivebaseSubsystem.setDefaultCommand(drive);
 
                 driveRotationLocked = new DriveRotationLocked(drivebaseSubsystem, driverXboxController::getLeftX, driverXboxController::getLeftY, leftBumper::getAsBoolean);
-
 
                 // Claw default command
                 clawSubsystem.setDefaultCommand(new InstantCommand(() -> clawSubsystem.stopClaw(), clawSubsystem));
@@ -149,7 +151,6 @@ public class RobotContainer {
                                 .onTrue(new InstantCommand(() -> drivebaseSubsystem.resetYaw(), drivebaseSubsystem));
                 driverXboxController.a().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
                                 .whileTrue(new AutoBalance(drivebaseSubsystem));
-
                 driverXboxController.b().whileTrue(driveRotationLocked);
         }
 
@@ -203,7 +204,15 @@ public class RobotContainer {
         }
 
         public Command autonomousCommand = new SequentialCommandGroup(
-                        new InstantCommand(() -> drivebaseSubsystem.resetYaw(), drivebaseSubsystem),
-                        new RunCommand(() -> drivebaseSubsystem.Drive(0, 0.3, 0), drivebaseSubsystem).withTimeout(1),
-                        new RunCommand(() -> drivebaseSubsystem.Drive(0, -0.3, 0), drivebaseSubsystem).withTimeout(4));
+                        new InstantCommand(() -> {
+                                drivebaseSubsystem.resetYaw();
+                                drivebaseSubsystem.resetDisplacement();
+                        }, drivebaseSubsystem),
+                        new RunCommand(() -> drivebaseSubsystem.Drive(0, 0.3, 0), drivebaseSubsystem)
+                                        .until(() -> drivebaseSubsystem
+                                                        .getDisplacementY() <= Constants.Autonomous.DRIVE_BACKWARD_DISTANCE),
+                        new InstantCommand(() -> drivebaseSubsystem.resetDisplacement(), drivebaseSubsystem),
+                        new RunCommand(() -> drivebaseSubsystem.Drive(0, -0.3, 0), drivebaseSubsystem)
+                                        .until(() -> drivebaseSubsystem.getPitch() >= Constants.Autonomous.BALANCE_TRIGGER_ANGLE),
+                        autoBalance);
 }

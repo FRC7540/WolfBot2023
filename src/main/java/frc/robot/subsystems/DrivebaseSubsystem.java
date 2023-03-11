@@ -98,12 +98,22 @@ public class DrivebaseSubsystem extends SubsystemBase {
   }
 
   public void resetYaw() {
-    if (ahrs != null) {
-      ahrs.zeroYaw();
-    }
+    ahrs.zeroYaw();
   }
 
   public float getPitch() {
     return ahrs.getPitch();
+  }
+
+  public float getDisplacementX() {
+    return ahrs.getDisplacementX();
+  }
+
+  public float getDisplacementY() {
+    return ahrs.getDisplacementY();
+  }
+
+  public void resetDisplacement() {
+    ahrs.resetDisplacement();
   }
 }
