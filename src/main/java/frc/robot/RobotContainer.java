@@ -56,6 +56,7 @@ public class RobotContainer {
                         OperatorConstants.OPERATOR_XBOX_CONTROLLER_PORT);
         private Drive drive;
         private OperateCrane operateCrane;
+        private AutoBalance autoBalance = new AutoBalance(drivebaseSubsystem);
 
         // Shuffleboard Entries
 
@@ -142,7 +143,7 @@ public class RobotContainer {
                 driverXboxController.start().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
                                 .onTrue(new InstantCommand(() -> drivebaseSubsystem.resetYaw(), drivebaseSubsystem));
                 driverXboxController.a().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
-                                .whileTrue(new AutoBalance(drivebaseSubsystem));
+                                .whileTrue(autoBalance);
         }
 
         private void networkTableListenerSetup() {
@@ -195,6 +196,7 @@ public class RobotContainer {
         }
 
         public Command autonomousCommand = new SequentialCommandGroup(
+                /*
                         new InstantCommand(() -> {
                                 drivebaseSubsystem.resetYaw();
                                 drivebaseSubsystem.resetDisplacement();
@@ -203,7 +205,8 @@ public class RobotContainer {
                                         .until(() -> drivebaseSubsystem
                                                         .getDisplacementY() <= Constants.Autonomous.DRIVE_BACKWARD_DISTANCE),
                         new InstantCommand(() -> drivebaseSubsystem.resetDisplacement(), drivebaseSubsystem),
+                */
                         new RunCommand(() -> drivebaseSubsystem.Drive(0, -0.3, 0), drivebaseSubsystem)
-                                        .until(() -> drivebaseSubsystem
-                                                        .getDisplacementY() >= Constants.Autonomous.DRIVE_FORWARD_DISTANCE));
+                                        .until(() -> drivebaseSubsystem.getPitch() >= Constants.Autonomous.BALANCE_TRIGGER_ANGLE),
+                        autoBalance);
 }
