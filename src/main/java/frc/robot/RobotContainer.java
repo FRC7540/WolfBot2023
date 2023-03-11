@@ -149,7 +149,7 @@ public class RobotContainer {
                 driverXboxController.start().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
                                 .onTrue(new InstantCommand(() -> drivebaseSubsystem.resetYaw(), drivebaseSubsystem));
                 driverXboxController.a().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
-                                .whileTrue(new AutoBalance(drivebaseSubsystem));
+                                .whileTrue(autoBalance);
                 driverXboxController.b().whileTrue(driveRotationLocked);
         }
 
