@@ -60,7 +60,6 @@ public class RobotContainer {
 
         private DriveRotationLocked driveRotationLocked;
 
-        private Trigger leftBumper = driverXboxController.leftBumper();
         private AutoBalance autoBalance = new AutoBalance(drivebaseSubsystem);
 
         // Shuffleboard Entries
