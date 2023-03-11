@@ -82,7 +82,8 @@ public class RobotContainer {
                                 leftBumper::getAsBoolean);
                 drivebaseSubsystem.setDefaultCommand(drive);
 
-                driveRotationLocked = new DriveRotationLocked(drivebaseSubsystem, driverXboxController::getLeftX, driverXboxController::getLeftY, leftBumper::getAsBoolean);
+                driveRotationLocked = new DriveRotationLocked(drivebaseSubsystem, driverXboxController::getLeftX,
+                                driverXboxController::getLeftY, leftBumper::getAsBoolean);
 
                 // Claw default command
                 clawSubsystem.setDefaultCommand(new InstantCommand(() -> clawSubsystem.stopClaw(), clawSubsystem));
@@ -212,6 +213,9 @@ public class RobotContainer {
                                                         .getDisplacementY() <= Constants.Autonomous.DRIVE_BACKWARD_DISTANCE),
                         new InstantCommand(() -> drivebaseSubsystem.resetDisplacement(), drivebaseSubsystem),
                         new RunCommand(() -> drivebaseSubsystem.Drive(0, -0.3, 0), drivebaseSubsystem)
-                                        .until(() -> drivebaseSubsystem.getPitch() >= Constants.Autonomous.BALANCE_TRIGGER_ANGLE),
+                                        .until(() -> (drivebaseSubsystem
+                                                        .getPitch() >= Constants.Autonomous.BALANCE_TRIGGER_ANGLE)
+                                                        || (drivebaseSubsystem
+                                                                        .getDisplacementY() >= Constants.Autonomous.DRIVE_FORWARD_DISTANCE)),
                         autoBalance);
 }
