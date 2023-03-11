@@ -41,159 +41,169 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-    // Subsystem Instantiation
-    private final DrivebaseSubsystem drivebaseSubsystem = new DrivebaseSubsystem();
-    private final CameraSubsystem cameraSubsystem = new CameraSubsystem();
-    private final PneumaticsSubsystem pneumaticsSubsystem = new PneumaticsSubsystem();
-    private final ClawSubsystem clawSubsystem = new ClawSubsystem();
-    private final CraneSubsystem craneSubsystem = new CraneSubsystem();
-    private final Dashboard dashboard = new Dashboard(drivebaseSubsystem);
+        // Subsystem Instantiation
+        private final DrivebaseSubsystem drivebaseSubsystem = new DrivebaseSubsystem();
+        private final CameraSubsystem cameraSubsystem = new CameraSubsystem();
+        private final PneumaticsSubsystem pneumaticsSubsystem = new PneumaticsSubsystem();
+        private final ClawSubsystem clawSubsystem = new ClawSubsystem();
+        private final CraneSubsystem craneSubsystem = new CraneSubsystem();
+        private final Dashboard dashboard = new Dashboard(drivebaseSubsystem);
 
-    // Controller Setup
-    private final CommandXboxController driverXboxController = new CommandXboxController(
-            OperatorConstants.DRIVER_XBOX_CONTROLLER_PORT);
-    private final CommandXboxController operatorXboxController = new CommandXboxController(
-            OperatorConstants.OPERATOR_XBOX_CONTROLLER_PORT);
-    private Drive drive;
-    private OperateCrane operateCrane;
+        // Controller Setup
+        private final CommandXboxController driverXboxController = new CommandXboxController(
+                        OperatorConstants.DRIVER_XBOX_CONTROLLER_PORT);
+        private final CommandXboxController operatorXboxController = new CommandXboxController(
+                        OperatorConstants.OPERATOR_XBOX_CONTROLLER_PORT);
+        private Drive drive;
+        private OperateCrane operateCrane;
 
-    // Shuffleboard Entries
+        // Shuffleboard Entries
 
-    /**
-     * The container for the robot. Contains subsystems, OI devices, and commands.
-     */
-    public RobotContainer() {
-        configureBindings();
-        configureDefaultCommands();
-        dashboard.ShuffleboardSetup();
-        networkTableListenerSetup();
-    }
+        /**
+         * The container for the robot. Contains subsystems, OI devices, and commands.
+         */
+        public RobotContainer() {
+                configureBindings();
+                configureDefaultCommands();
+                dashboard.ShuffleboardSetup();
+                networkTableListenerSetup();
+        }
 
-    private void configureDefaultCommands() {
-        // Drivebase default command
-        Trigger leftBumper = driverXboxController.leftBumper();
-        drive = new Drive(drivebaseSubsystem, driverXboxController::getLeftX,
-                driverXboxController::getLeftY, driverXboxController::getRightX, leftBumper::getAsBoolean);
-        drivebaseSubsystem.setDefaultCommand(drive);
+        private void configureDefaultCommands() {
+                // Drivebase default command
+                Trigger leftBumper = driverXboxController.leftBumper();
+                drive = new Drive(drivebaseSubsystem, driverXboxController::getLeftX,
+                                driverXboxController::getLeftY, driverXboxController::getRightX,
+                                leftBumper::getAsBoolean);
+                drivebaseSubsystem.setDefaultCommand(drive);
 
-        // Claw default command
-        clawSubsystem.setDefaultCommand(new InstantCommand(() -> clawSubsystem.stopClaw(), clawSubsystem));
+                // Claw default command
+                clawSubsystem.setDefaultCommand(new InstantCommand(() -> clawSubsystem.stopClaw(), clawSubsystem));
 
-        // Crane default command
-        operateCrane = new OperateCrane(craneSubsystem, operatorXboxController::getLeftY,
-                operatorXboxController.povUp(),
-                operatorXboxController.povDown());
-        craneSubsystem.setDefaultCommand(operateCrane);
-    }
+                // Crane default command
+                operateCrane = new OperateCrane(craneSubsystem, operatorXboxController::getLeftY,
+                                operatorXboxController.povUp(),
+                                operatorXboxController.povDown());
+                craneSubsystem.setDefaultCommand(operateCrane);
+        }
 
-    /**
-     * Use this method to define your trigger->command mappings. Triggers can be
-     * created via the
-     * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with
-     * an arbitrary
-     * predicate, or via the named factories in {@link
-     * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
-     * {@link
-     * CommandXboxController
-     * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-     * PS4} controllers or
-     * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-     * joysticks}.
-     */
-    private void configureBindings() {
-        // Operator Controller Bindings
-        operatorXboxController.rightTrigger().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
-                .whileTrue(new ActuateClaw(clawSubsystem, Direction.BACKWARD));
-        operatorXboxController.leftTrigger().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
-                .whileTrue(new ActuateClaw(clawSubsystem, Direction.FORWARD));
-        operatorXboxController.x().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
-                .onTrue(new InstantCommand(() -> operateCrane.recallPreset(armPreset.HOME), craneSubsystem));
-        operatorXboxController.a().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
-                .onTrue(new InstantCommand(
-                        () -> operateCrane.recallPreset(
-                                operatorXboxController.leftBumper().getAsBoolean() ? armPreset.LOWER_NODE
-                                        : armPreset.FLOOR_PICKUP),
-                        craneSubsystem));
-        operatorXboxController.b().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
-                .onTrue(new InstantCommand(
-                        () -> operateCrane
-                                .recallPreset(operatorXboxController.leftBumper().getAsBoolean() ? armPreset.MID_NODE
-                                        : armPreset.DO_NOTHING),
-                        craneSubsystem));
-        operatorXboxController.y().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
-                .onTrue(new InstantCommand(
-                        () -> operateCrane.recallPreset(
-                                operatorXboxController.leftBumper().getAsBoolean() ? armPreset.UPPER_NODE
-                                        : armPreset.SHELF_PICKUP),
-                        craneSubsystem));
+        /**
+         * Use this method to define your trigger->command mappings. Triggers can be
+         * created via the
+         * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with
+         * an arbitrary
+         * predicate, or via the named factories in {@link
+         * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
+         * {@link
+         * CommandXboxController
+         * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
+         * PS4} controllers or
+         * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
+         * joysticks}.
+         */
+        private void configureBindings() {
+                // Operator Controller Bindings
+                operatorXboxController.rightTrigger().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
+                                .whileTrue(new ActuateClaw(clawSubsystem, Direction.BACKWARD));
+                operatorXboxController.leftTrigger().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
+                                .whileTrue(new ActuateClaw(clawSubsystem, Direction.FORWARD));
+                operatorXboxController.x().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
+                                .onTrue(new InstantCommand(() -> operateCrane.recallPreset(armPreset.HOME),
+                                                craneSubsystem));
+                operatorXboxController.a().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
+                                .onTrue(new InstantCommand(
+                                                () -> operateCrane.recallPreset(
+                                                                operatorXboxController.leftBumper().getAsBoolean()
+                                                                                ? armPreset.LOWER_NODE
+                                                                                : armPreset.FLOOR_PICKUP),
+                                                craneSubsystem));
+                operatorXboxController.b().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
+                                .onTrue(new InstantCommand(
+                                                () -> operateCrane
+                                                                .recallPreset(operatorXboxController.leftBumper()
+                                                                                .getAsBoolean() ? armPreset.MID_NODE
+                                                                                                : armPreset.DO_NOTHING),
+                                                craneSubsystem));
+                operatorXboxController.y().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
+                                .onTrue(new InstantCommand(
+                                                () -> operateCrane.recallPreset(
+                                                                operatorXboxController.leftBumper().getAsBoolean()
+                                                                                ? armPreset.UPPER_NODE
+                                                                                : armPreset.SHELF_PICKUP),
+                                                craneSubsystem));
 
-        // Driver controller Bindings
-        driverXboxController.x().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
-                .onTrue(new SetVisionPipeline(cameraSubsystem, Pipeline.APRIL_TAG));
-        driverXboxController.y().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
-                .onTrue(new SetVisionPipeline(cameraSubsystem, Pipeline.RETRO_TAPE));
-        driverXboxController.rightBumper().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
-                .whileTrue(new AutoAlign(drivebaseSubsystem, cameraSubsystem));
-        driverXboxController.start().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
-                .onTrue(new InstantCommand(() -> drivebaseSubsystem.resetYaw(), drivebaseSubsystem));
-        driverXboxController.a().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
-                .whileTrue(new AutoBalance(drivebaseSubsystem));
-    }
+                // Driver controller Bindings
+                driverXboxController.x().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
+                                .onTrue(new SetVisionPipeline(cameraSubsystem, Pipeline.APRIL_TAG));
+                driverXboxController.y().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
+                                .onTrue(new SetVisionPipeline(cameraSubsystem, Pipeline.RETRO_TAPE));
+                driverXboxController.rightBumper().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
+                                .whileTrue(new AutoAlign(drivebaseSubsystem, cameraSubsystem));
+                driverXboxController.start().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
+                                .onTrue(new InstantCommand(() -> drivebaseSubsystem.resetYaw(), drivebaseSubsystem));
+                driverXboxController.a().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
+                                .whileTrue(new AutoBalance(drivebaseSubsystem));
+        }
 
-    private void networkTableListenerSetup() {
-        Dashboard.networkTableInstance.addListener(Dashboard.compressorEnabled,
-                EnumSet.of(NetworkTableEvent.Kind.kValueAll),
-                (event) -> new SetCompressor(pneumaticsSubsystem, event).schedule());
+        private void networkTableListenerSetup() {
+                Dashboard.networkTableInstance.addListener(Dashboard.compressorEnabled,
+                                EnumSet.of(NetworkTableEvent.Kind.kValueAll),
+                                (event) -> new SetCompressor(pneumaticsSubsystem, event).schedule());
 
-        Dashboard.networkTableInstance.addListener(Dashboard.accelLimitEntry,
-                EnumSet.of(NetworkTableEvent.Kind.kValueAll),
-                (event) -> drive.updateRateLimiters(event));
+                Dashboard.networkTableInstance.addListener(Dashboard.accelLimitEntry,
+                                EnumSet.of(NetworkTableEvent.Kind.kValueAll),
+                                (event) -> drive.updateRateLimiters(event));
 
-        Dashboard.networkTableInstance.addListener(Dashboard.fieldOrientationEntry,
-                EnumSet.of(NetworkTableEvent.Kind.kValueAll), (e) -> {
-                    drivebaseSubsystem.setFieldOrientedDriveEnabled(e.valueData.value.getBoolean());
-                });
+                Dashboard.networkTableInstance.addListener(Dashboard.fieldOrientationEntry,
+                                EnumSet.of(NetworkTableEvent.Kind.kValueAll), (e) -> {
+                                        drivebaseSubsystem.setFieldOrientedDriveEnabled(e.valueData.value.getBoolean());
+                                });
 
-        Dashboard.networkTableInstance.addListener(
-                Dashboard.armMinimumAngle,
-                EnumSet.of(NetworkTableEvent.Kind.kValueAll),
-                (e) -> craneSubsystem.setMinAngle(e.valueData.value.getDouble()));
-        Dashboard.networkTableInstance.addListener(
-                Dashboard.armMaximumAngleHigh,
-                EnumSet.of(NetworkTableEvent.Kind.kValueAll),
-                (e) -> craneSubsystem.setMaxAngleHigh(e.valueData.value.getDouble()));
-        Dashboard.networkTableInstance.addListener(
-                Dashboard.armMaximumAngleLow,
-                EnumSet.of(NetworkTableEvent.Kind.kValueAll),
-                (e) -> craneSubsystem.setMaxAngleLow(e.valueData.value.getDouble()));
-        Dashboard.networkTableInstance.addListener(
-                Dashboard.armEncoderOffset,
-                EnumSet.of(NetworkTableEvent.Kind.kValueAll),
-                (e) -> craneSubsystem.setEncoderOffset(e.valueData.value.getDouble()));
-        Dashboard.networkTableInstance.addListener(
-                Dashboard.armRateLimit,
-                EnumSet.of(NetworkTableEvent.Kind.kValueAll),
-                (e) -> operateCrane.setRateLimit(e.valueData.value.getDouble()));
-        Dashboard.networkTableInstance.addListener(
-                Dashboard.armSpeedMultiplier,
-                EnumSet.of(NetworkTableEvent.Kind.kValueAll),
-                (e) -> operateCrane.setSpeedMultiplier(e.valueData.value.getDouble()));
-    }
+                Dashboard.networkTableInstance.addListener(
+                                Dashboard.armMinimumAngle,
+                                EnumSet.of(NetworkTableEvent.Kind.kValueAll),
+                                (e) -> craneSubsystem.setMinAngle(e.valueData.value.getDouble()));
+                Dashboard.networkTableInstance.addListener(
+                                Dashboard.armMaximumAngleHigh,
+                                EnumSet.of(NetworkTableEvent.Kind.kValueAll),
+                                (e) -> craneSubsystem.setMaxAngleHigh(e.valueData.value.getDouble()));
+                Dashboard.networkTableInstance.addListener(
+                                Dashboard.armMaximumAngleLow,
+                                EnumSet.of(NetworkTableEvent.Kind.kValueAll),
+                                (e) -> craneSubsystem.setMaxAngleLow(e.valueData.value.getDouble()));
+                Dashboard.networkTableInstance.addListener(
+                                Dashboard.armEncoderOffset,
+                                EnumSet.of(NetworkTableEvent.Kind.kValueAll),
+                                (e) -> craneSubsystem.setEncoderOffset(e.valueData.value.getDouble()));
+                Dashboard.networkTableInstance.addListener(
+                                Dashboard.armRateLimit,
+                                EnumSet.of(NetworkTableEvent.Kind.kValueAll),
+                                (e) -> operateCrane.setRateLimit(e.valueData.value.getDouble()));
+                Dashboard.networkTableInstance.addListener(
+                                Dashboard.armSpeedMultiplier,
+                                EnumSet.of(NetworkTableEvent.Kind.kValueAll),
+                                (e) -> operateCrane.setSpeedMultiplier(e.valueData.value.getDouble()));
+        }
 
-    /**
-     * Use this to pass the autonomous command to the main {@link Robot} class.
-     *
-     * @return the command to run in autonomous
-     */
-    public Command getAutonomousCommand() {
-        return autonomousCommand;
-    }
+        /**
+         * Use this to pass the autonomous command to the main {@link Robot} class.
+         *
+         * @return the command to run in autonomous
+         */
+        public Command getAutonomousCommand() {
+                return autonomousCommand;
+        }
 
-    public Command autonomousCommand = new SequentialCommandGroup(
-                    new InstantCommand(() -> {
-                            drivebaseSubsystem.resetYaw();
-                            drivebaseSubsystem.resetDisplacement();
-                    }, drivebaseSubsystem),
-                    new RunCommand(() -> drivebaseSubsystem.Drive(0, 0.3, 0), drivebaseSubsystem).withTimeout(1),
-                    new RunCommand(() -> drivebaseSubsystem.Drive(0, -0.3, 0), drivebaseSubsystem).withTimeout(4));
+        public Command autonomousCommand = new SequentialCommandGroup(
+                        new InstantCommand(() -> {
+                                drivebaseSubsystem.resetYaw();
+                                drivebaseSubsystem.resetDisplacement();
+                        }, drivebaseSubsystem),
+                        new RunCommand(() -> drivebaseSubsystem.Drive(0, 0.3, 0), drivebaseSubsystem)
+                                        .until(() -> drivebaseSubsystem
+                                                        .getDisplacementY() <= Constants.Autonomous.DRIVE_BACKWARD_DISTANCE),
+                        new InstantCommand(() -> drivebaseSubsystem.resetDisplacement(), drivebaseSubsystem),
+                        new RunCommand(() -> drivebaseSubsystem.Drive(0, -0.3, 0), drivebaseSubsystem)
+                                        .until(() -> drivebaseSubsystem
+                                                        .getDisplacementY() >= Constants.Autonomous.DRIVE_FORWARD_DISTANCE));
 }
