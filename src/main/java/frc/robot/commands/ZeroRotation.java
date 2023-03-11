@@ -18,7 +18,7 @@ public class ZeroRotation extends PIDCommand {
       .getLayout("Rotation Zero PID", BuiltInLayouts.kList)
       .withSize(4, 4);
 
-  public ZeroRotation(DrivebaseSubsystem drivebaseSubsystem, float setRotation) {
+  public ZeroRotation(DrivebaseSubsystem drivebaseSubsystem, double setRotation) {
     super(
         // The controller that the command will use
         new PIDController(0.05, 0, 0),

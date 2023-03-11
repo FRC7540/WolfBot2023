@@ -10,6 +10,7 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.networktables.NetworkTableEvent;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants;
 import frc.robot.Dashboard;
 import frc.robot.subsystems.DrivebaseSubsystem;
@@ -22,6 +23,8 @@ public class DriveRotationLocked extends CommandBase {
   private SlewRateLimiter accelLimiterX = new SlewRateLimiter(Constants.DrivebaseConstants.DEFAULT_MAX_ACCELERATION);
   private SlewRateLimiter accelLimiterY = new SlewRateLimiter(Constants.DrivebaseConstants.DEFAULT_MAX_ACCELERATION);
 
+  private double originalRotation;
+
   /** Creates a new Drive. */
   public DriveRotationLocked(DrivebaseSubsystem drivebase, DoubleSupplier translateX, DoubleSupplier translateY, BooleanSupplier slowmodeButton) {
     this.drivebase = drivebase;
@@ -31,6 +34,7 @@ public class DriveRotationLocked extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivebase);
 
+    originalRotation = drivebase.getYaw();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -41,6 +45,10 @@ public class DriveRotationLocked extends CommandBase {
     double y = getDeadzone(translateY.getAsDouble()) * getSpeedMultiplier();
 
     drivebase.Drive(accelLimiterX.calculate(x), accelLimiterY.calculate(y), 0);
+
+    if (drivebase.getYaw() != originalRotation) {
+      CommandScheduler.getInstance().schedule(new ZeroRotation(drivebase, originalRotation).until(() -> drivebase.getYaw() == originalRotation));
+    }
   }
 
   private double getDeadzone(Double input) {

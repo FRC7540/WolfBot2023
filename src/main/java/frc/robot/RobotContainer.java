@@ -145,10 +145,8 @@ public class RobotContainer {
                 driverXboxController.a().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
                                 .whileTrue(new AutoBalance(drivebaseSubsystem));
 
-                driverXboxController.rightTrigger().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
-                                .whileTrue(new DriveRotationLocked(drivebaseSubsystem,
-                                                driverXboxController::getLeftX, driverXboxController::getLeftY,
-                                                leftBumper::getAsBoolean));
+                driverXboxController.rightTrigger()
+                                .whileTrue(new DriveRotationLocked(drivebaseSubsystem, driverXboxController::getLeftX, driverXboxController::getLeftY, leftBumper));
         }
 
         private void networkTableListenerSetup() {
