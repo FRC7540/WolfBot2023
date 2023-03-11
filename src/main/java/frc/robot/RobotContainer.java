@@ -11,6 +11,7 @@ import frc.robot.commands.AutoBalance;
 import frc.robot.commands.ActuateClaw.Direction;
 import frc.robot.commands.OperateCrane.armPreset;
 import frc.robot.commands.Drive;
+import frc.robot.commands.DriveRotationLocked;
 import frc.robot.commands.OperateCrane;
 import frc.robot.commands.SetCompressor;
 import frc.robot.commands.SetVisionPipeline;
@@ -56,6 +57,10 @@ public class RobotContainer {
                         OperatorConstants.OPERATOR_XBOX_CONTROLLER_PORT);
         private Drive drive;
         private OperateCrane operateCrane;
+
+        private DriveRotationLocked driveRotationLocked;
+
+        private Trigger leftBumper = driverXboxController.leftBumper();
         private AutoBalance autoBalance = new AutoBalance(drivebaseSubsystem);
 
         // Shuffleboard Entries
@@ -64,8 +69,8 @@ public class RobotContainer {
          * The container for the robot. Contains subsystems, OI devices, and commands.
          */
         public RobotContainer() {
-                configureBindings();
                 configureDefaultCommands();
+                configureBindings();
                 dashboard.ShuffleboardSetup();
                 networkTableListenerSetup();
         }
@@ -77,6 +82,8 @@ public class RobotContainer {
                                 driverXboxController::getLeftY, driverXboxController::getRightX,
                                 leftBumper::getAsBoolean);
                 drivebaseSubsystem.setDefaultCommand(drive);
+
+                driveRotationLocked = new DriveRotationLocked(drivebaseSubsystem, driverXboxController::getLeftX, driverXboxController::getLeftY, leftBumper::getAsBoolean);
 
                 // Claw default command
                 clawSubsystem.setDefaultCommand(new InstantCommand(() -> clawSubsystem.stopClaw(), clawSubsystem));
@@ -143,7 +150,8 @@ public class RobotContainer {
                 driverXboxController.start().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
                                 .onTrue(new InstantCommand(() -> drivebaseSubsystem.resetYaw(), drivebaseSubsystem));
                 driverXboxController.a().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
-                                .whileTrue(autoBalance);
+                                .whileTrue(new AutoBalance(drivebaseSubsystem));
+                driverXboxController.b().whileTrue(driveRotationLocked);
         }
 
         private void networkTableListenerSetup() {

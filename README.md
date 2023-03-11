@@ -10,16 +10,17 @@ Please make sure that you use a shuffleboard tile size of 64, rather than the de
 
 ### Driver controls
 
-| control           | binding            | description                                    |
-| ----------------- | ------------------ | ---------------------------------------------- |
-| movement          | Left Analog Stick  |                                                |
-| rotation          | Right Analog Stick |                                                |
-| auto align        | Right Bumper       | Aligns robot with target                       |
-| slowmode speed    | Left Bumper        | makes controls slower for precise movement     |
-| detect april tags | Press X Button     | Sets limelight to detect april tags            |
-| detect retro tape | Press Y Button     | Sets limelight to detect retro-reflective tape |
-| auto balance      | Press A Button     | Auto balances on platform                      |
-| reset gyro yaw    | Press Start Button | Resets the gyro's yaw readout                  |
+| control           | binding            | description                                     |
+| ----------------- | ------------------ | ----------------------------------------------- |
+| movement          | Left Analog Stick  |                                                 |
+| rotation          | Right Analog Stick |                                                 |
+| Lock Rotation     | Hold B Button      | When held, the robot will not be able to rotate |
+| auto align        | Right Bumper       | Aligns robot with target                        |
+| slowmode speed    | Left Bumper        | makes controls slower for precise movement      |
+| detect april tags | Press X Button     | Sets limelight to detect april tags             |
+| detect retro tape | Press Y Button     | Sets limelight to detect retro-reflective tape  |
+| auto balance      | Press A Button     | Auto balances on platform                       |
+| reset gyro yaw    | Press Start Button | Resets the gyro's yaw readout                   |
 
 
 ### Operator Controls
