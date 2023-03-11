@@ -4,7 +4,6 @@
 
 package frc.robot.commands;
 
-import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
@@ -35,8 +34,7 @@ public class OperateCrane extends CommandBase {
     DO_NOTHING
   }
 
-  public OperateCrane(CraneSubsystem craneSubsystem, DoubleSupplier elbowJoystick, BooleanSupplier shoulderUp,
-      BooleanSupplier shoulderDown) {
+  public OperateCrane(CraneSubsystem craneSubsystem, DoubleSupplier elbowJoystick) {
     this.craneSubsystem = craneSubsystem;
     this.elbowJoystick = elbowJoystick;
 

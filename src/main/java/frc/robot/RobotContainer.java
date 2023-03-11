@@ -8,6 +8,8 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ActuateClaw;
 import frc.robot.commands.AutoAlign;
 import frc.robot.commands.AutoBalance;
+import frc.robot.commands.CraneDown;
+import frc.robot.commands.CraneUp;
 import frc.robot.commands.ActuateClaw.Direction;
 import frc.robot.commands.OperateCrane.armPreset;
 import frc.robot.commands.Drive;
@@ -92,9 +94,7 @@ public class RobotContainer {
                 clawSubsystem.setDefaultCommand(new InstantCommand(() -> clawSubsystem.stopClaw(), clawSubsystem));
 
                 // Crane default command
-                operateCrane = new OperateCrane(craneSubsystem, operatorXboxController::getLeftY,
-                                operatorXboxController.povUp(),
-                                operatorXboxController.povDown());
+                operateCrane = new OperateCrane(craneSubsystem, operatorXboxController::getLeftY);
                 craneSubsystem.setDefaultCommand(operateCrane);
         }
 
@@ -118,6 +118,8 @@ public class RobotContainer {
                                 .whileTrue(new ActuateClaw(clawSubsystem, Direction.BACKWARD));
                 operatorXboxController.leftTrigger().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
                                 .whileTrue(new ActuateClaw(clawSubsystem, Direction.FORWARD));
+                operatorXboxController.povUp().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY).onTrue(new CraneUp(craneSubsystem));
+                operatorXboxController.povDown().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY).onTrue(new CraneDown(craneSubsystem));
                 operatorXboxController.x().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
                                 .onTrue(new InstantCommand(() -> operateCrane.recallPreset(armPreset.HOME),
                                                 craneSubsystem));
