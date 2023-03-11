@@ -36,7 +36,7 @@ public class AutoBalance extends PIDCommand {
           drivebaseSubsystem.Drive(0, output, 0);
         });
     this.drivebaseSubsystem = drivebaseSubsystem;
-    pidLayout.add("controller", this.m_controller).withWidget(BuiltInWidgets.kPIDController);
+    pidLayout.add("balance controller", this.m_controller).withWidget(BuiltInWidgets.kPIDController);
   }
 
   // Called when the command is initially scheduled.
