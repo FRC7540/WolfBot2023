@@ -14,7 +14,7 @@ Please make sure that you use a shuffleboard tile size of 64, rather than the de
 | ----------------- | ------------------ | ----------------------------------------------- |
 | movement          | Left Analog Stick  |                                                 |
 | rotation          | Right Analog Stick |                                                 |
-| Lock Rotation     | Right Trigger      | When held, the robot will not be able to rotate |
+| Lock Rotation     | Hold B Button      | When held, the robot will not be able to rotate |
 | auto align        | Right Bumper       | Aligns robot with target                        |
 | slowmode speed    | Left Bumper        | makes controls slower for precise movement      |
 | detect april tags | Press X Button     | Sets limelight to detect april tags             |
