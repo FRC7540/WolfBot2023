@@ -106,8 +106,4 @@ public class DrivebaseSubsystem extends SubsystemBase {
   public float getPitch() {
     return ahrs.getPitch();
   }
-
-  public void lockRotation() {
-
-  }
 }
