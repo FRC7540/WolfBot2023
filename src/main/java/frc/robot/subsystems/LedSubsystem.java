@@ -17,7 +17,14 @@ public class LedSubsystem extends SubsystemBase {
     ziaSymbol.setLength(buffer.getLength());
     ziaSymbol.setData(buffer);
     ziaSymbol.start();
+  }
+
+  public void setLeds(boolean active) {
+    if (active) {
     setColor(LedConstants.TIMBERWOLF_R, LedConstants.TIMBERWOLF_G, LedConstants.TIMBERWOLF_B);
+    } else {
+      setColor(0, 0, 0);
+    }
   }
 
   private void setColor(int r, int g, int b) {
