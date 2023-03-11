@@ -118,4 +118,13 @@ public final class Constants {
     public static final double DRIVE_FORWARD_DISTANCE = 4.8;
     public static final double BALANCE_TRIGGER_ANGLE = 5;
   }
+
+  public static class LedConstants {
+    public static final int LED_PWM_PORT = 0;
+    public static final int LED_LENGTH = 48;
+
+    public static final int TIMBERWOLF_R = 50;
+    public static final int TIMBERWOLF_G = 50;
+    public static final int TIMBERWOLF_B = 255;
+  }
 }

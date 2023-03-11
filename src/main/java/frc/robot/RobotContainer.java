@@ -19,6 +19,7 @@ import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.CraneSubsystem;
 import frc.robot.subsystems.DrivebaseSubsystem;
+import frc.robot.subsystems.LedSubsystem;
 import frc.robot.subsystems.PneumaticsSubsystem;
 import frc.robot.subsystems.CameraSubsystem.Pipeline;
 
@@ -49,6 +50,7 @@ public class RobotContainer {
         private final ClawSubsystem clawSubsystem = new ClawSubsystem();
         private final CraneSubsystem craneSubsystem = new CraneSubsystem();
         private final Dashboard dashboard = new Dashboard(drivebaseSubsystem);
+        private final LedSubsystem ledSubsystem = new LedSubsystem();
 
         // Controller Setup
         private final CommandXboxController driverXboxController = new CommandXboxController(
@@ -72,6 +74,7 @@ public class RobotContainer {
                 configureBindings();
                 dashboard.ShuffleboardSetup();
                 networkTableListenerSetup();
+                ledSubsystem.setLeds(true);
         }
 
         private void configureDefaultCommands() {
