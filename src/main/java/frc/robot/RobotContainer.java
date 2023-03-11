@@ -196,7 +196,6 @@ public class RobotContainer {
         }
 
         public Command autonomousCommand = new SequentialCommandGroup(
-                /*
                         new InstantCommand(() -> {
                                 drivebaseSubsystem.resetYaw();
                                 drivebaseSubsystem.resetDisplacement();
@@ -205,7 +204,6 @@ public class RobotContainer {
                                         .until(() -> drivebaseSubsystem
                                                         .getDisplacementY() <= Constants.Autonomous.DRIVE_BACKWARD_DISTANCE),
                         new InstantCommand(() -> drivebaseSubsystem.resetDisplacement(), drivebaseSubsystem),
-                */
                         new RunCommand(() -> drivebaseSubsystem.Drive(0, -0.3, 0), drivebaseSubsystem)
                                         .until(() -> drivebaseSubsystem.getPitch() >= Constants.Autonomous.BALANCE_TRIGGER_ANGLE),
                         autoBalance);
