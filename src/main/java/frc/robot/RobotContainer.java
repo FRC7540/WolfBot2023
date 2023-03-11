@@ -153,7 +153,7 @@ public class RobotContainer {
                 driverXboxController.start().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
                                 .onTrue(new InstantCommand(() -> drivebaseSubsystem.resetYaw(), drivebaseSubsystem));
                 driverXboxController.a().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
-                                .whileTrue(new AutoBalance(drivebaseSubsystem));
+                                .whileTrue(autoBalance);
                 driverXboxController.b().whileTrue(driveRotationLocked);
         }
 
@@ -216,7 +216,9 @@ public class RobotContainer {
                                                         .getDisplacementY() <= Constants.Autonomous.DRIVE_BACKWARD_DISTANCE),
                         new InstantCommand(() -> drivebaseSubsystem.resetDisplacement(), drivebaseSubsystem),
                         new RunCommand(() -> drivebaseSubsystem.Drive(0, -0.3, 0), drivebaseSubsystem)
-                                        .until(() -> drivebaseSubsystem
-                                                        .getPitch() >= Constants.Autonomous.BALANCE_TRIGGER_ANGLE),
+                                        .until(() -> (drivebaseSubsystem
+                                                        .getPitch() >= Constants.Autonomous.BALANCE_TRIGGER_ANGLE)
+                                                        || (drivebaseSubsystem
+                                                                        .getDisplacementY() >= Constants.Autonomous.DRIVE_FORWARD_DISTANCE)),
                         autoBalance);
 }
