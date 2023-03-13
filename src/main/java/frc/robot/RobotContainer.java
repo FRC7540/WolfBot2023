@@ -8,6 +8,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ActuateClaw;
 import frc.robot.commands.AutoAlign;
 import frc.robot.commands.AutoBalance;
+import frc.robot.commands.ChangeLeds;
 import frc.robot.commands.ActuateClaw.Direction;
 import frc.robot.commands.OperateCrane.armPreset;
 import frc.robot.commands.Drive;
@@ -26,6 +27,7 @@ import frc.robot.subsystems.CameraSubsystem.Pipeline;
 import java.util.EnumSet;
 
 import edu.wpi.first.networktables.NetworkTableEvent;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -96,6 +98,8 @@ public class RobotContainer {
                                 operatorXboxController.povUp(),
                                 operatorXboxController.povDown());
                 craneSubsystem.setDefaultCommand(operateCrane);
+
+                ledSubsystem.setDefaultCommand(new ChangeLeds(ledSubsystem, DriverStation.getAlliance()));
         }
 
         /**

@@ -13,6 +13,8 @@ public class LedSubsystem extends SubsystemBase {
   public AddressableLEDBuffer buffer = new AddressableLEDBuffer(LedConstants.LED_LENGTH);
   private AddressableLED ziaSymbol = new AddressableLED(LedConstants.LED_PWM_PORT);
 
+  public boolean active;
+
   public LedSubsystem() {
     ziaSymbol.setLength(buffer.getLength());
     ziaSymbol.setData(buffer);
@@ -21,20 +23,23 @@ public class LedSubsystem extends SubsystemBase {
 
   public void setLeds(boolean active) {
     if (active) {
-    setColor(LedConstants.TIMBERWOLF_R, LedConstants.TIMBERWOLF_G, LedConstants.TIMBERWOLF_B);
+      setColor(LedConstants.TIMBERWOLF_R, LedConstants.TIMBERWOLF_G, LedConstants.TIMBERWOLF_B);
     } else {
       setColor(0, 0, 0);
     }
+    this.active = active;
   }
 
   private void setColor(int r, int g, int b) {
-    for (int i = 0; i < buffer.getLength(); i++) {
-      buffer.setRGB(i, r, g, b);
+    if (active) {
+      for (int i = 0; i < buffer.getLength(); i++) {
+        buffer.setRGB(i, r, g, b);
+      }
+      applyBuffer();
     }
-    ziaSymbol.setData(buffer);
   }
 
-  @Override
-  public void periodic() {
+  public void applyBuffer() {
+    ziaSymbol.setData(buffer);
   }
 }
