@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import frc.robot.Constants.LedConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ActuateClaw;
 import frc.robot.commands.AutoAlign;
@@ -12,6 +13,7 @@ import frc.robot.commands.ActuateClaw.Direction;
 import frc.robot.commands.OperateCrane.armPreset;
 import frc.robot.commands.Drive;
 import frc.robot.commands.DriveRotationLocked;
+import frc.robot.commands.LedChase;
 import frc.robot.commands.OperateCrane;
 import frc.robot.commands.SetCompressor;
 import frc.robot.commands.SetVisionPipeline;
@@ -74,7 +76,6 @@ public class RobotContainer {
                 configureBindings();
                 dashboard.ShuffleboardSetup();
                 networkTableListenerSetup();
-                ledSubsystem.setLeds(true);
         }
 
         private void configureDefaultCommands() {
@@ -96,6 +97,12 @@ public class RobotContainer {
                                 operatorXboxController.povUp(),
                                 operatorXboxController.povDown());
                 craneSubsystem.setDefaultCommand(operateCrane);
+
+                LedChase ledchase = new LedChase(ledSubsystem, 10, true, null, null, null, 255,
+                                215, 0, LedConstants.TIMBERWOLF_R, LedConstants.TIMBERWOLF_G, LedConstants.TIMBERWOLF_B,
+                                24, LedConstants.TIMBERWOLF_R, LedConstants.TIMBERWOLF_G, LedConstants.TIMBERWOLF_B,
+                                10, 10, -10);
+                ledSubsystem.setDefaultCommand(ledchase);
         }
 
         /**
