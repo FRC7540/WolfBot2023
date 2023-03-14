@@ -53,8 +53,6 @@ public class Dashboard extends SubsystemBase {
         public static GenericEntry midElbowEntry;
         public static GenericEntry upperElbowEntry;
 
-        public static GenericEntry allianceLedEntry;
-
         private ShuffleboardLayout driveTuningLayout;
         private ShuffleboardLayout telemetryLayout;
         private ShuffleboardLayout craneTuningLayout;
