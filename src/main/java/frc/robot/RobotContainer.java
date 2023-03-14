@@ -9,6 +9,8 @@ import frc.robot.commands.ActuateClaw;
 import frc.robot.commands.AutoAlign;
 import frc.robot.commands.AutoBalance;
 import frc.robot.commands.ChangeLeds;
+import frc.robot.commands.CraneDown;
+import frc.robot.commands.CraneUp;
 import frc.robot.commands.ActuateClaw.Direction;
 import frc.robot.commands.OperateCrane.armPreset;
 import frc.robot.commands.Drive;
@@ -62,10 +64,6 @@ public class RobotContainer {
         private Drive drive;
         private OperateCrane operateCrane;
 
-        private DriveRotationLocked driveRotationLocked;
-
-        private AutoBalance autoBalance = new AutoBalance(drivebaseSubsystem);
-
         // Shuffleboard Entries
 
         /**
@@ -87,16 +85,11 @@ public class RobotContainer {
                                 leftBumper::getAsBoolean);
                 drivebaseSubsystem.setDefaultCommand(drive);
 
-                driveRotationLocked = new DriveRotationLocked(drivebaseSubsystem, driverXboxController::getLeftX,
-                                driverXboxController::getLeftY, leftBumper::getAsBoolean);
-
                 // Claw default command
                 clawSubsystem.setDefaultCommand(new InstantCommand(() -> clawSubsystem.stopClaw(), clawSubsystem));
 
                 // Crane default command
-                operateCrane = new OperateCrane(craneSubsystem, operatorXboxController::getLeftY,
-                                operatorXboxController.povUp(),
-                                operatorXboxController.povDown());
+                operateCrane = new OperateCrane(craneSubsystem, operatorXboxController::getLeftY);
                 craneSubsystem.setDefaultCommand(operateCrane);
 
                 ledSubsystem.setDefaultCommand(new ChangeLeds(ledSubsystem, DriverStation.getAlliance()));
@@ -122,6 +115,8 @@ public class RobotContainer {
                                 .whileTrue(new ActuateClaw(clawSubsystem, Direction.BACKWARD));
                 operatorXboxController.leftTrigger().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
                                 .whileTrue(new ActuateClaw(clawSubsystem, Direction.FORWARD));
+                operatorXboxController.povUp().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY).onTrue(new CraneUp(craneSubsystem));
+                operatorXboxController.povDown().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY).onTrue(new CraneDown(craneSubsystem));
                 operatorXboxController.x().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
                                 .onTrue(new InstantCommand(() -> operateCrane.recallPreset(armPreset.HOME),
                                                 craneSubsystem));
@@ -156,9 +151,8 @@ public class RobotContainer {
                                 .whileTrue(new AutoAlign(drivebaseSubsystem, cameraSubsystem));
                 driverXboxController.start().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
                                 .onTrue(new InstantCommand(() -> drivebaseSubsystem.resetYaw(), drivebaseSubsystem));
-                driverXboxController.a().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
-                                .whileTrue(autoBalance);
-                driverXboxController.b().whileTrue(driveRotationLocked);
+                driverXboxController.b().whileTrue(new DriveRotationLocked(drivebaseSubsystem, driverXboxController::getLeftX,
+                driverXboxController::getLeftY, () -> driverXboxController.leftBumper().getAsBoolean()));
         }
 
         private void networkTableListenerSetup() {
@@ -224,5 +218,5 @@ public class RobotContainer {
                                                         .getPitch() >= Constants.Autonomous.BALANCE_TRIGGER_ANGLE)
                                                         || (drivebaseSubsystem
                                                                         .getDisplacementY() >= Constants.Autonomous.DRIVE_FORWARD_DISTANCE)),
-                        autoBalance);
+                        new AutoBalance(drivebaseSubsystem));
 }

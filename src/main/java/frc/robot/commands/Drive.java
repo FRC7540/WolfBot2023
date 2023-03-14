@@ -57,7 +57,7 @@ public class Drive extends CommandBase {
   }
 
   private double getSpeedMultiplier() {
-    boolean slowModeEnabled = slowmodeButton.getAsBoolean();
+    boolean slowModeEnabled = !slowmodeButton.getAsBoolean();
     if (slowModeEnabled) {
       return Dashboard.slowmodeSpeed.get().getDouble();
     } else {

@@ -59,8 +59,10 @@
       "/Shuffleboard/Test/Arm Preset": "String Chooser",
       "/Shuffleboard/Tuning/Arm PID/controller": "PIDController",
       "/Shuffleboard/Tuning/Auto Align PID/controller": "PIDController",
+      "/Shuffleboard/Tuning/Auto Balance PID/balance controller": "PIDController",
       "/Shuffleboard/Tuning/Auto Balance PID/controller": "PIDController",
-      "/Shuffleboard/Tuning/Gyro Selection": "String Chooser"
+      "/Shuffleboard/Tuning/Gyro Selection": "String Chooser",
+      "/Shuffleboard/Tuning/Rotation Zero PID/Controller": "PIDController"
     }
   },
   "NetworkTables": {
