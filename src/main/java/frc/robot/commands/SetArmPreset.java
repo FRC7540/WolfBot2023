@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.CraneSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -18,7 +19,9 @@ public class SetArmPreset extends ConditionalCommand {
     super(
         new InstantCommand(() -> craneSubsystem.setAngle(angle), craneSubsystem),
         new SequentialCommandGroup(
-            new ConditionalCommand(new CraneUp(craneSubsystem), new CraneDown(craneSubsystem), () -> shoulder)),
+            new ConditionalCommand(new CraneUp(craneSubsystem), new CraneDown(craneSubsystem), () -> shoulder),
+            new WaitCommand(0.6),
+            new InstantCommand(() -> craneSubsystem.setAngle(angle))),
         () -> craneSubsystem.isArmUp == shoulder);
   }
 }
