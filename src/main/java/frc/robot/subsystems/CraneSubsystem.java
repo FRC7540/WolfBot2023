@@ -34,7 +34,7 @@ public class CraneSubsystem extends SubsystemBase {
       PneumaticsModuleType.CTREPCM, Constants.PneumaticsConstants.CRANE_SOLENOID_EXTEND,
       Constants.PneumaticsConstants.CRANE_SOLENOID_RETRACT);
 
-  public PIDController elbowPidController = new PIDController(0.012, 0, 0.0001);
+  public PIDController elbowPidController = new PIDController(0.012, 0.0007, 0.0005);
   private double elbowAngleSetPoint = 0d;
   private double minAngle = Constants.CraneConstants.DEFAULT_MINIMUM_ANGLE_LOW;
   private double maxAngleHigh = Constants.CraneConstants.DEFAULT_MAXIMUM_ANGLE_HIGH;
