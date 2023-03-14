@@ -60,10 +60,6 @@ public class RobotContainer {
         private Drive drive;
         private OperateCrane operateCrane;
 
-        private DriveRotationLocked driveRotationLocked;
-
-        private AutoBalance autoBalance = new AutoBalance(drivebaseSubsystem);
-
         // Shuffleboard Entries
 
         /**
@@ -84,9 +80,6 @@ public class RobotContainer {
                                 driverXboxController::getLeftY, driverXboxController::getRightX,
                                 leftBumper::getAsBoolean);
                 drivebaseSubsystem.setDefaultCommand(drive);
-
-                driveRotationLocked = new DriveRotationLocked(drivebaseSubsystem, driverXboxController::getLeftX,
-                                driverXboxController::getLeftY, leftBumper::getAsBoolean);
 
                 // Claw default command
                 clawSubsystem.setDefaultCommand(new InstantCommand(() -> clawSubsystem.stopClaw(), clawSubsystem));
@@ -152,9 +145,8 @@ public class RobotContainer {
                                 .whileTrue(new AutoAlign(drivebaseSubsystem, cameraSubsystem));
                 driverXboxController.start().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
                                 .onTrue(new InstantCommand(() -> drivebaseSubsystem.resetYaw(), drivebaseSubsystem));
-                driverXboxController.a().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
-                                .whileTrue(autoBalance);
-                driverXboxController.b().whileTrue(driveRotationLocked);
+                driverXboxController.b().whileTrue(new DriveRotationLocked(drivebaseSubsystem, driverXboxController::getLeftX,
+                driverXboxController::getLeftY, () -> driverXboxController.leftBumper().getAsBoolean()));
         }
 
         private void networkTableListenerSetup() {
@@ -220,5 +212,5 @@ public class RobotContainer {
                                                         .getPitch() >= Constants.Autonomous.BALANCE_TRIGGER_ANGLE)
                                                         || (drivebaseSubsystem
                                                                         .getDisplacementY() >= Constants.Autonomous.DRIVE_FORWARD_DISTANCE)),
-                        autoBalance);
+                        new AutoBalance(drivebaseSubsystem));
 }

@@ -26,14 +26,18 @@ public class DriveRotationLocked extends CommandBase {
   private double originalRotation;
 
   /** Creates a new Drive. */
-  public DriveRotationLocked(DrivebaseSubsystem drivebase, DoubleSupplier translateX, DoubleSupplier translateY, BooleanSupplier slowmodeButton) {
+  public DriveRotationLocked(DrivebaseSubsystem drivebase, DoubleSupplier translateX, DoubleSupplier translateY,
+      BooleanSupplier slowmodeButton) {
     this.drivebase = drivebase;
     this.translateX = translateX;
     this.translateY = translateY;
     this.slowmodeButton = slowmodeButton;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivebase);
+  }
 
+  @Override
+  public void initialize() {
     originalRotation = drivebase.getYaw();
   }
 
@@ -47,7 +51,8 @@ public class DriveRotationLocked extends CommandBase {
     drivebase.Drive(accelLimiterX.calculate(x), accelLimiterY.calculate(y), 0);
 
     if (drivebase.getYaw() != originalRotation) {
-      CommandScheduler.getInstance().schedule(new ZeroRotation(drivebase, originalRotation).until(() -> drivebase.getYaw() == originalRotation));
+      CommandScheduler.getInstance().schedule(
+          new ZeroRotation(drivebase, originalRotation % 360).until(() -> drivebase.getYaw() == originalRotation));
     }
   }
 
@@ -60,7 +65,7 @@ public class DriveRotationLocked extends CommandBase {
   }
 
   private double getSpeedMultiplier() {
-    boolean slowModeEnabled = slowmodeButton.getAsBoolean();
+    boolean slowModeEnabled = !slowmodeButton.getAsBoolean();
     if (slowModeEnabled) {
       return Dashboard.slowmodeSpeed.get().getDouble();
     } else {

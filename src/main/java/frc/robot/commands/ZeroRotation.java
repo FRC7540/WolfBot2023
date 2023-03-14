@@ -5,33 +5,24 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
-import frc.robot.Constants;
 import frc.robot.subsystems.DrivebaseSubsystem;
 
 public class ZeroRotation extends PIDCommand {
-  private ShuffleboardLayout pidLayout = Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
-      .getLayout("Rotation Zero PID", BuiltInLayouts.kList)
-      .withSize(4, 4);
 
   public ZeroRotation(DrivebaseSubsystem drivebaseSubsystem, double setRotation) {
     super(
         // The controller that the command will use
         new PIDController(0.05, 0, 0),
         // This should return the measurement
-        drivebaseSubsystem::getYaw,
+        () -> drivebaseSubsystem.getYaw() % 360,
         // This should return the setpoint (can also be a constant)
-        () -> setRotation,
+        () -> setRotation % 360,
         // This uses the output
         output -> {
           // Use the output here
           drivebaseSubsystem.Drive(0, 0, output);
         });
-    pidLayout.add("Controller", this.m_controller).withWidget(BuiltInWidgets.kPIDController);
 
     addRequirements(drivebaseSubsystem);
   }
