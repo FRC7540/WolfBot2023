@@ -24,7 +24,7 @@ public class ChangeLeds extends CommandBase {
 
   @Override
   public void initialize() {
-    alliance = DriverStation.getAlliance();
+    alliance = Alliance.Invalid;
   }
 
   private void setAlliance() {
