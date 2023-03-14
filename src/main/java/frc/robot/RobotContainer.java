@@ -8,6 +8,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ActuateClaw;
 import frc.robot.commands.AutoAlign;
 import frc.robot.commands.AutoBalance;
+import frc.robot.commands.ChangeLeds;
 import frc.robot.commands.CraneDown;
 import frc.robot.commands.CraneUp;
 import frc.robot.commands.ActuateClaw.Direction;
@@ -89,6 +90,8 @@ public class RobotContainer {
                 // Crane default command
                 operateCrane = new OperateCrane(craneSubsystem, operatorXboxController::getLeftY);
                 craneSubsystem.setDefaultCommand(operateCrane);
+
+                ledSubsystem.setDefaultCommand(new ChangeLeds(ledSubsystem));
         }
 
         /**

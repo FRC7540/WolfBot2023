@@ -249,6 +249,5 @@ public class Dashboard extends SubsystemBase {
                                 .withProperties(Map.of("min", Constants.CraneConstants.Presets.UPPER_ELBOW - 20, "max",
                                                 Constants.CraneConstants.Presets.UPPER_ELBOW + 20))
                                 .getEntry();
-
         }
 }
