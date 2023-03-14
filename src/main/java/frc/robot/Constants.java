@@ -120,7 +120,7 @@ public final class Constants {
   }
 
   public static class LedConstants {
-    public static final int LED_PWM_PORT = 0;
+    public static final int LED_PWM_PORT = 9;
     public static final int LED_LENGTH = 48;
 
     public static final int TIMBERWOLF_R = 50;
