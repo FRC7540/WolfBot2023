@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.LedConstants;
@@ -16,14 +17,17 @@ public class ChangeLeds extends CommandBase {
   private int g;
   private int b;
 
-  public ChangeLeds(LedSubsystem ledSubsystem, Alliance alliance) {
+  public ChangeLeds(LedSubsystem ledSubsystem) {
     this.ledSubsystem = ledSubsystem;
-    this.alliance = alliance;
     addRequirements(ledSubsystem);
   }
 
   @Override
   public void initialize() {
+    alliance = DriverStation.getAlliance();
+  }
+
+  private void setAlliance() {
     if (alliance == Alliance.Red) {
       r = 255;
       g = 0;
@@ -37,18 +41,18 @@ public class ChangeLeds extends CommandBase {
       g = LedConstants.TIMBERWOLF_G;
       b = LedConstants.TIMBERWOLF_B;
     }
-  }
-
-  @Override
-  public void execute() {
     for (int i = 0; i < ledSubsystem.buffer.getLength(); i++) {
       ledSubsystem.buffer.setRGB(i, r, g, b);
     }
   }
 
   @Override
-  public void end(boolean interrupted) {
-    ledSubsystem.applyBuffer();
+  public void execute() {
+    if (alliance != DriverStation.getAlliance()) {
+      alliance = DriverStation.getAlliance();
+      setAlliance();
+      ledSubsystem.applyBuffer();
+    }
   }
 
   @Override

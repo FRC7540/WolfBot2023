@@ -29,7 +29,6 @@ import frc.robot.subsystems.CameraSubsystem.Pipeline;
 import java.util.EnumSet;
 
 import edu.wpi.first.networktables.NetworkTableEvent;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -92,7 +91,7 @@ public class RobotContainer {
                 operateCrane = new OperateCrane(craneSubsystem, operatorXboxController::getLeftY);
                 craneSubsystem.setDefaultCommand(operateCrane);
 
-                ledSubsystem.setDefaultCommand(new ChangeLeds(ledSubsystem, DriverStation.getAlliance()));
+                ledSubsystem.setDefaultCommand(new ChangeLeds(ledSubsystem));
         }
 
         /**
