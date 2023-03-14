@@ -18,10 +18,13 @@ public class SetArmPreset extends ConditionalCommand {
   public SetArmPreset(CraneSubsystem craneSubsystem, boolean shoulder, double angle) {
     super(
         new InstantCommand(() -> craneSubsystem.setAngle(angle), craneSubsystem),
-        new SequentialCommandGroup(
-            new ConditionalCommand(new CraneUp(craneSubsystem), new CraneDown(craneSubsystem), () -> shoulder),
-            new WaitCommand(0.6),
-            new InstantCommand(() -> craneSubsystem.setAngle(angle))),
+        new ConditionalCommand(new SequentialCommandGroup(
+          new InstantCommand(() -> craneSubsystem.setAngle(angle)),
+          new CraneUp(craneSubsystem)
+        ), new SequentialCommandGroup(
+          new CraneDown(craneSubsystem),
+          new WaitCommand(0.6),
+          new InstantCommand(() -> craneSubsystem.setAngle(angle))), () -> shoulder),
         () -> craneSubsystem.isArmUp == shoulder);
   }
 }
