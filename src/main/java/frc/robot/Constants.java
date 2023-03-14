@@ -100,11 +100,11 @@ public final class Constants {
 
       // Upper Node Preset
       public static final boolean UPPER_SHOULDER = true;
-      public static final double UPPER_ELBOW = 180;
+      public static final double UPPER_ELBOW = 165;
 
       // Lower Node Preset
       public static final boolean MID_SHOULDER = true;
-      public static final double MID_ELBOW = 250;
+      public static final double MID_ELBOW = 200;
 
       // Hybrid Node Preset
       public static final boolean LOWER_SHOULDER = false;
