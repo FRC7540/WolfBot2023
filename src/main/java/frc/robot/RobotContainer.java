@@ -142,7 +142,7 @@ public class RobotContainer {
                                                                                 ? armPreset.UPPER_NODE
                                                                                 : armPreset.SHELF_PICKUP),
                                                 craneSubsystem));
-                operatorXboxController.leftBumper().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
+                operatorXboxController.rightBumper().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
                                 .onTrue(new ConditionalCommand(
                                                 new SetVisionPipeline(cameraSubsystem, Pipeline.RETRO_TAPE),
                                                 new SetVisionPipeline(cameraSubsystem, Pipeline.APRIL_TAG),
