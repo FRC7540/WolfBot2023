@@ -25,18 +25,19 @@ Please make sure that you use a shuffleboard tile size of 64, rather than the de
 
 ### Operator Controls
 
-| control             | binding           | description                                    |
-| ------------------- | ----------------- | ---------------------------------------------- |
-| floor preset        | Press A Button    | Normal: Floor Preset, Score: Lower Goal Preset |
-| middle score preset | Press B Button    | Score: Middle Goal Preset                      |
-| shelf preset        | Press Y Button    | Normal: Shelf Preset, Score: High Goal Preset  |
-| home preset         | Press X Button    | Normal: Home Preset, Score: Home Preset        |
-| scoring mode        | Hold Left Bumper  | When held, puts presets into Score mode        |
-| elbow movement      | Left Analog Stick | Y axis moves elbow joint                       |
-| opens claw          | Right Trigger     | will open claw for grabbing game pieces        |
-| closes claw         | Left Trigger      | will close claw for chomping game pieces       |
-| crane shoulder up   | Press D-Pad up    | Makes the shoulder go up                       |
-| crane shoulder down | Press D-Pad down  | Makes the shoulder go down                     |
+| control             | binding            | description                                               |
+| ------------------- | ------------------ | --------------------------------------------------------- |
+| floor preset        | Press A Button     | Normal: Floor Preset, Score: Lower Goal Preset            |
+| middle score preset | Press B Button     | Score: Middle Goal Preset                                 |
+| shelf preset        | Press Y Button     | Normal: Shelf Preset, Score: High Goal Preset             |
+| home preset         | Press X Button     | Normal: Home Preset, Score: Home Preset                   |
+| scoring mode        | Hold Left Bumper   | When held, puts presets into Score mode                   |
+| limelight pipeline  | Press Right Bumper | When pressed, toggles between the two limelight pipelines |
+| elbow movement      | Left Analog Stick  | Y axis moves elbow joint                                  |
+| opens claw          | Right Trigger      | will open claw for grabbing game pieces                   |
+| closes claw         | Left Trigger       | will close claw for chomping game pieces                  |
+| crane shoulder up   | Press D-Pad up     | Makes the shoulder go up                                  |
+| crane shoulder down | Press D-Pad down   | Makes the shoulder go down                                |
 
 ## Limelight pipeline
 
