@@ -29,6 +29,7 @@ import java.util.EnumSet;
 
 import edu.wpi.first.networktables.NetworkTableEvent;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -113,8 +114,10 @@ public class RobotContainer {
                                 .whileTrue(new ActuateClaw(clawSubsystem, Direction.BACKWARD));
                 operatorXboxController.leftTrigger().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
                                 .whileTrue(new ActuateClaw(clawSubsystem, Direction.FORWARD));
-                operatorXboxController.povUp().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY).onTrue(new CraneUp(craneSubsystem));
-                operatorXboxController.povDown().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY).onTrue(new CraneDown(craneSubsystem));
+                operatorXboxController.povUp().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
+                                .onTrue(new CraneUp(craneSubsystem));
+                operatorXboxController.povDown().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
+                                .onTrue(new CraneDown(craneSubsystem));
                 operatorXboxController.x().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
                                 .onTrue(new InstantCommand(() -> operateCrane.recallPreset(armPreset.HOME),
                                                 craneSubsystem));
@@ -139,6 +142,11 @@ public class RobotContainer {
                                                                                 ? armPreset.UPPER_NODE
                                                                                 : armPreset.SHELF_PICKUP),
                                                 craneSubsystem));
+                operatorXboxController.leftBumper().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
+                                .onTrue(new ConditionalCommand(
+                                                new SetVisionPipeline(cameraSubsystem, Pipeline.RETRO_TAPE),
+                                                new SetVisionPipeline(cameraSubsystem, Pipeline.APRIL_TAG),
+                                                () -> cameraSubsystem.getPipeline() == Pipeline.APRIL_TAG));
 
                 // Driver controller Bindings
                 driverXboxController.x().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
