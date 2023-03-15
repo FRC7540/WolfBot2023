@@ -14,7 +14,6 @@ import frc.robot.commands.CraneUp;
 import frc.robot.commands.ActuateClaw.Direction;
 import frc.robot.commands.OperateCrane.armPreset;
 import frc.robot.commands.Drive;
-import frc.robot.commands.DriveRotationLocked;
 import frc.robot.commands.OperateCrane;
 import frc.robot.commands.SetCompressor;
 import frc.robot.commands.SetVisionPipeline;
@@ -150,8 +149,6 @@ public class RobotContainer {
                                 .whileTrue(new AutoAlign(drivebaseSubsystem, cameraSubsystem));
                 driverXboxController.start().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
                                 .onTrue(new InstantCommand(() -> drivebaseSubsystem.resetYaw(), drivebaseSubsystem));
-                driverXboxController.b().whileTrue(new DriveRotationLocked(drivebaseSubsystem, driverXboxController::getLeftX,
-                driverXboxController::getLeftY, () -> driverXboxController.leftBumper().getAsBoolean()));
         }
 
         private void networkTableListenerSetup() {
