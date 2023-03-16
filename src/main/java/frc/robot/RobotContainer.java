@@ -14,6 +14,7 @@ import frc.robot.commands.CraneUp;
 import frc.robot.commands.ActuateClaw.Direction;
 import frc.robot.commands.OperateCrane.armPreset;
 import frc.robot.commands.Drive;
+import frc.robot.commands.LockedDrive;
 import frc.robot.commands.OperateCrane;
 import frc.robot.commands.SetCompressor;
 import frc.robot.commands.SetVisionPipeline;
@@ -155,8 +156,10 @@ public class RobotContainer {
                                 .onTrue(new SetVisionPipeline(cameraSubsystem, Pipeline.RETRO_TAPE));
                 driverXboxController.rightBumper().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
                                 .whileTrue(new AutoAlign(drivebaseSubsystem, cameraSubsystem));
+                Trigger leftBumper = driverXboxController.leftBumper();
                 driverXboxController.start().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
                                 .onTrue(new InstantCommand(() -> drivebaseSubsystem.resetYaw(), drivebaseSubsystem));
+                                driverXboxController.a().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY).whileTrue(new LockedDrive(drivebaseSubsystem, driverXboxController::getLeftX, driverXboxController::getLeftY, leftBumper::getAsBoolean));
         }
 
         private void networkTableListenerSetup() {
