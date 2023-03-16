@@ -13,7 +13,7 @@ public class LedSubsystem extends SubsystemBase {
   public AddressableLEDBuffer buffer = new AddressableLEDBuffer(LedConstants.LED_LENGTH);
   private AddressableLED ziaSymbol = new AddressableLED(LedConstants.LED_PWM_PORT);
 
-  public boolean active;
+  public boolean active = true;
 
   public LedSubsystem() {
     ziaSymbol.setLength(buffer.getLength());
