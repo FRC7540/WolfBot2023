@@ -22,11 +22,6 @@ public class ChangeLeds extends CommandBase {
     addRequirements(ledSubsystem);
   }
 
-  @Override
-  public void initialize() {
-    alliance = Alliance.Invalid;
-  }
-
   private void setAlliance() {
     if (alliance == Alliance.Red) {
       r = 255;

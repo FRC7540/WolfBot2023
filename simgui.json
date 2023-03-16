@@ -1,5 +1,10 @@
 {
   "HALProvider": {
+    "Addressable LEDs": {
+      "window": {
+        "visible": true
+      }
+    },
     "Other Devices": {
       "Compressor[0]": {
         "header": {
@@ -62,6 +67,7 @@
       "/Shuffleboard/Tuning/Auto Balance PID/balance controller": "PIDController",
       "/Shuffleboard/Tuning/Auto Balance PID/controller": "PIDController",
       "/Shuffleboard/Tuning/Gyro Selection": "String Chooser",
+      "/Shuffleboard/Tuning/Rotation PID/rotation controller": "PIDController",
       "/Shuffleboard/Tuning/Rotation Zero PID/Controller": "PIDController"
     }
   },

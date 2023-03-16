@@ -74,7 +74,6 @@ public class RobotContainer {
                 configureBindings();
                 dashboard.ShuffleboardSetup();
                 networkTableListenerSetup();
-                ledSubsystem.setLeds(true);
         }
 
         private void configureDefaultCommands() {
