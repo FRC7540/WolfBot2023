@@ -29,7 +29,7 @@ public class LockedDrive extends CommandBase {
 
   private float targetHeading;
 
-  private PIDController rotationController = new PIDController(0.001, 0, 0);
+  private PIDController rotationController = new PIDController(0.01, 0.003, 0);
   private ShuffleboardLayout pidLayout = Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
       .getLayout("Rotation PID", BuiltInLayouts.kList)
       .withSize(4, 4);
@@ -65,7 +65,7 @@ public class LockedDrive extends CommandBase {
     }
     double z = rotationController.calculate(error, 0);
 
-    drivebase.Drive(accelLimiterX.calculate(x), accelLimiterY.calculate(y), z);
+    drivebase.Drive(accelLimiterX.calculate(x), accelLimiterY.calculate(y), -z);
   }
 
   private double getDeadzone(Double input) {
