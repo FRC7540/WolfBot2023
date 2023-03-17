@@ -157,10 +157,8 @@ public class RobotContainer {
                                 .whileTrue(new AutoAlign(drivebaseSubsystem, cameraSubsystem));
                 Trigger leftBumper = driverXboxController.leftBumper();
                 driverXboxController.start().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
-                                .onTrue(new InstantCommand(() -> drivebaseSubsystem.resetNav(), drivebaseSubsystem));
-                driverXboxController.a().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
-                                .whileTrue(new LockedDrive(drivebaseSubsystem, driverXboxController::getLeftX,
-                                                driverXboxController::getLeftY, leftBumper::getAsBoolean));
+                                .onTrue(new InstantCommand(() -> drivebaseSubsystem.resetYaw(), drivebaseSubsystem));
+                                driverXboxController.a().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY).whileTrue(new LockedDrive(drivebaseSubsystem, driverXboxController::getLeftX, driverXboxController::getLeftY, leftBumper::getAsBoolean));
         }
 
         private void networkTableListenerSetup() {
@@ -213,15 +211,18 @@ public class RobotContainer {
         }
 
         public Command autonomousCommand = new SequentialCommandGroup(
-                        new InstantCommand(() -> drivebaseSubsystem.resetNav(), drivebaseSubsystem),
+                        new InstantCommand(() -> {
+                                drivebaseSubsystem.resetYaw();
+                                drivebaseSubsystem.resetDisplacement();
+                        }, drivebaseSubsystem),
                         new RunCommand(() -> drivebaseSubsystem.Drive(0, 0.3, 0), drivebaseSubsystem)
                                         .until(() -> drivebaseSubsystem
-                                                        .getDisplacementY() <= Constants.Autonomous.DRIVE_BACKWARD_DISTANCE).withTimeout(1.5),
+                                                        .getDisplacementY() <= Constants.Autonomous.DRIVE_BACKWARD_DISTANCE),
                         new InstantCommand(() -> drivebaseSubsystem.resetDisplacement(), drivebaseSubsystem),
-                        new RunCommand(() -> drivebaseSubsystem.Drive(0, -0.4, 0), drivebaseSubsystem)
+                        new RunCommand(() -> drivebaseSubsystem.Drive(0, -0.3, 0), drivebaseSubsystem)
                                         .until(() -> (drivebaseSubsystem
                                                         .getPitch() >= Constants.Autonomous.BALANCE_TRIGGER_ANGLE)
                                                         || (drivebaseSubsystem
-                                                                        .getDisplacementY() >= Constants.Autonomous.DRIVE_FORWARD_DISTANCE)).withTimeout(3),
-                        new AutoBalance(drivebaseSubsystem).until(() -> drivebaseSubsystem.getYaw() < Constants.Autonomous.BALANCE_TRIGGER_ANGLE));
+                                                                        .getDisplacementY() >= Constants.Autonomous.DRIVE_FORWARD_DISTANCE)),
+                        new AutoBalance(drivebaseSubsystem));
 }

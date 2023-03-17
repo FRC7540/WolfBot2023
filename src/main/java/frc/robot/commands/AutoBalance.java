@@ -25,7 +25,7 @@ public class AutoBalance extends PIDCommand {
   public AutoBalance(DrivebaseSubsystem drivebaseSubsystem) {
     super(
         // The controller that the command will use
-        new PIDController(0.015, 0, 0.01),
+        new PIDController(0.01, 0, 0),
         // This should return the measurement
         drivebaseSubsystem::getPitch,
         // This should return the setpoint (can also be a constant)

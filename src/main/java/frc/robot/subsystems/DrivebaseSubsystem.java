@@ -116,9 +116,4 @@ public class DrivebaseSubsystem extends SubsystemBase {
   public void resetDisplacement() {
     ahrs.resetDisplacement();
   }
-
-  public void resetNav() {
-    resetDisplacement();
-    resetYaw();
-  }
 }

@@ -96,7 +96,7 @@ public final class Constants {
 
       // Slide Pickup Preset
       public static final boolean SHELF_SHOULDER = true;
-      public static final double SHELF_ELBOW = 202;
+      public static final double SHELF_ELBOW = 190;
 
       // Upper Node Preset
       public static final boolean UPPER_SHOULDER = true;
@@ -116,11 +116,11 @@ public final class Constants {
   public static class Autonomous {
     public static final double DRIVE_BACKWARD_DISTANCE = -0.75;
     public static final double DRIVE_FORWARD_DISTANCE = 4.8;
-    public static final double BALANCE_TRIGGER_ANGLE = 10;
+    public static final double BALANCE_TRIGGER_ANGLE = 5;
   }
 
   public static class LedConstants {
-    public static final int LED_PWM_PORT = 1;
+    public static final int LED_PWM_PORT = 9;
     public static final int LED_LENGTH = 48;
 
     public static final int TIMBERWOLF_R = 50;
