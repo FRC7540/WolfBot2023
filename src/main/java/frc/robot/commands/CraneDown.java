@@ -15,11 +15,17 @@ import frc.robot.subsystems.CraneSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class CraneDown extends SequentialCommandGroup {
   /** Creates a new CraneDown. */
+
+  public boolean cooldown = false;
+
   public CraneDown(CraneSubsystem craneSubsystem) {
     addCommands(
+                new InstantCommand(() -> cooldown = true),
                 new InstantCommand(() -> craneSubsystem.setMinAngle(Constants.CraneConstants.DEFAULT_MINIMUM_ANGLE_LOW)),
                 new InstantCommand(() -> craneSubsystem.ShoulderDown()),
                 new WaitCommand(0.6),
-                new InstantCommand(() -> craneSubsystem.setAngle(Constants.CraneConstants.AUTO_LOW_ANGLE)));
+                new InstantCommand(() -> craneSubsystem.setAngle(Constants.CraneConstants.AUTO_LOW_ANGLE)),
+                new WaitCommand(2),
+                new InstantCommand(() -> cooldown = false));
   }
 }

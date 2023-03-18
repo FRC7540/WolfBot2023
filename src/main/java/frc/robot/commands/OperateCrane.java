@@ -59,13 +59,13 @@ public class OperateCrane extends CommandBase {
   }
 
   public void craneUp() {
-    if (!craneSubsystem.isArmUp) {
+    if (!craneSubsystem.isArmUp && !craneDown.cooldown) {
       craneUp.schedule();
     }
   }
 
   public void craneDown() {
-    if (craneSubsystem.isArmUp) {
+    if (craneSubsystem.isArmUp && !craneUp.cooldown) {
       craneDown.schedule();
     }
   } 
