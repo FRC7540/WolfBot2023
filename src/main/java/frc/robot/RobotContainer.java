@@ -218,10 +218,10 @@ public class RobotContainer {
                                         .until(() -> drivebaseSubsystem
                                                         .getDisplacementY() <= Constants.Autonomous.DRIVE_BACKWARD_DISTANCE).withTimeout(1.5),
                         new InstantCommand(() -> drivebaseSubsystem.resetDisplacement(), drivebaseSubsystem),
-                        new RunCommand(() -> drivebaseSubsystem.Drive(0, -0.3, 0), drivebaseSubsystem)
+                        new RunCommand(() -> drivebaseSubsystem.Drive(0, -0.4, 0), drivebaseSubsystem)
                                         .until(() -> (drivebaseSubsystem
                                                         .getPitch() >= Constants.Autonomous.BALANCE_TRIGGER_ANGLE)
                                                         || (drivebaseSubsystem
-                                                                        .getDisplacementY() >= Constants.Autonomous.DRIVE_FORWARD_DISTANCE)).withTimeout(3),
+                                                                        .getDisplacementY() >= Constants.Autonomous.DRIVE_FORWARD_DISTANCE)).withTimeout(3.5),
                         new AutoBalance(drivebaseSubsystem).until(() -> drivebaseSubsystem.getPitch() < Constants.Autonomous.BALANCE_TRIGGER_ANGLE));
 }
