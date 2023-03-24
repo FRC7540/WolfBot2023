@@ -42,6 +42,9 @@ public class Dashboard extends SubsystemBase {
         public static GenericEntry armSpeedMultiplier;
         public static GenericEntry armSetPointReadout;
         public static GenericEntry pressureReadout;
+        public static GenericEntry balanceTriggerAngle;
+        public static GenericEntry upperThresholdAngle;
+        public static GenericEntry finishThresholdAngle;
         public static NetworkTableEntry gyroSelectEntry = table.getEntry("Tuning/Gyro Selection/active");
         private DrivebaseSubsystem drivebaseSubsystem;
 
@@ -56,6 +59,7 @@ public class Dashboard extends SubsystemBase {
         private ShuffleboardLayout driveTuningLayout;
         private ShuffleboardLayout telemetryLayout;
         private ShuffleboardLayout craneTuningLayout;
+        private ShuffleboardLayout autoBalanceTuningLayout;
 
         /** Creates a new ShuffleboardSubsystem. */
         public Dashboard(DrivebaseSubsystem drivebaseSubsystem) {
@@ -248,6 +252,28 @@ public class Dashboard extends SubsystemBase {
                                 .withWidget(BuiltInWidgets.kNumberSlider)
                                 .withProperties(Map.of("min", Constants.CraneConstants.Presets.UPPER_ELBOW - 20, "max",
                                                 Constants.CraneConstants.Presets.UPPER_ELBOW + 20))
+                                .getEntry();
+
+                autoBalanceTuningLayout = Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
+                                .getLayout("Auto Balance", BuiltInLayouts.kList)
+                                .withSize(3, 5);
+
+                balanceTriggerAngle = autoBalanceTuningLayout
+                                .add("Balance Trigger Angle", Constants.Autonomous.BALANCE_TRIGGER_ANGLE)
+                                .withWidget(BuiltInWidgets.kNumberSlider)
+                                .withProperties(Map.of("min", 0, "max", 15))
+                                .getEntry();
+
+                upperThresholdAngle = autoBalanceTuningLayout
+                                .add("Upper Threshold Angle", Constants.Autonomous.BALANCE_GREATER_THRESHOLD_ANGLE)
+                                .withWidget(BuiltInWidgets.kNumberSlider)
+                                .withProperties(Map.of("min", 0, "max", 15))
+                                .getEntry();
+
+                finishThresholdAngle = autoBalanceTuningLayout
+                                .add("Finish Threshold Angle", Constants.Autonomous.BALANCE_FINISH_THRESHOLD_ANGLE)
+                                .withWidget(BuiltInWidgets.kNumberSlider)
+                                .withProperties(Map.of("min", 0, "max", 15))
                                 .getEntry();
         }
 }
