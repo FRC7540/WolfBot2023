@@ -4,7 +4,7 @@ area_similarity:0
 aspect_max:20.000000
 aspect_min:0.000000
 black_level:0
-blue_balance:1758
+blue_balance:500
 botfloorsnap:0
 botlength:0.7112
 botwidth:0.7112
@@ -50,15 +50,15 @@ image_source:0
 img_to_show:0
 intersection_filter:0
 invert_hue:0
-lcgain:17
+lcgain:4
 multigroup_max:7
 multigroup_min:1
 multigroup_rejector:0
 pipeline_led_enabled:1
-pipeline_led_power:60
+pipeline_led_power:100
 pipeline_res:0
 pipeline_type:0
-red_balance:748
+red_balance:500
 roi_x:0.000000
 roi_y:0.000000
 rsf:0.000000
