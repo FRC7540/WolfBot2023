@@ -162,6 +162,9 @@ public class RobotContainer {
                 AutoAlign autoAlign = new AutoAlign(cameraSubsystem, Dashboard.autoAlignController);
                 driverXboxController.rightBumper().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
                                 .whileTrue(new LockedDrive(drivebaseSubsystem, autoAlign::getOutput, driverXboxController::getLeftY, () -> false, Dashboard.rotationController));
+                Trigger driverRightTrigger = driverXboxController.rightTrigger();
+                driverRightTrigger.onTrue(new InstantCommand(()-> drivebaseSubsystem.setFieldOrientedDriveEnabled(false)));
+                driverRightTrigger.onFalse(new InstantCommand(()-> drivebaseSubsystem.setFieldOrientedDriveEnabled(true)));
         }
 
         private void networkTableListenerSetup() {
@@ -215,12 +218,12 @@ public class RobotContainer {
 
         public Command autonomousCommand = new SequentialCommandGroup(
                         new InstantCommand(() -> drivebaseSubsystem.resetNav(), drivebaseSubsystem),
-                        new LockedDrive(drivebaseSubsystem, () -> 0, () -> 0.3, () -> true)
+                        new LockedDrive(drivebaseSubsystem, () -> 0, () -> 0.3, () -> true, Dashboard.rotationController)
                                         .until(() -> drivebaseSubsystem
                                                         .getDisplacementY() <= Constants.Autonomous.DRIVE_BACKWARD_DISTANCE)
                                         .withTimeout(0.5),
                         new InstantCommand(() -> drivebaseSubsystem.resetDisplacement(), drivebaseSubsystem),
-                        new LockedDrive(drivebaseSubsystem, () -> 0, () -> -0.4, () -> true)
+                        new LockedDrive(drivebaseSubsystem, () -> 0, () -> -0.4, () -> true, Dashboard.rotationController)
                                         .until(() -> (drivebaseSubsystem
                                                         .getPitch() >= Dashboard.balanceTriggerAngle.get().getDouble())
                                                         || (drivebaseSubsystem
