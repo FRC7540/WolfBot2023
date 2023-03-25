@@ -163,6 +163,9 @@ public class RobotContainer {
                 AutoAlign autoAlign = new AutoAlign(cameraSubsystem, Dashboard.autoAlignController);
                 driverXboxController.rightBumper().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
                                 .whileTrue(new LockedDrive(drivebaseSubsystem, autoAlign::getOutput, driverXboxController::getLeftY, () -> false, Dashboard.rotationController));
+                Trigger driverRightTrigger = driverXboxController.rightTrigger();
+                driverRightTrigger.onTrue(new InstantCommand(()-> drivebaseSubsystem.setFieldOrientedDriveEnabled(false)));
+                driverRightTrigger.onFalse(new InstantCommand(()-> drivebaseSubsystem.setFieldOrientedDriveEnabled(true)));
         }
 
         private void networkTableListenerSetup() {
