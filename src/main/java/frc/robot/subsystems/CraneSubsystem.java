@@ -59,7 +59,7 @@ public class CraneSubsystem extends SubsystemBase {
 
     shoulderEncoder.setDutyCycleRange(1.0/1025.0, 1024.0/1025.0);
     shoulderEncoder.setDistancePerRotation(360);
-    shoulderEncoder.setPositionOffset(0);
+    shoulderEncoder.setPositionOffset(127);
 
     pidLayout.add("controller", this.elbowPidController).withWidget(BuiltInWidgets.kPIDController);
 
@@ -97,7 +97,7 @@ public class CraneSubsystem extends SubsystemBase {
   }
 
   public double getShoulderAngle() {
-    double output = (shoulderEncoder.getAbsolutePosition() * 360) + shoulderEncoder.getPositionOffset();
+    double output = (shoulderEncoder.getAbsolutePosition() * 360) - 40;
     return output;
   }
 
