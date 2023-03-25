@@ -33,7 +33,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -229,7 +228,5 @@ public class RobotContainer {
                                                         || (drivebaseSubsystem
                                                                         .getDisplacementY() >= Constants.Autonomous.DRIVE_FORWARD_DISTANCE))
                                         .withTimeout(3.5),
-                        new ConditionalCommand(new AutoBalance(drivebaseSubsystem), new WaitCommand(0),
-                                        () -> Math.abs(drivebaseSubsystem.getPitch()) > Dashboard.balanceTriggerAngle
-                                                        .get().getDouble()));
+                        new AutoBalance(drivebaseSubsystem));
 }

@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.simulation.SimDeviceSim;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Dashboard;
 
 public class DrivebaseSubsystem extends SubsystemBase {
   // MecanumDrive Setup
@@ -60,6 +61,11 @@ public class DrivebaseSubsystem extends SubsystemBase {
       simDevices[i] = new SimDeviceSim("SPARK MAX ", i + 1);
       physicsSim.addSparkMax(motor, DCMotor.getNEO(1));
     }
+  }
+
+  @Override
+  public void periodic() {
+    Dashboard.pitchReadoutEntry.setDouble(getPitch());
   }
 
   @Override
