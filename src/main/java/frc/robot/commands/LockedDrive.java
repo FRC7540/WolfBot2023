@@ -10,10 +10,6 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.networktables.NetworkTableEvent;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.Dashboard;
@@ -29,26 +25,26 @@ public class LockedDrive extends CommandBase {
 
   private float targetHeading;
 
-  private PIDController rotationController = new PIDController(0.01, 0.003, 0);
-  private ShuffleboardLayout pidLayout = Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
-      .getLayout("Rotation PID", BuiltInLayouts.kList)
-      .withSize(4, 4);
-
+  private PIDController rotationController;
   /** Creates a new Drive. */
   public LockedDrive(DrivebaseSubsystem drivebase, DoubleSupplier translateX, DoubleSupplier translateY,
-      BooleanSupplier slowmodeButton) {
+      BooleanSupplier slowmodeButton, PIDController rotationController) {
     this.drivebase = drivebase;
     this.translateX = translateX;
     this.translateY = translateY;
     this.slowmodeButton = slowmodeButton;
+    this.rotationController = rotationController;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivebase);
-    pidLayout.add("rotation controller", rotationController).withWidget(BuiltInWidgets.kPIDController);
   }
 
   @Override
   public void initialize() {
-    targetHeading = drivebase.getYaw();
+    if(Math.abs(drivebase.getYaw()) < 90) {
+      targetHeading = 0;
+    } else {
+      targetHeading = 180;
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
