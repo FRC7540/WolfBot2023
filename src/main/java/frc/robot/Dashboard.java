@@ -71,7 +71,8 @@ public class Dashboard extends SubsystemBase {
 
                 craneTuningLayout = Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
                                 .getLayout("Crane Tuning", BuiltInLayouts.kList)
-                                .withSize(4, 7);
+                                .withSize(4, 7)
+                                .withPosition(0, 0);
 
                 armEncoderOffset = craneTuningLayout
                                 .add("Encoder Offset", Constants.CraneConstants.DEFAULT_ANGLE_OFFSET)
@@ -109,7 +110,8 @@ public class Dashboard extends SubsystemBase {
 
                 driveTuningLayout = Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
                                 .getLayout("Drive Tuning", BuiltInLayouts.kList)
-                                .withSize(4, 7);
+                                .withSize(4, 7)
+                                .withPosition(4, 0);
 
                 slowmodeSpeed = driveTuningLayout
                                 .add("Slowmode Speed", Constants.DrivebaseConstants.DEFAULT_SLOWMODE_SPEED)
@@ -256,7 +258,8 @@ public class Dashboard extends SubsystemBase {
 
                 autoBalanceTuningLayout = Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
                                 .getLayout("Auto Balance", BuiltInLayouts.kList)
-                                .withSize(3, 5);
+                                .withSize(3, 5)
+                                .withPosition(8, 0);
 
                 balanceTriggerAngle = autoBalanceTuningLayout
                                 .add("Balance Trigger Angle", Constants.Autonomous.BALANCE_TRIGGER_ANGLE)

@@ -32,7 +32,8 @@ public class LockedDrive extends CommandBase {
   private PIDController rotationController = new PIDController(0.01, 0.003, 0);
   private ShuffleboardLayout pidLayout = Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
       .getLayout("Rotation PID", BuiltInLayouts.kList)
-      .withSize(4, 4);
+      .withSize(4, 4)
+      .withPosition(15, 0);
 
   /** Creates a new Drive. */
   public LockedDrive(DrivebaseSubsystem drivebase, DoubleSupplier translateX, DoubleSupplier translateY,

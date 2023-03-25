@@ -20,7 +20,8 @@ import frc.robot.subsystems.DrivebaseSubsystem;
 public class AutoAlign extends PIDCommand {
   private ShuffleboardLayout pidLayout = Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
       .getLayout("Auto Align PID", BuiltInLayouts.kList)
-      .withSize(4, 4);
+      .withSize(4, 4)
+      .withPosition(11, 0);
   private DrivebaseSubsystem drivebase;
   private boolean originalFieldOrientedDriveEnabled = false;
 

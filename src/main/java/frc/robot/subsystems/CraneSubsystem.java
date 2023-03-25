@@ -48,7 +48,8 @@ public class CraneSubsystem extends SubsystemBase {
 
   private ShuffleboardLayout pidLayout = Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
       .getLayout("Arm PID", BuiltInLayouts.kList)
-      .withSize(4, 4);
+      .withSize(4, 4)
+      .withPosition(11, 4);
 
   public CraneSubsystem() {
     absoluteEncoder.setDutyCycleRange(1.0/1025.0, 1024.0/1025.0);
