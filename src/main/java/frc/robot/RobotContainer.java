@@ -32,7 +32,6 @@ import edu.wpi.first.networktables.NetworkTableEvent;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -215,12 +214,12 @@ public class RobotContainer {
 
         public Command autonomousCommand = new SequentialCommandGroup(
                         new InstantCommand(() -> drivebaseSubsystem.resetNav(), drivebaseSubsystem),
-                        new RunCommand(() -> drivebaseSubsystem.Drive(0, 0.3, 0), drivebaseSubsystem)
+                        new LockedDrive(drivebaseSubsystem, () -> 0, () -> 0.3, () -> true)
                                         .until(() -> drivebaseSubsystem
                                                         .getDisplacementY() <= Constants.Autonomous.DRIVE_BACKWARD_DISTANCE)
                                         .withTimeout(0.5),
                         new InstantCommand(() -> drivebaseSubsystem.resetDisplacement(), drivebaseSubsystem),
-                        new RunCommand(() -> drivebaseSubsystem.Drive(0, -0.4, 0), drivebaseSubsystem)
+                        new LockedDrive(drivebaseSubsystem, () -> 0, () -> -0.4, () -> true)
                                         .until(() -> (drivebaseSubsystem
                                                         .getPitch() >= Dashboard.balanceTriggerAngle.get().getDouble())
                                                         || (drivebaseSubsystem

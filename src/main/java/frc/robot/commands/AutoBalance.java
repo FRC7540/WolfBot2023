@@ -4,7 +4,6 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Dashboard;
 import frc.robot.subsystems.DrivebaseSubsystem;
@@ -15,9 +14,9 @@ import frc.robot.subsystems.DrivebaseSubsystem;
 public class AutoBalance extends SequentialCommandGroup {
   public AutoBalance(DrivebaseSubsystem drivebaseSubsystem) {
     addCommands(
-      new RunCommand(() -> drivebaseSubsystem.Drive(0, -0.3, 0), drivebaseSubsystem).until(() -> drivebaseSubsystem.getPitch() > Dashboard.upperThresholdAngle.get().getDouble()).withTimeout(3),
-      new RunCommand(() -> drivebaseSubsystem.Drive(0, -0.15, 0), drivebaseSubsystem).until(() -> drivebaseSubsystem.getPitch() < Dashboard.finishThresholdAngle.get().getDouble()).withTimeout(3),
-      new RunCommand(() -> drivebaseSubsystem.Drive(0, 0.15, 0), drivebaseSubsystem).withTimeout(0.3)
+      new LockedDrive(drivebaseSubsystem, () -> 0, () -> -0.3, () -> true).until(() -> drivebaseSubsystem.getPitch() > Dashboard.upperThresholdAngle.get().getDouble()).withTimeout(3),
+      new LockedDrive(drivebaseSubsystem, () -> 0, () -> -0.15, () -> true).until(() -> drivebaseSubsystem.getPitch() < Dashboard.finishThresholdAngle.get().getDouble()).withTimeout(3),
+      new LockedDrive(drivebaseSubsystem, () -> 0, () -> 0.15, () -> true).withTimeout(0.3)
     );
   }  
 }
