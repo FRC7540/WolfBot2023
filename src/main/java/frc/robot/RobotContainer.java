@@ -34,6 +34,7 @@ import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -216,12 +217,16 @@ public class RobotContainer {
                         new InstantCommand(() -> drivebaseSubsystem.resetNav(), drivebaseSubsystem),
                         new RunCommand(() -> drivebaseSubsystem.Drive(0, 0.3, 0), drivebaseSubsystem)
                                         .until(() -> drivebaseSubsystem
-                                                        .getDisplacementY() <= Constants.Autonomous.DRIVE_BACKWARD_DISTANCE).withTimeout(1.5),
+                                                        .getDisplacementY() <= Constants.Autonomous.DRIVE_BACKWARD_DISTANCE)
+                                        .withTimeout(0.5),
                         new InstantCommand(() -> drivebaseSubsystem.resetDisplacement(), drivebaseSubsystem),
                         new RunCommand(() -> drivebaseSubsystem.Drive(0, -0.4, 0), drivebaseSubsystem)
                                         .until(() -> (drivebaseSubsystem
-                                                        .getPitch() >= Constants.Autonomous.BALANCE_TRIGGER_ANGLE)
+                                                        .getPitch() >= Dashboard.balanceTriggerAngle.get().getDouble())
                                                         || (drivebaseSubsystem
-                                                                        .getDisplacementY() >= Constants.Autonomous.DRIVE_FORWARD_DISTANCE)).withTimeout(3.5),
-                        new AutoBalance(drivebaseSubsystem).until(() -> drivebaseSubsystem.getPitch() < Constants.Autonomous.BALANCE_TRIGGER_ANGLE));
+                                                                        .getDisplacementY() >= Constants.Autonomous.DRIVE_FORWARD_DISTANCE))
+                                        .withTimeout(3.5),
+                        new ConditionalCommand(new AutoBalance(drivebaseSubsystem), new WaitCommand(0),
+                                        () -> Math.abs(drivebaseSubsystem.getPitch()) > Dashboard.balanceTriggerAngle
+                                                        .get().getDouble()));
 }

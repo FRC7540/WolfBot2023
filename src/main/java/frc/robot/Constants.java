@@ -116,7 +116,9 @@ public final class Constants {
   public static class Autonomous {
     public static final double DRIVE_BACKWARD_DISTANCE = -0.75;
     public static final double DRIVE_FORWARD_DISTANCE = 5.1;
-    public static final double BALANCE_TRIGGER_ANGLE = 5;
+    public static final double BALANCE_TRIGGER_ANGLE = 8;
+    public static final double BALANCE_GREATER_THRESHOLD_ANGLE = 13;
+    public static final double BALANCE_FINISH_THRESHOLD_ANGLE = 10;
   }
 
   public static class LedConstants {
