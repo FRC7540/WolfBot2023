@@ -41,7 +41,8 @@ public class CraneSubsystem extends SubsystemBase {
   private double maxAngleLow = Constants.CraneConstants.DEFAULT_MAXIMUM_ANGLE_LOW;
   public boolean isArmUp = false;
 
-  private DutyCycleEncoder absoluteEncoder = new DutyCycleEncoder(Constants.CraneConstants.ENCODER_PIN_1);
+  private DutyCycleEncoder elbowEncoder = new DutyCycleEncoder(Constants.CraneConstants.ELBOW_ENCODER_PIN);
+  private DutyCycleEncoder shoulderEncoder = new DutyCycleEncoder(Constants.CraneConstants.SHOULDER_ENCODER_PIN);
 
   private SimDeviceSim simDeviceSim;
   private DutyCycleEncoderSim encoderSim;
@@ -51,10 +52,14 @@ public class CraneSubsystem extends SubsystemBase {
       .withSize(4, 4);
 
   public CraneSubsystem() {
-    absoluteEncoder.setDutyCycleRange(1.0/1025.0, 1024.0/1025.0);
-    absoluteEncoder.setDistancePerRotation(360);
-    absoluteEncoder.setPositionOffset(Constants.CraneConstants.DEFAULT_ANGLE_OFFSET);
-    elbowAngleSetPoint = absoluteEncoder.getAbsolutePosition();
+    elbowEncoder.setDutyCycleRange(1.0/1025.0, 1024.0/1025.0);
+    elbowEncoder.setDistancePerRotation(360);
+    elbowEncoder.setPositionOffset(Constants.CraneConstants.DEFAULT_ANGLE_OFFSET);
+    elbowAngleSetPoint = elbowEncoder.getAbsolutePosition();
+
+    shoulderEncoder.setDutyCycleRange(1.0/1025.0, 1024.0/1025.0);
+    shoulderEncoder.setDistancePerRotation(360);
+    shoulderEncoder.setPositionOffset(0);
 
     pidLayout.add("controller", this.elbowPidController).withWidget(BuiltInWidgets.kPIDController);
 
@@ -87,12 +92,17 @@ public class CraneSubsystem extends SubsystemBase {
   }
 
   public double getEncoderOutput() {
-    double output = (absoluteEncoder.getAbsolutePosition() * 360) + Constants.CraneConstants.DEFAULT_ANGLE_OFFSET;
+    double output = (elbowEncoder.getAbsolutePosition() * 360) + Constants.CraneConstants.DEFAULT_ANGLE_OFFSET;
     return output % 360;
   }
 
+  public double getShoulderAngle() {
+    double output = (shoulderEncoder.getAbsolutePosition() * 360) + shoulderEncoder.getPositionOffset();
+    return output;
+  }
+
   public void setEncoderOffset(double offset) {
-    absoluteEncoder.setPositionOffset(offset);
+    elbowEncoder.setPositionOffset(offset);
   }
 
   public void setAngle(double angle) {
@@ -139,13 +149,13 @@ public class CraneSubsystem extends SubsystemBase {
     REVPhysicsSim physicsSim = REVPhysicsSim.getInstance();
     physicsSim.addSparkMax(elbowMotor, DCMotor.getNEO(1));
     simDeviceSim = new SimDeviceSim("SPARK MAX ", 5);
-    encoderSim = new DutyCycleEncoderSim(absoluteEncoder);
+    encoderSim = new DutyCycleEncoderSim(elbowEncoder);
   }
 
   @Override
   public void simulationPeriodic() {
     SimDouble velocityEntry = simDeviceSim.getDouble("Velocity");
     velocityEntry.set(elbowMotor.get());
-    encoderSim.set(absoluteEncoder.get() + elbowMotor.get() * 10);
+    encoderSim.set(elbowEncoder.get() + elbowMotor.get() * 10);
   }
 }

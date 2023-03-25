@@ -68,11 +68,8 @@ public final class Constants {
     public static final int ELBOW_MOTOR = 5;
     public static final double ELBOW_DEADZONE = 0.2;
 
-    public static final int ENCODER_PIN_1 = 0;
-    public static final int ENOCDER_PIN_2 = 1;
-    public static final int ENOCDER_PIN_3 = 2;
-    public static final int ENOCDER_PIN_4 = 3;
-    public static final int LIMIT_SWITCH = 4;
+    public static final int ELBOW_ENCODER_PIN = 0;
+    public static final int SHOULDER_ENCODER_PIN = 1;
 
     public static final double DEFAULT_MINIMUM_ANGLE_LOW = 15.0;
     public static final double DEFAULT_MINIMUM_ANGLE_HIGH = 145;
