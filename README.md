@@ -23,6 +23,7 @@ Please make sure that you use a shuffleboard tile size of 64, rather than the de
 | reset gyro yaw                 | Press Start Button | Resets the gyro's yaw readout                            |
 | switch to robot oriented drive | Hold Right Trigger | When held, the robot will switch to robot oriented drive |
 
+
 ### Operator Controls
 
 | control             | binding            | description                                               |

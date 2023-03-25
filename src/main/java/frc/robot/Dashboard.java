@@ -9,6 +9,7 @@ import java.util.Map;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.cscore.MjpegServer;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -61,12 +62,30 @@ public class Dashboard extends SubsystemBase {
         private ShuffleboardLayout craneTuningLayout;
         private ShuffleboardLayout autoBalanceTuningLayout;
 
+        public static PIDController rotationController = new PIDController(0.03, 0.003, 0.002);
+        private ShuffleboardLayout rotationPidLayout = Shuffleboard
+                        .getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
+                        .getLayout("Rotation PID", BuiltInLayouts.kList)
+                        .withSize(4, 4);
+
+        public static PIDController autoAlignController = new PIDController(0.12, 0.01, 0.005);
+        private ShuffleboardLayout autoAlignLayout = Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
+                        .getLayout("Auto Align PID", BuiltInLayouts.kList)
+                        .withSize(4, 4);
+
         /** Creates a new ShuffleboardSubsystem. */
         public Dashboard(DrivebaseSubsystem drivebaseSubsystem) {
                 this.drivebaseSubsystem = drivebaseSubsystem;
         }
 
         public void ShuffleboardSetup() {
+                // PID Controllers
+                rotationPidLayout.add("rotation controller", rotationController)
+                                .withWidget(BuiltInWidgets.kPIDController);
+
+                autoAlignLayout.add("alignment controller", autoAlignController)
+                                .withWidget(BuiltInWidgets.kPIDController);
+
                 // Drive Shuffleboard Widgets
 
                 craneTuningLayout = Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)

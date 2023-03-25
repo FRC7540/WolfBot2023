@@ -6,7 +6,7 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ActuateClaw;
-import frc.robot.commands.AutoAlign;
+import frc.robot.suppliers.AutoAlign;
 import frc.robot.commands.AutoBalance;
 import frc.robot.commands.ChangeLeds;
 import frc.robot.commands.CraneDown;
@@ -154,14 +154,15 @@ public class RobotContainer {
                                 .onTrue(new SetVisionPipeline(cameraSubsystem, Pipeline.APRIL_TAG));
                 driverXboxController.y().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
                                 .onTrue(new SetVisionPipeline(cameraSubsystem, Pipeline.RETRO_TAPE));
-                driverXboxController.rightBumper().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
-                                .whileTrue(new AutoAlign(drivebaseSubsystem, cameraSubsystem));
                 Trigger leftBumper = driverXboxController.leftBumper();
                 driverXboxController.start().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
                                 .onTrue(new InstantCommand(() -> drivebaseSubsystem.resetYaw(), drivebaseSubsystem));
-                driverXboxController.a().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
+                driverXboxController.b().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
                                 .whileTrue(new LockedDrive(drivebaseSubsystem, driverXboxController::getLeftX,
-                                                driverXboxController::getLeftY, leftBumper::getAsBoolean));
+                                                driverXboxController::getLeftY, leftBumper::getAsBoolean, Dashboard.rotationController));
+                AutoAlign autoAlign = new AutoAlign(cameraSubsystem, Dashboard.autoAlignController);
+                driverXboxController.rightBumper().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
+                                .whileTrue(new LockedDrive(drivebaseSubsystem, autoAlign::getOutput, driverXboxController::getLeftY, () -> false, Dashboard.rotationController));
                 Trigger driverRightTrigger = driverXboxController.rightTrigger();
                 driverRightTrigger.onTrue(new InstantCommand(()-> drivebaseSubsystem.setFieldOrientedDriveEnabled(false)));
                 driverRightTrigger.onFalse(new InstantCommand(()-> drivebaseSubsystem.setFieldOrientedDriveEnabled(true)));
