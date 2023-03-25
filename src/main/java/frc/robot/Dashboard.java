@@ -62,13 +62,13 @@ public class Dashboard extends SubsystemBase {
         private ShuffleboardLayout craneTuningLayout;
         private ShuffleboardLayout autoBalanceTuningLayout;
 
-        public static PIDController rotationController = new PIDController(0.03, 0.003, 0);
+        public static PIDController rotationController = new PIDController(0.03, 0.003, 0.002);
         private ShuffleboardLayout rotationPidLayout = Shuffleboard
                         .getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
                         .getLayout("Rotation PID", BuiltInLayouts.kList)
                         .withSize(4, 4);
 
-        public static PIDController autoAlignController = new PIDController(0.05, 0, 0.0015);
+        public static PIDController autoAlignController = new PIDController(0.12, 0.01, 0.005);
         private ShuffleboardLayout autoAlignLayout = Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
                         .getLayout("Auto Align PID", BuiltInLayouts.kList)
                         .withSize(4, 4);
