@@ -162,6 +162,9 @@ public class RobotContainer {
                 driverXboxController.a().debounce(Constants.OperatorConstants.DEFAULT_DEBOUNCE_DELAY)
                                 .whileTrue(new LockedDrive(drivebaseSubsystem, driverXboxController::getLeftX,
                                                 driverXboxController::getLeftY, leftBumper::getAsBoolean));
+                Trigger driverRightTrigger = driverXboxController.rightTrigger();
+                driverRightTrigger.onTrue(new InstantCommand(()-> drivebaseSubsystem.setFieldOrientedDriveEnabled(false)));
+                driverRightTrigger.onFalse(new InstantCommand(()-> drivebaseSubsystem.setFieldOrientedDriveEnabled(true)));
         }
 
         private void networkTableListenerSetup() {
