@@ -15,8 +15,8 @@ import frc.robot.subsystems.DrivebaseSubsystem;
 public class AutoBalance extends SequentialCommandGroup {
   public AutoBalance(DrivebaseSubsystem drivebaseSubsystem) {
     addCommands(
-      new RunCommand(() -> drivebaseSubsystem.Drive(0, -0.3, 0), drivebaseSubsystem).until(() -> drivebaseSubsystem.getPitch() > Dashboard.upperThresholdAngle.get().getDouble()),
-      new RunCommand(() -> drivebaseSubsystem.Drive(0, -0.15, 0), drivebaseSubsystem).until(() -> drivebaseSubsystem.getPitch() < Dashboard.finishThresholdAngle.get().getDouble()),
+      new RunCommand(() -> drivebaseSubsystem.Drive(0, -0.3, 0), drivebaseSubsystem).until(() -> drivebaseSubsystem.getPitch() > Dashboard.upperThresholdAngle.get().getDouble()).withTimeout(3),
+      new RunCommand(() -> drivebaseSubsystem.Drive(0, -0.15, 0), drivebaseSubsystem).until(() -> drivebaseSubsystem.getPitch() < Dashboard.finishThresholdAngle.get().getDouble()).withTimeout(3),
       new RunCommand(() -> drivebaseSubsystem.Drive(0, 0.15, 0), drivebaseSubsystem).withTimeout(0.3)
     );
   }  
