@@ -12,7 +12,6 @@ import edu.wpi.first.cscore.MjpegServer;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -46,7 +45,7 @@ public class Dashboard extends SubsystemBase {
         public static GenericEntry balanceTriggerAngle;
         public static GenericEntry upperThresholdAngle;
         public static GenericEntry finishThresholdAngle;
-        public static NetworkTableEntry gyroSelectEntry = table.getEntry("Tuning/Gyro Selection/active");
+        public static GenericEntry pitchReadoutEntry;
         private DrivebaseSubsystem drivebaseSubsystem;
 
         private ShuffleboardLayout presetLayout;
@@ -206,6 +205,12 @@ public class Dashboard extends SubsystemBase {
                                 .withWidget(BuiltInWidgets.kDial)
                                 .withProperties(Map.of("min", 0, "max", 130))
                                 .withPosition(18, 5)
+                                .getEntry();
+
+                pitchReadoutEntry = Shuffleboard.getTab(Constants.ShuffleboardConstants.GAME_TAB_NAME)
+                                .add("Pitch", 0)
+                                .withWidget(BuiltInWidgets.kDial)
+                                .withProperties(Map.of("min", -90, "max", 90))
                                 .getEntry();
 
                 // Limelight widget
