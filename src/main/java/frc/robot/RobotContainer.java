@@ -224,9 +224,9 @@ public class RobotContainer {
                         new InstantCommand(() -> drivebaseSubsystem.resetDisplacement(), drivebaseSubsystem),
                         new LockedDrive(drivebaseSubsystem, () -> 0, () -> -0.4, () -> true, Dashboard.rotationController)
                                         .until(() -> (drivebaseSubsystem
-                                                        .getPitch() >= Dashboard.balanceTriggerAngle.get().getDouble())
+                                                        .getPitch() >= Dashboard.balanceTriggerAngle.get().getFloat())
                                                         || (drivebaseSubsystem
                                                                         .getDisplacementY() >= Constants.Autonomous.DRIVE_FORWARD_DISTANCE))
                                         .withTimeout(3.5),
-                        new AutoBalance(drivebaseSubsystem));
+                        new AutoBalance(drivebaseSubsystem).unless(() -> drivebaseSubsystem.getPitch() < 5));
 }

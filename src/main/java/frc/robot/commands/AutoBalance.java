@@ -14,9 +14,11 @@ import frc.robot.subsystems.DrivebaseSubsystem;
 public class AutoBalance extends SequentialCommandGroup {
   public AutoBalance(DrivebaseSubsystem drivebaseSubsystem) {
     addCommands(
-      new LockedDrive(drivebaseSubsystem, () -> 0, () -> -0.3, () -> true, Dashboard.rotationController).until(() -> drivebaseSubsystem.getPitch() > Dashboard.upperThresholdAngle.get().getDouble()),
-      new LockedDrive(drivebaseSubsystem, () -> 0, () -> -0.15, () -> true, Dashboard.rotationController).until(() -> drivebaseSubsystem.getPitch() < Dashboard.finishThresholdAngle.get().getDouble()),
-      new LockedDrive(drivebaseSubsystem, () -> 0, () -> 0.15, () -> true, Dashboard.rotationController).withTimeout(0.35)
-    );
-  }  
+        new LockedDrive(drivebaseSubsystem, () -> 0, () -> -0.3, () -> true, Dashboard.rotationController)
+            .until(() -> drivebaseSubsystem.getPitch() > Dashboard.upperThresholdAngle.get().getFloat()),
+        new LockedDrive(drivebaseSubsystem, () -> 0, () -> -0.22, () -> true, Dashboard.rotationController)
+            .until(() -> drivebaseSubsystem.getPitch() < Dashboard.finishThresholdAngle.get().getFloat()),
+        new LockedDrive(drivebaseSubsystem, () -> 0, () -> 0.22, () -> true, Dashboard.rotationController)
+            .withTimeout(0.35));
+  }
 }
