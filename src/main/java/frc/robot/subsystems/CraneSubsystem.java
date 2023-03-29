@@ -139,6 +139,14 @@ public class CraneSubsystem extends SubsystemBase {
     }
   }
 
+  public boolean isArmUp() {
+    if (getShoulderAngle() > 70) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   @Override
   public void periodic() {
     Dashboard.armRotationReadout.setDouble(getEncoderOutput());
