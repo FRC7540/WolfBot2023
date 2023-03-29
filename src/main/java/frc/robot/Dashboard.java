@@ -63,6 +63,16 @@ public class Dashboard extends SubsystemBase {
         private ShuffleboardLayout craneTuningLayout;
         private ShuffleboardLayout autoBalanceTuningLayout;
 
+        private ShuffleboardLayout autonomousTuningLayout;
+        public static GenericEntry autonomousDriveToPlaceDistance;
+        public static GenericEntry autonomousDriveToPlaceSpeed;
+        public static GenericEntry autonomousWaitToPlaceDelay;
+        public static GenericEntry autonomousWaitAfterPlaceDelay;
+        public static GenericEntry autonomousReverseFromPlaceDistance;
+        public static GenericEntry autonomousReverseFromPlaceSpeed;
+        public static GenericEntry autonomousRotateSpeed;
+        public static GenericEntry autonomousRotateTimeout;
+
         public static PIDController rotationController = new PIDController(0.03, 0.003, 0.002);
         private ShuffleboardLayout rotationPidLayout = Shuffleboard
                         .getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
@@ -70,7 +80,8 @@ public class Dashboard extends SubsystemBase {
                         .withSize(4, 4);
 
         public static PIDController autoAlignController = new PIDController(0.12, 0.01, 0.005);
-        private ShuffleboardLayout autoAlignLayout = Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
+        private ShuffleboardLayout autoAlignLayout = Shuffleboard
+                        .getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
                         .getLayout("Auto Align PID", BuiltInLayouts.kList)
                         .withSize(4, 4);
 
@@ -306,5 +317,37 @@ public class Dashboard extends SubsystemBase {
                                 .withWidget(BuiltInWidgets.kNumberSlider)
                                 .withProperties(Map.of("min", 0, "max", 15))
                                 .getEntry();
+
+                // autonomous tuning
+                autonomousTuningLayout = Shuffleboard.getTab(Constants.ShuffleboardConstants.AUTO_TUNING_TAB_NAME)
+                                .getLayout("Autonomous Values", BuiltInLayouts.kList).withSize(3, 8);
+                autonomousDriveToPlaceDistance = autonomousTuningLayout
+                                .add("Drive towards scoring distance", Constants.Autonomous.DRIVE_TO_PLACE_DISTANCE)
+                                .withWidget(BuiltInWidgets.kTextView).getEntry();
+                autonomousDriveToPlaceSpeed = autonomousTuningLayout
+                                .add("Drive towards scoring speed", Constants.Autonomous.DRIVE_TO_PLACE_SPEED)
+                                .withWidget(BuiltInWidgets.kTextView).getEntry();
+                autonomousWaitToPlaceDelay = autonomousTuningLayout
+                                .add("Delay before dropping object",
+                                                Constants.Autonomous.WAIT_TO_PLACE_DELAY)
+                                .withWidget(BuiltInWidgets.kTextView).getEntry();
+                autonomousWaitAfterPlaceDelay = autonomousTuningLayout
+                                .add("Delay after dropping object", Constants.Autonomous.WAIT_AFTER_PLACE_DELAY)
+                                .withWidget(BuiltInWidgets.kTextView).getEntry();
+                autonomousReverseFromPlaceDistance = autonomousTuningLayout
+                                .add("Distance to reverse after object drop",
+                                                Constants.Autonomous.REVERSE_FROM_PLACE_DISTANCE)
+                                .withWidget(BuiltInWidgets.kTextView)
+                                .getEntry();
+                autonomousReverseFromPlaceSpeed = autonomousTuningLayout
+                                .add("Speed to reverse after object drop",
+                                                Constants.Autonomous.REVERSE_FROM_PLACE_SPEED)
+                                .withWidget(BuiltInWidgets.kTextView).getEntry();
+                autonomousRotateSpeed = autonomousTuningLayout
+                                .add("Speed to rotate after reverse", Constants.Autonomous.ROTATE_SPEED)
+                                .withWidget(BuiltInWidgets.kTextView).getEntry();
+                autonomousRotateTimeout = autonomousTuningLayout
+                                .add("Timeout for rotate after reverse", Constants.Autonomous.ROTATE_TIMEOUT)
+                                .withWidget(BuiltInWidgets.kTextView).getEntry();
         }
 }
