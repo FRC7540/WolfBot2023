@@ -33,6 +33,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -217,11 +218,41 @@ public class RobotContainer {
 
         public Command autonomousCommand = new SequentialCommandGroup(
                         new InstantCommand(() -> drivebaseSubsystem.resetNav(), drivebaseSubsystem),
-                        new LockedDrive(drivebaseSubsystem, () -> 0, () -> 0.3, () -> true, Dashboard.rotationController)
-                                        .until(() -> drivebaseSubsystem
-                                                        .getDisplacementY() <= Constants.Autonomous.DRIVE_BACKWARD_DISTANCE)
-                                        .withTimeout(0.5),
-                        new InstantCommand(() -> drivebaseSubsystem.resetDisplacement(), drivebaseSubsystem),
+                        //Stage 1: place a cone, rotate
+
+                        //raise arm
+                        new InstantCommand(() -> operateCrane.recallPreset(armPreset.UPPER_NODE)),
+
+                        //drive up
+                        new LockedDrive(drivebaseSubsystem, () -> 0.3, () -> 0.0, () -> true, Dashboard.rotationController)
+                        .until(() -> drivebaseSubsystem
+                                        .getDisplacementY() <= Constants.Autonomous.DRIVE_BACKWARD_DISTANCE *-1)
+                        .withTimeout(0.5),
+
+                        //open claw
+                        new WaitCommand(2),
+                        
+                        new ActuateClaw(clawSubsystem, Direction.BACKWARD),
+
+                        new WaitCommand(1),
+
+                        //drive back 
+                        new InstantCommand(() -> drivebaseSubsystem.resetNav(), drivebaseSubsystem),
+                        new LockedDrive(drivebaseSubsystem, () -> 0.3, () -> 0.0, () -> true, Dashboard.rotationController)
+                        .until(() -> drivebaseSubsystem
+                                        .getDisplacementY() <= Constants.Autonomous.DRIVE_BACKWARD_DISTANCE),
+
+                        //lower crane
+                        new InstantCommand(() -> operateCrane.recallPreset(armPreset.HOME)),
+
+                        //rotate 180 
+                        new InstantCommand(() -> drivebaseSubsystem.resetNav(), drivebaseSubsystem),
+                        new Drive(drivebaseSubsystem, () -> 0.0, () -> 0.0, () -> 0.25, () -> true).withTimeout(0.5),
+                        new LockedDrive(drivebaseSubsystem, () -> 0.0, () -> 0.0, () -> true, Dashboard.rotationController),
+
+                        new InstantCommand(() -> drivebaseSubsystem.resetNav(), drivebaseSubsystem),
+
+                        //Begin stage 2: drive forward, blance if needed
                         new LockedDrive(drivebaseSubsystem, () -> 0, () -> -0.4, () -> true, Dashboard.rotationController)
                                         .until(() -> (drivebaseSubsystem
                                                         .getPitch() >= Dashboard.balanceTriggerAngle.get().getFloat())
