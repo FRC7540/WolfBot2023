@@ -101,7 +101,7 @@ public class OperateCrane extends CommandBase {
       elbow = Dashboard.lowerElbowEntry.get().getDouble();
     }
 
-    new SetArmPreset(craneSubsystem, shoulder, elbow).schedule();
+    new SetArmPreset(craneSubsystem, shoulder, elbow).withInterruptBehavior(InterruptionBehavior.kCancelIncoming).schedule();
   }
 
   // Returns true when the command should end.
