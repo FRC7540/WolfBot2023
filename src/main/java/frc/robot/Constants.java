@@ -116,6 +116,15 @@ public final class Constants {
     public static final float BALANCE_TRIGGER_ANGLE = 8;
     public static final float BALANCE_GREATER_THRESHOLD_ANGLE = 13;
     public static final float BALANCE_FINISH_THRESHOLD_ANGLE = 10;
+
+    public static final double DRIVE_TO_PLACE_DISTANCE = 0.75;
+    public static final double DRIVE_TO_PLACE_SPEED = 0.3;
+    public static final double WAIT_TO_PLACE_DELAY = 1.0;
+    public static final double WAIT_AFTER_PLACE_DELAY = 1.0;
+    public static final double REVERSE_FROM_PLACE_DISTANCE = -0.75;
+    public static final double REVERSE_FROM_PLACE_SPEED = 0.3;
+    public static final double ROTATE_SPEED = 0.25;
+    public static final double ROTATE_TIMEOUT = 0.5;
   }
 
   public static class LedConstants {
