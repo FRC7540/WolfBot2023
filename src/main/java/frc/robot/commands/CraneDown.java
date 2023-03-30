@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.CraneSubsystem;
 
@@ -20,12 +21,12 @@ public class CraneDown extends SequentialCommandGroup {
 
   public CraneDown(CraneSubsystem craneSubsystem) {
     addCommands(
-                new InstantCommand(() -> cooldown = true),
-                new InstantCommand(() -> craneSubsystem.setMinAngle(Constants.CraneConstants.DEFAULT_MINIMUM_ANGLE_LOW)),
-                new InstantCommand(() -> craneSubsystem.ShoulderDown()),
-                new WaitCommand(0.6),
-                new InstantCommand(() -> craneSubsystem.setAngle(Constants.CraneConstants.AUTO_LOW_ANGLE)),
-                new WaitCommand(2),
-                new InstantCommand(() -> cooldown = false));
+        new InstantCommand(() -> cooldown = true),
+        new InstantCommand(() -> craneSubsystem.setMinAngle(Constants.CraneConstants.DEFAULT_MINIMUM_ANGLE_LOW)),
+        new InstantCommand(() -> craneSubsystem.ShoulderDown()),
+        new WaitUntilCommand(() -> craneSubsystem.getShoulderAngle() > Constants.CraneConstants.SHOULDER_DOWN_ANGLE),
+        new InstantCommand(() -> craneSubsystem.setAngle(Constants.CraneConstants.AUTO_LOW_ANGLE)),
+        new WaitCommand(2),
+        new InstantCommand(() -> cooldown = false));
   }
 }

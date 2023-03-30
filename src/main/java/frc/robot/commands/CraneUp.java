@@ -21,10 +21,9 @@ public class CraneUp extends SequentialCommandGroup {
   public CraneUp(CraneSubsystem craneSubsystem) {
     addCommands(
                 new InstantCommand(() -> cooldown = true),
-                new InstantCommand(() -> craneSubsystem.isArmUp = true),
+                new InstantCommand(() -> craneSubsystem.ShoulderUp()),
                 new InstantCommand(() -> craneSubsystem.setAngle(Constants.CraneConstants.AUTO_HIGH_ANGLE)),
                 new InstantCommand(() -> craneSubsystem.setMinAngle(Constants.CraneConstants.DEFAULT_MINIMUM_ANGLE_HIGH)),
-                new InstantCommand(() -> craneSubsystem.ShoulderUp()),
                 new WaitCommand(2),
                 new InstantCommand(() -> cooldown = false));
   }
