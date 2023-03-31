@@ -59,13 +59,13 @@ public class OperateCrane extends CommandBase {
   }
 
   public void craneUp() {
-    if (!craneSubsystem.isArmUp && !craneDown.cooldown) {
+    if (!craneSubsystem.isArmUp() && !craneDown.cooldown) {
       craneUp.schedule();
     }
   }
 
   public void craneDown() {
-    if (craneSubsystem.isArmUp && !craneUp.cooldown) {
+    if (craneSubsystem.isArmUp() && !craneUp.cooldown) {
       craneDown.schedule();
     }
   } 
@@ -79,7 +79,7 @@ public class OperateCrane extends CommandBase {
   }
 
   public void recallPreset(Enum<armPreset> preset) {
-    boolean shoulder = craneSubsystem.isArmUp;
+    boolean shoulder = craneSubsystem.isArmUp();
     double elbow = craneSubsystem.getAngleSetPoint();
     if (preset == armPreset.HOME) {
       shoulder = Presets.HOME_SHOULDER;
@@ -101,7 +101,7 @@ public class OperateCrane extends CommandBase {
       elbow = Dashboard.lowerElbowEntry.get().getDouble();
     }
 
-    new SetArmPreset(craneSubsystem, shoulder, elbow).schedule();
+    new SetArmPreset(craneSubsystem, shoulder, elbow).withInterruptBehavior(InterruptionBehavior.kCancelIncoming).schedule();
   }
 
   // Returns true when the command should end.

@@ -71,6 +71,8 @@ public final class Constants {
     public static final int ELBOW_ENCODER_PIN = 0;
     public static final int SHOULDER_ENCODER_PIN = 1;
 
+    public static final double SHOULDER_DOWN_ANGLE = 5;
+
     public static final double DEFAULT_MINIMUM_ANGLE_LOW = 15.0;
     public static final double DEFAULT_MINIMUM_ANGLE_HIGH = 145;
     public static final double DEFAULT_MAXIMUM_ANGLE_HIGH = 270.0;
@@ -78,7 +80,7 @@ public final class Constants {
     public static final double DEFAULT_ANGLE_OFFSET = 220.0;
     public static final double DEFAULT_RATE_LIMIT = 80;
     public static final double AUTO_HIGH_ANGLE = 200;
-    public static final double AUTO_LOW_ANGLE = 100;
+    public static final double AUTO_LOW_ANGLE = 90;
 
     public static final double DEFAULT_SPEED_MULTIPLIER = 2;
 
