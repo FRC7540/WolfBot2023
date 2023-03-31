@@ -8,18 +8,19 @@ import frc.robot.Dashboard;
 import frc.robot.commands.ActuateClaw.Direction;
 import frc.robot.commands.OperateCrane.armPreset;
 import frc.robot.subsystems.ClawSubsystem;
+import frc.robot.subsystems.CraneSubsystem;
 import frc.robot.subsystems.DrivebaseSubsystem;
 
 //This needs ot bew separate to prevent a race condition, if its not it will try to access the shuffleboard values before the dashboard class has had time to fully initialize and throw a null pointer
 public class AutonomousCommand extends SequentialCommandGroup{
 
-    public AutonomousCommand(DrivebaseSubsystem drivebaseSubsystem, ClawSubsystem clawSubsystem, OperateCrane operateCrane ) {
+    public AutonomousCommand(DrivebaseSubsystem drivebaseSubsystem, ClawSubsystem clawSubsystem, OperateCrane operateCrane, CraneSubsystem craneSubsystem ) {
         addCommands(
             new InstantCommand(() -> drivebaseSubsystem.resetNav(), drivebaseSubsystem),
             //Stage 1: place a cone, rotate
 
             //raise arm
-            new InstantCommand(() -> operateCrane.recallPreset(armPreset.UPPER_NODE)),
+            new InstantCommand(() -> operateCrane.recallPreset(armPreset.UPPER_NODE), craneSubsystem),
 
             //drive up
             new LockedDrive(drivebaseSubsystem, () -> Dashboard.autonomousDriveToPlaceSpeed.get().getDouble(), () -> 0.0, () -> true, Dashboard.rotationController)
@@ -41,7 +42,7 @@ public class AutonomousCommand extends SequentialCommandGroup{
                             .getDisplacementY() <= Dashboard.autonomousReverseFromPlaceDistance.get().getDouble()),
 
             //lower crane
-            new InstantCommand(() -> operateCrane.recallPreset(armPreset.HOME)),
+            new InstantCommand(() -> operateCrane.recallPreset(armPreset.HOME), craneSubsystem),
 
             //rotate 180
             new InstantCommand(() -> drivebaseSubsystem.resetNav(), drivebaseSubsystem),
