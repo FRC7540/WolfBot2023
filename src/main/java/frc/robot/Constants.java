@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
  * numerical or boolean
@@ -125,6 +126,9 @@ public final class Constants {
     public static final double REVERSE_FROM_PLACE_SPEED = 0.3;
     public static final double ROTATE_SPEED = 0.25;
     public static final double ROTATE_TIMEOUT = 0.5;
+
+    public static final double WAIT_TO_RAISE_DELAY = 2;
+    public static final double WAIT_TO_LOWER_DELAY = 2;
   }
 
   public static class LedConstants {

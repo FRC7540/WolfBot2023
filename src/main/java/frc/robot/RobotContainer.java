@@ -6,6 +6,8 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ActuateClaw;
+import frc.robot.commands.AutoBalanceOrDrive;
+import frc.robot.commands.AutoPlaceCone;
 import frc.robot.suppliers.AutoAlign;
 import frc.robot.commands.AutonomousCommand;
 import frc.robot.commands.ChangeLeds;
@@ -29,6 +31,7 @@ import frc.robot.subsystems.CameraSubsystem.Pipeline;
 import java.util.EnumSet;
 
 import edu.wpi.first.networktables.NetworkTableEvent;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -72,6 +75,8 @@ public class RobotContainer {
                 configureBindings();
                 dashboard.ShuffleboardSetup();
                 networkTableListenerSetup();
+                SmartDashboard.putData("AutoPlaceCone", new AutoPlaceCone(drivebaseSubsystem, clawSubsystem, operateCrane, craneSubsystem));
+                SmartDashboard.putData("AutoBalanceOrDrive", new AutoBalanceOrDrive(drivebaseSubsystem));
         }
 
         private void configureDefaultCommands() {

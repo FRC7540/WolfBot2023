@@ -70,6 +70,8 @@ public class Dashboard extends SubsystemBase {
         public static GenericEntry autonomousReverseFromPlaceSpeed;
         public static GenericEntry autonomousRotateSpeed;
         public static GenericEntry autonomousRotateTimeout;
+        public static GenericEntry autonomousWaitToRaise;
+        public static GenericEntry autonomousWaitToLower;
 
         public static PIDController rotationController = new PIDController(0.03, 0.003, 0.002);
         private ShuffleboardLayout rotationPidLayout = Shuffleboard
@@ -342,5 +344,12 @@ public class Dashboard extends SubsystemBase {
                 autonomousRotateTimeout = autonomousTuningLayout
                                 .add("Timeout for rotate after reverse", Constants.Autonomous.ROTATE_TIMEOUT)
                                 .withWidget(BuiltInWidgets.kTextView).getEntry();
+
+                autonomousWaitToRaise = autonomousTuningLayout.add("Wait for crane to raise", Constants.Autonomous.WAIT_TO_RAISE_DELAY)
+                                .withWidget(BuiltInWidgets.kTextView).getEntry();
+
+                autonomousWaitToLower = autonomousTuningLayout.add("Wait for crane to lower", Constants.Autonomous.WAIT_TO_LOWER_DELAY)
+                                .withWidget(BuiltInWidgets.kTextView).getEntry();
+
         }
 }
