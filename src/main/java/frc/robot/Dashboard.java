@@ -46,6 +46,8 @@ public class Dashboard extends SubsystemBase {
         public static GenericEntry upperThresholdAngle;
         public static GenericEntry finishThresholdAngle;
         public static GenericEntry pitchReadoutEntry;
+        public static GenericEntry autoAlignOverrideMultiplier;
+
         private DrivebaseSubsystem drivebaseSubsystem;
 
         private ShuffleboardLayout presetLayout;
@@ -176,6 +178,11 @@ public class Dashboard extends SubsystemBase {
                                 .withWidget(BuiltInWidgets.kToggleSwitch)
                                 .withSize(2, 1)
                                 .withPosition(16, 6)
+                                .getEntry();
+
+                autoAlignOverrideMultiplier = Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
+                                .add("", Constants.OperatorConstants.DEFAULT_ALIGNMENT_OVERRIDE_MULTIPLIER)
+                                .withWidget(BuiltInWidgets.kNumberSlider)
                                 .getEntry();
 
                 // Pneumatics Widgets
