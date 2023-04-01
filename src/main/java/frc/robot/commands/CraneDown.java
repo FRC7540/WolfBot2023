@@ -21,6 +21,7 @@ public class CraneDown extends SequentialCommandGroup {
 
   public CraneDown(CraneSubsystem craneSubsystem) {
     addCommands(
+        new InstantCommand(() -> craneSubsystem.setAngle(Constants.CraneConstants.AUTO_HIGH_ANGLE)),
         new InstantCommand(() -> cooldown = true),
         new InstantCommand(() -> craneSubsystem.setMinAngle(Constants.CraneConstants.DEFAULT_MINIMUM_ANGLE_LOW)),
         new InstantCommand(() -> craneSubsystem.ShoulderDown()),

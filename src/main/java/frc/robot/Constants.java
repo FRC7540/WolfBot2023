@@ -93,7 +93,7 @@ public final class Constants {
 
       // Floor Pickup Preset
       public static final boolean FLOOR_SHOULDER = false;
-      public static final double FLOOR_ELBOW = 114;
+      public static final double FLOOR_ELBOW = 110;
 
       // Slide Pickup Preset
       public static final boolean SHELF_SHOULDER = true;
