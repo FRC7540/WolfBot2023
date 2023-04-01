@@ -25,11 +25,13 @@ public class SetArmPreset extends ConditionalCommand {
                 new OperateCrane(craneSubsystem, () -> 0).withTimeout(0.2),
                 new InstantCommand(() -> craneSubsystem.ShoulderUp(), craneSubsystem),
                 new WaitUntilCommand(() -> craneSubsystem.getShoulderAngle() < 70),
-                new InstantCommand(() -> craneSubsystem.setAngle(angle), craneSubsystem)),
+                new InstantCommand(() -> craneSubsystem.setAngle(angle), craneSubsystem),
+                new InstantCommand(() -> craneSubsystem.setMinAngle(Constants.CraneConstants.DEFAULT_MINIMUM_ANGLE_HIGH), craneSubsystem)),
             new SequentialCommandGroup(
                 new InstantCommand(() -> craneSubsystem.ShoulderDown(), craneSubsystem),
                 new WaitUntilCommand(() -> craneSubsystem.getShoulderAngle() > 10),
-                new InstantCommand(() -> craneSubsystem.setAngle(angle), craneSubsystem)),
+                new InstantCommand(() -> craneSubsystem.setAngle(angle), craneSubsystem),
+                new InstantCommand(() -> craneSubsystem.setMinAngle(Constants.CraneConstants.DEFAULT_MINIMUM_ANGLE_LOW), craneSubsystem)),
             () -> shoulder),
         () -> craneSubsystem.isArmUp() == shoulder);
   }
