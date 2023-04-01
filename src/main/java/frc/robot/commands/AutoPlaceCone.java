@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -26,7 +27,7 @@ public class AutoPlaceCone extends SequentialCommandGroup {
                 // raise arm
                 new InstantCommand(() -> operateCrane.recallPreset(armPreset.UPPER_NODE), craneSubsystem),
 
-                new WaitCommand(Dashboard.autonomousWaitToRaise.get().getDouble()),
+                Commands.deadline(new WaitCommand(Dashboard.autonomousWaitToRaise.get().getDouble()), new Drive(drivebaseSubsystem, () -> 0.0, () -> 0.0, () -> 0.0, () -> true)),
 
                 new PrintCommand("Driving forward"),
                 // drive up
@@ -39,13 +40,13 @@ public class AutoPlaceCone extends SequentialCommandGroup {
                 // open claw
 
 
-                new WaitCommand(Dashboard.autonomousWaitToPlaceDelay.get().getDouble()),
+                Commands.deadline(new WaitCommand(Dashboard.autonomousWaitToPlaceDelay.get().getDouble()), new Drive(drivebaseSubsystem, () -> 0.0, () -> 0.0, () -> 0.0, () -> true)),
 
                 new PrintCommand("Drop cone"),
 
                 new ActuateClaw(clawSubsystem, Direction.BACKWARD),
 
-                new WaitCommand(Dashboard.autonomousWaitAfterPlaceDelay.get().getDouble()),
+                Commands.deadline(new WaitCommand(Dashboard.autonomousWaitAfterPlaceDelay.get().getDouble()), new Drive(drivebaseSubsystem, () -> 0.0, () -> 0.0, () -> 0.0, () -> true)),
 
                 // drive back
 
@@ -62,7 +63,7 @@ public class AutoPlaceCone extends SequentialCommandGroup {
 
                 new InstantCommand(() -> operateCrane.recallPreset(armPreset.HOME), craneSubsystem),
 
-                new WaitCommand(Dashboard.autonomousWaitToLower.get().getDouble()),
+                Commands.deadline(new WaitCommand(Dashboard.autonomousWaitToLower.get().getDouble()),new Drive(drivebaseSubsystem, () -> 0.0, () -> 0.0, () -> 0.0, () -> true)),
 
                 // rotate 180
                 new PrintCommand("Rotate 180"),
