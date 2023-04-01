@@ -1,9 +1,10 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.Commands;
+
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Dashboard;
 import frc.robot.commands.ActuateClaw.Direction;
 import frc.robot.commands.OperateCrane.armPreset;
@@ -25,7 +26,7 @@ public class AutoPlaceCone extends SequentialCommandGroup {
                 // raise arm
                 new InstantCommand(() -> operateCrane.recallPreset(armPreset.UPPER_NODE), craneSubsystem),
 
-                Commands.waitSeconds(Dashboard.autonomousWaitToRaise.get().getDouble()),
+                new WaitCommand(Dashboard.autonomousWaitToRaise.get().getDouble()),
 
                 new PrintCommand("Driving forward"),
                 // drive up
@@ -38,13 +39,13 @@ public class AutoPlaceCone extends SequentialCommandGroup {
                 // open claw
 
 
-                Commands.waitSeconds(Dashboard.autonomousWaitToPlaceDelay.get().getDouble()),
+                new WaitCommand(Dashboard.autonomousWaitToPlaceDelay.get().getDouble()),
 
                 new PrintCommand("Drop cone"),
 
                 new ActuateClaw(clawSubsystem, Direction.BACKWARD),
 
-                Commands.waitSeconds(Dashboard.autonomousWaitAfterPlaceDelay.get().getDouble()),
+                new WaitCommand(Dashboard.autonomousWaitAfterPlaceDelay.get().getDouble()),
 
                 // drive back
 
@@ -61,7 +62,7 @@ public class AutoPlaceCone extends SequentialCommandGroup {
 
                 new InstantCommand(() -> operateCrane.recallPreset(armPreset.HOME), craneSubsystem),
 
-                Commands.waitSeconds(Dashboard.autonomousWaitToLower.get().getDouble()),
+                new WaitCommand(Dashboard.autonomousWaitToLower.get().getDouble()),
 
                 // rotate 180
                 new PrintCommand("Rotate 180"),
