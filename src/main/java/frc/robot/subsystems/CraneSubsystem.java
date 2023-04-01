@@ -39,6 +39,7 @@ public class CraneSubsystem extends SubsystemBase {
   private double minAngle = Constants.CraneConstants.DEFAULT_MINIMUM_ANGLE_LOW;
   private double maxAngleHigh = Constants.CraneConstants.DEFAULT_MAXIMUM_ANGLE_HIGH;
   private double maxAngleLow = Constants.CraneConstants.DEFAULT_MAXIMUM_ANGLE_LOW;
+  private boolean isArmUp = false;
 
   private DutyCycleEncoder elbowEncoder = new DutyCycleEncoder(Constants.CraneConstants.ELBOW_ENCODER_PIN);
   private DutyCycleEncoder shoulderEncoder = new DutyCycleEncoder(Constants.CraneConstants.SHOULDER_ENCODER_PIN);
@@ -70,10 +71,12 @@ public class CraneSubsystem extends SubsystemBase {
   }
 
   public void ShoulderUp() {
+    isArmUp = true;
     craneSolenoids.set(Value.kForward);
   }
 
   public void ShoulderDown() {
+    isArmUp = false;
     craneSolenoids.set(Value.kReverse);
   }
 
@@ -129,7 +132,7 @@ public class CraneSubsystem extends SubsystemBase {
   }
 
   public double getMaxAngle() {
-    if (isArmUp()) {
+    if (isArmUp) {
       return maxAngleHigh;
     } else {
       return maxAngleLow;
