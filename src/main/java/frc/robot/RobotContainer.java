@@ -75,7 +75,8 @@ public class RobotContainer {
                 configureBindings();
                 dashboard.ShuffleboardSetup();
                 networkTableListenerSetup();
-                SmartDashboard.putData("AutoPlaceCone", new AutoPlaceCone(drivebaseSubsystem, clawSubsystem, operateCrane, craneSubsystem));
+
+                SmartDashboard.putData("AutoPlaceCone", new AutoPlaceCone(drivebaseSubsystem, clawSubsystem, craneSubsystem));
                 SmartDashboard.putData("AutoBalanceOrDrive", new AutoBalanceOrDrive(drivebaseSubsystem));
         }
 
@@ -95,6 +96,7 @@ public class RobotContainer {
                 craneSubsystem.setDefaultCommand(operateCrane);
 
                 ledSubsystem.setDefaultCommand(new ChangeLeds(ledSubsystem));
+
         }
 
         /**
@@ -218,6 +220,6 @@ public class RobotContainer {
          * @return the command to run in autonomous
          */
         public Command getAutonomousCommand() {
-                return new AutonomousCommand(drivebaseSubsystem, clawSubsystem, operateCrane, craneSubsystem);
+                return new AutonomousCommand(drivebaseSubsystem, clawSubsystem, craneSubsystem);
         }
 }
