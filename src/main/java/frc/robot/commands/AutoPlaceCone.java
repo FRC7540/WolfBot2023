@@ -1,9 +1,9 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Dashboard;
 import frc.robot.commands.ActuateClaw.Direction;
 import frc.robot.commands.OperateCrane.armPreset;
@@ -23,9 +23,9 @@ public class AutoPlaceCone extends SequentialCommandGroup {
                 // Stage 1: place a cone, rotate
 
                 // raise arm
-                //new InstantCommand(() -> operateCrane.recallPreset(armPreset.UPPER_NODE), craneSubsystem),
+                new InstantCommand(() -> operateCrane.recallPreset(armPreset.UPPER_NODE), craneSubsystem),
 
-                new WaitCommand(Dashboard.autonomousWaitToRaise.get().getDouble()),
+                Commands.waitSeconds(Dashboard.autonomousWaitToRaise.get().getDouble()),
 
                 new PrintCommand("Driving forward"),
                 // drive up
@@ -38,11 +38,11 @@ public class AutoPlaceCone extends SequentialCommandGroup {
                 // open claw
                 new PrintCommand("Drop cone"),
 
-                new WaitCommand(Dashboard.autonomousWaitToPlaceDelay.get().getDouble()),
+                Commands.waitSeconds(Dashboard.autonomousWaitToPlaceDelay.get().getDouble()),
 
                 new ActuateClaw(clawSubsystem, Direction.BACKWARD),
 
-                new WaitCommand(Dashboard.autonomousWaitAfterPlaceDelay.get().getDouble()),
+                Commands.waitSeconds(Dashboard.autonomousWaitAfterPlaceDelay.get().getDouble()),
 
                 // drive back
 
@@ -59,7 +59,7 @@ public class AutoPlaceCone extends SequentialCommandGroup {
 
                 new InstantCommand(() -> operateCrane.recallPreset(armPreset.HOME), craneSubsystem),
 
-                new WaitCommand(Dashboard.autonomousWaitToLower.get().getDouble()),
+                Commands.waitSeconds(Dashboard.autonomousWaitToLower.get().getDouble()),
 
                 // rotate 180
                 new PrintCommand("Rotate 180"),
