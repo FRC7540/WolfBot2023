@@ -12,8 +12,9 @@ import frc.robot.subsystems.DrivebaseSubsystem;
 
 public class AutoPlaceCone extends SequentialCommandGroup {
 
-    public AutoPlaceCone(DrivebaseSubsystem drivebaseSubsystem, ClawSubsystem clawSubsystem, OperateCrane operateCrane,
+    public AutoPlaceCone(DrivebaseSubsystem drivebaseSubsystem, ClawSubsystem clawSubsystem,
             CraneSubsystem craneSubsystem) {
+                OperateCrane operateCrane = new OperateCrane(craneSubsystem, () -> 0.0);
         addCommands(
                 new InstantCommand(() -> drivebaseSubsystem.resetNav(), drivebaseSubsystem),
                 // Stage 1: place a cone, rotate
@@ -24,8 +25,8 @@ public class AutoPlaceCone extends SequentialCommandGroup {
                 new WaitCommand(Dashboard.autonomousWaitToRaise.get().getDouble()),
 
                 // drive up
-                new LockedDrive(drivebaseSubsystem, () -> Dashboard.autonomousDriveToPlaceSpeed.get().getDouble(),
-                        () -> 0.0, () -> true, Dashboard.rotationController)
+                new LockedDrive(drivebaseSubsystem, () -> 0.0, () -> Dashboard.autonomousDriveToPlaceSpeed.get().getDouble(),
+                         () -> true, Dashboard.rotationController)
                         .until(() -> drivebaseSubsystem
                                 .getDisplacementY() <= Dashboard.autonomousDriveToPlaceDistance.get().getDouble())
                         .withTimeout(0.5),
@@ -39,8 +40,8 @@ public class AutoPlaceCone extends SequentialCommandGroup {
 
                 // drive back
                 new InstantCommand(() -> drivebaseSubsystem.resetNav(), drivebaseSubsystem),
-                new LockedDrive(drivebaseSubsystem, () -> Dashboard.autonomousReverseFromPlaceSpeed.get().getDouble(),
-                        () -> 0.0, () -> true, Dashboard.rotationController)
+                new LockedDrive(drivebaseSubsystem, () -> 0.0, () -> Dashboard.autonomousReverseFromPlaceSpeed.get().getDouble(),
+                        () -> true, Dashboard.rotationController)
                         .until(() -> drivebaseSubsystem
                                 .getDisplacementY() <= Dashboard.autonomousReverseFromPlaceDistance.get().getDouble()),
 
