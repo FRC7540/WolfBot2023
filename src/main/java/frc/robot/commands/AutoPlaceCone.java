@@ -36,9 +36,11 @@ public class AutoPlaceCone extends SequentialCommandGroup {
                         .withTimeout(0.5),
 
                 // open claw
-                new PrintCommand("Drop cone"),
+
 
                 Commands.waitSeconds(Dashboard.autonomousWaitToPlaceDelay.get().getDouble()),
+
+                new PrintCommand("Drop cone"),
 
                 new ActuateClaw(clawSubsystem, Direction.BACKWARD),
 
@@ -52,7 +54,7 @@ public class AutoPlaceCone extends SequentialCommandGroup {
                 new LockedDrive(drivebaseSubsystem, () -> 0.0, () -> Dashboard.autonomousReverseFromPlaceSpeed.get().getDouble(),
                         () -> true, Dashboard.rotationController)
                         .until(() -> drivebaseSubsystem
-                                .getDisplacementY() <= Dashboard.autonomousReverseFromPlaceDistance.get().getDouble()),
+                                .getDisplacementY() <= Dashboard.autonomousReverseFromPlaceDistance.get().getDouble()).withTimeout(0.5),
 
                 // lower crane
                 new PrintCommand("Lower crane"),
@@ -68,7 +70,7 @@ public class AutoPlaceCone extends SequentialCommandGroup {
                 new Drive(drivebaseSubsystem, () -> 0.0, () -> 0.0,
                         () -> Dashboard.autonomousRotateSpeed.get().getDouble(), () -> true)
                         .withTimeout(Dashboard.autonomousRotateTimeout.get().getDouble()),
-                new LockedDrive(drivebaseSubsystem, () -> 0.0, () -> 0.0, () -> true, Dashboard.rotationController),
+                new LockedDrive(drivebaseSubsystem, () -> 0.0, () -> 0.0, () -> true, Dashboard.rotationController).withTimeout(0.5),
 
                 new InstantCommand(() -> drivebaseSubsystem.resetNav(), drivebaseSubsystem)
 
