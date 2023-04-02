@@ -26,6 +26,7 @@ public class Dashboard extends SubsystemBase {
         public static NetworkTableInstance networkTableInstance = NetworkTableInstance.getDefault();
         public static NetworkTable table = networkTableInstance.getTable("Shuffleboard");
 
+        public static GenericEntry fieldOrientationEntry;
         public static GenericEntry compressorEnabled;
         public static GenericEntry armRotationReadout;
         public static GenericEntry slowmodeSpeed;
@@ -58,6 +59,7 @@ public class Dashboard extends SubsystemBase {
         public static GenericEntry upperElbowEntry;
 
         private ShuffleboardLayout driveTuningLayout;
+        private ShuffleboardLayout telemetryLayout;
         private ShuffleboardLayout craneTuningLayout;
         private ShuffleboardLayout autoBalanceTuningLayout;
 
@@ -159,11 +161,25 @@ public class Dashboard extends SubsystemBase {
                                 .withProperties(Map.of("min", 0, "max", 1))
                                 .getEntry();
 
-                Shuffleboard.getTab(Constants.ShuffleboardConstants.GAME_TAB_NAME)
-                                .add("Gyro", drivebaseSubsystem.ahrs)
-                                .withWidget(BuiltInWidgets.kGyro)
+                telemetryLayout = Shuffleboard.getTab(Constants.ShuffleboardConstants.GAME_TAB_NAME)
+                                .getLayout("Telemetry", BuiltInLayouts.kGrid)
+                                .withProperties(Map.of("Number of columns", 2, "Number of rows", 1))
+                                .withSize(8, 5)
                                 .withPosition(12, 0);
-                                
+
+                telemetryLayout.add("Gyro", drivebaseSubsystem.ahrs)
+                                .withWidget(BuiltInWidgets.kGyro);
+
+                telemetryLayout.add("Drivebase", drivebaseSubsystem.mecanumDrive)
+                                .withWidget(BuiltInWidgets.kMecanumDrive);
+
+                fieldOrientationEntry = Shuffleboard.getTab(Constants.ShuffleboardConstants.GAME_TAB_NAME)
+                                .add("Field Oriented Drive", true)
+                                .withWidget(BuiltInWidgets.kToggleSwitch)
+                                .withSize(2, 1)
+                                .withPosition(16, 6)
+                                .getEntry();
+
                 autoAlignOverrideMultiplier = Shuffleboard.getTab(Constants.ShuffleboardConstants.TUNING_TAB_NAME)
                                 .add("", Constants.OperatorConstants.DEFAULT_ALIGNMENT_OVERRIDE_MULTIPLIER)
                                 .withWidget(BuiltInWidgets.kNumberSlider)
@@ -174,38 +190,34 @@ public class Dashboard extends SubsystemBase {
                                 .add("Enable Compressor", true)
                                 .withWidget(BuiltInWidgets.kToggleSwitch)
                                 .withSize(2, 1)
-                                .withPosition(12, 3)
-                                .getEntry();
-
-                armSetPointReadout = Shuffleboard.getTab(Constants.ShuffleboardConstants.GAME_TAB_NAME)
-                                .add("Set Point", 0)
-                                .withWidget(BuiltInWidgets.kDial)
-                                .withProperties(Map.of("min", 0, "max", 360))
-                                .withSize(2, 2)
-                                .withPosition(17, 0)
+                                .withPosition(16, 5)
                                 .getEntry();
 
                 armRotationReadout = Shuffleboard.getTab(Constants.ShuffleboardConstants.GAME_TAB_NAME)
                                 .add("Elbow Rotation", 0)
                                 .withWidget(BuiltInWidgets.kDial)
                                 .withProperties(Map.of("min", 0, "max", 360))
-                                .withSize(2, 2)
-                                .withPosition(17, 2)
+                                .withPosition(14, 5)
+                                .getEntry();
+
+                armSetPointReadout = Shuffleboard.getTab(Constants.ShuffleboardConstants.GAME_TAB_NAME)
+                                .add("Set Point", 0)
+                                .withWidget(BuiltInWidgets.kDial)
+                                .withProperties(Map.of("min", 0, "max", 360))
+                                .withPosition(12, 5)
                                 .getEntry();
 
                 pressureReadout = Shuffleboard.getTab(Constants.ShuffleboardConstants.GAME_TAB_NAME)
                                 .add("Air Pressure", 0)
                                 .withWidget(BuiltInWidgets.kDial)
                                 .withProperties(Map.of("min", 0, "max", 130))
-                                .withSize(2, 2)
-                                .withPosition(15, 2)
+                                .withPosition(18, 5)
                                 .getEntry();
 
                 pitchReadoutEntry = Shuffleboard.getTab(Constants.ShuffleboardConstants.GAME_TAB_NAME)
                                 .add("Pitch", 0)
                                 .withWidget(BuiltInWidgets.kDial)
                                 .withProperties(Map.of("min", -90, "max", 90))
-                                .withPosition(15, 0)
                                 .getEntry();
 
                 // Limelight widget
