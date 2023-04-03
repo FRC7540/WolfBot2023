@@ -177,11 +177,6 @@ public class RobotContainer {
                                 EnumSet.of(NetworkTableEvent.Kind.kValueAll),
                                 (event) -> drive.updateRateLimiters(event));
 
-                Dashboard.networkTableInstance.addListener(Dashboard.fieldOrientationEntry,
-                                EnumSet.of(NetworkTableEvent.Kind.kValueAll), (e) -> {
-                                        drivebaseSubsystem.setFieldOrientedDriveEnabled(e.valueData.value.getBoolean());
-                                });
-
                 Dashboard.networkTableInstance.addListener(
                                 Dashboard.armMinimumAngle,
                                 EnumSet.of(NetworkTableEvent.Kind.kValueAll),
