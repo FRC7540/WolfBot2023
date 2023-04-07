@@ -19,6 +19,6 @@ public class AutoBalance extends SequentialCommandGroup {
         new LockedDrive(drivebaseSubsystem, () -> 0, () -> -0.22, () -> true, Dashboard.rotationController)
             .until(() -> drivebaseSubsystem.getPitch() < Dashboard.finishThresholdAngle.get().getFloat()),
         new LockedDrive(drivebaseSubsystem, () -> 0, () -> 0.22, () -> true, Dashboard.rotationController)
-          .withTimeout(0.6));
+          .withTimeout(0.5));
   }
 }
